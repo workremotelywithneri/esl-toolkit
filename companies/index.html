@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ESL Company Directory — Filipino Teachers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --bg: #0B0A1F;
+    --surface: #120F2B;
+    --card: #171335;
+    --card-hover: #1E1943;
+    --text: #F5F3FF;
+    --text-soft: #B9B3D9;
+    --text-muted: #8783B3;
+    --accent: #A78BFA;
+    --accent-deep: #8B5CF6;
+    --accent-glow: rgba(167,139,250,0.35);
+    --accent-pink: #F472B6;
+    --line: rgba(255,255,255,0.12);
+    --line-soft: rgba(255,255,255,0.07);
+    --glass: rgba(255,255,255,0.05);
+    --glass-strong: rgba(255,255,255,0.10);
+    --good: #34D399;
+    --good-soft: rgba(52,211,153,0.14);
+    --warn: #FBBF24;
+    --warn-soft: rgba(251,191,36,0.14);
+    --bad: #FB7185;
+    --bad-soft: rgba(251,113,133,0.14);
+    --cn: #F472B6;
+    --cn-soft: rgba(244,114,182,0.14);
+    --jp: #67E8F9;
+    --jp-soft: rgba(103,232,249,0.14);
+    --gl: #A78BFA;
+    --gl-soft: rgba(167,139,250,0.16);
+    --radius: 18px;
+    --shadow: 0 20px 50px rgba(0,0,0,0.45);
+    --shadow-glow: 0 0 60px var(--accent-glow);
+    --focus: #C4B5FD;
+    --noise-opacity: 0.3;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F7F5FB;
+    --surface: #FFFFFF;
+    --card: #FFFFFF;
+    --card-hover: #FBFAFF;
+    --text: #211D3D;
+    --text-soft: #524C74;
+    --text-muted: #857FA6;
+    --accent: #7C3AED;
+    --accent-deep: #6D28D9;
+    --accent-glow: rgba(124,58,237,0.18);
+    --accent-pink: #DB2777;
+    --line: rgba(33,29,61,0.12);
+    --line-soft: rgba(33,29,61,0.08);
+    --glass: rgba(33,29,61,0.04);
+    --glass-strong: rgba(33,29,61,0.08);
+    --good: #059669;
+    --good-soft: rgba(5,150,105,0.12);
+    --warn: #B45309;
+    --warn-soft: rgba(180,83,9,0.12);
+    --bad: #E11D48;
+    --bad-soft: rgba(225,29,72,0.12);
+    --cn: #DB2777;
+    --cn-soft: rgba(219,39,119,0.10);
+    --jp: #0891B2;
+    --jp-soft: rgba(8,145,178,0.10);
+    --gl: #7C3AED;
+    --gl-soft: rgba(124,58,237,0.10);
+    --shadow: 0 20px 50px rgba(33,29,61,0.10);
+    --shadow-glow: 0 0 60px var(--accent-glow);
+    --focus: #6D28D9;
+    --noise-opacity: 0.06;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 900px 600px at 12% -10%, rgba(167,139,250,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 92% 5%, rgba(244,114,182,0.10), transparent 60%),
+      radial-gradient(ellipse 800px 700px at 50% 100%, rgba(103,232,249,0.06), transparent 60%);
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: var(--noise-opacity); mix-blend-mode: overlay; transition: opacity 0.25s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap { position: relative; z-index: 1; max-width: 100%; overflow-x: hidden; }
+  a { color: inherit; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: calc(env(safe-area-inset-top, 0px) + 56px) 0 44px;
+  }
+  .glow-blob {
+    position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+  .glow-blob.b1 { width: 380px; height: 380px; background: var(--accent); top: -140px; left: -100px; animation: floatBlob 16s ease-in-out infinite; }
+  .glow-blob.b2 { width: 300px; height: 300px; background: var(--accent-pink); top: 20px; right: -80px; animation: floatBlob 20s ease-in-out infinite reverse; }
+  @keyframes floatBlob {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(26px, -20px) scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) { .glow-blob { animation: none; } }
+
+  .hero-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 16px;
+  }
+  .eyebrow::before { content: ""; width: 20px; height: 1px; background: var(--accent-pink); display: inline-block; }
+
+  .hero h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 4.4vw, 46px);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    max-width: 15ch;
+  }
+  .hero h1 em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .hero p.sub {
+    font-size: 15.5px;
+    color: var(--text-soft);
+    max-width: 56ch;
+    margin: 0 0 26px;
+  }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
+  .stat-chip {
+    background: var(--glass);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text-soft);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .stat-chip strong {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    color: var(--text);
+  }
+
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .public-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin: 18px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .public-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
+
+  .theme-toggle {
+    position: absolute;
+    top: calc(env(safe-area-inset-top, 0px) + 20px);
+    right: 28px;
+    z-index: 2;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    transition: all 0.2s ease;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); background: var(--glass-strong); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  @media (max-width: 600px) { .theme-toggle { top: calc(env(safe-area-inset-top, 0px) + 14px); right: 16px; width: 38px; height: 38px; font-size: 15px; } }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(.2,.8,.2,1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #fff; box-shadow: 0 8px 28px rgba(139,92,246,0.35); }
+  .btn-primary:hover { box-shadow: 0 12px 40px rgba(139,92,246,0.5); transform: translateY(-2px); }
+  .btn-ghost { background: var(--glass); color: var(--text); border: 1px solid var(--line); backdrop-filter: blur(12px); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--glass-strong); }
+  .btn-line { background: transparent; border: 1px solid var(--line); color: var(--text-soft); }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-danger { background: transparent; border: 1px solid rgba(251,113,133,0.5); color: var(--bad); }
+  .btn-danger:hover { background: var(--bad-soft); }
+
+  /* ---------- LAYOUT ---------- */
+  .board {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 8px 28px 90px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 26px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 860px) {
+    .board { grid-template-columns: 1fr; padding: 8px 18px 70px; }
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar {
+    position: sticky;
+    top: 16px;
+    background: var(--glass);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  @media (max-width: 860px) { .sidebar { position: static; } }
+  .filter-group { margin-bottom: 22px; }
+  .filter-group:last-child { margin-bottom: 0; }
+  .filter-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 10px;
+  }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--text); }
+  .tag.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(139,92,246,0.4);
+  }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-soft);
+    padding: 7px 0;
+    cursor: pointer;
+  }
+  .switch {
+    width: 34px; height: 19px;
+    background: var(--line);
+    border-radius: 20px;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+  }
+  .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: #fff;
+    transition: left 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  .toggle-row.on .switch { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); }
+  .toggle-row.on .switch::after { left: 17px; }
+  select.sort-select {
+    width: 100%;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    padding: 9px 11px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .reset-link {
+    background: none; border: none; padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12.5px; color: var(--accent);
+    text-decoration: underline; cursor: pointer; margin-top: 16px;
+  }
+
+  /* ---------- MAIN ---------- */
+  .search-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .search-input {
+    flex: 1;
+    min-width: 200px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .count-line { font-size: 13px; color: var(--text-muted); margin: 0 0 16px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+  @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .card { animation: none !important; } }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    animation: cardIn 0.5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .card:hover { background: var(--card-hover); border-color: rgba(167,139,250,0.4); transform: translateY(-3px); }
+
+  .card-tab { height: 3px; width: 100%; }
+  .tier-newbie .card-tab { background: linear-gradient(90deg, var(--good), transparent); }
+  .tier-mid .card-tab { background: linear-gradient(90deg, var(--warn), transparent); }
+  .tier-senior .card-tab { background: linear-gradient(90deg, var(--accent), var(--accent-pink)); }
+
+  .card-body { padding: 18px 18px 16px; flex: 1; display: flex; flex-direction: column; }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 0;
+    color: var(--text);
+  }
+  .card-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .icon-btn {
+    width: 27px; height: 27px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    transition: all 0.15s ease;
+  }
+  .icon-btn:hover { background: var(--glass-strong); color: var(--text); }
+
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .mkt-chip { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .mkt-China { background: var(--cn-soft); color: var(--cn); }
+  .mkt-Japan { background: var(--jp-soft); color: var(--jp); }
+  .mkt-Global { background: var(--gl-soft); color: var(--gl); }
+  .tier-label { font-size: 11px; color: var(--text-muted); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); }
+
+  .salary-block { margin-bottom: 14px; }
+  .salary-figure { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 17px; color: var(--text); }
+  .salary-figure span { color: var(--text-muted); font-weight: 500; font-size: 13px; }
+  .pay-method { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+  .pill-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .pill { font-size: 11.5px; padding: 5px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px; }
+  .pill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .pill-good { background: var(--good-soft); color: var(--good); }
+  .pill-good .pill-dot { background: var(--good); }
+  .pill-warn { background: var(--warn-soft); color: var(--warn); }
+  .pill-warn .pill-dot { background: var(--warn); }
+  .pill-bad { background: var(--bad-soft); color: var(--bad); }
+  .pill-bad .pill-dot { background: var(--bad); }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px 12px;
+    font-size: 12.5px;
+    margin: 0 0 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .meta-item dt { color: var(--text-muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .meta-item dd { margin: 0; color: var(--text-soft); }
+
+  .card-link {
+    font-size: 12.5px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(167,139,250,0.4);
+    align-self: flex-start;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .card-link:hover { color: var(--accent-pink); border-color: var(--accent-pink); }
+
+  details.notes { margin-top: auto; }
+  details.notes summary {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  details.notes summary::-webkit-details-marker { display: none; }
+  details.notes summary::before { content: "▸"; font-size: 10px; color: var(--accent); transition: transform 0.15s ease; }
+  details.notes[open] summary::before { transform: rotate(90deg); }
+  details.notes p { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: var(--text-soft); margin: 10px 0 0; line-height: 1.6; }
+
+  .empty-state { grid-column: 1 / -1; text-align: center; padding: 70px 20px; color: var(--text-muted); }
+  .empty-state h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 24px; color: var(--text); margin: 0 0 8px; }
+  .empty-state button { margin-top: 16px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ---- community section ---- */
+  .community {
+    max-width: 1180px;
+    margin: 10px auto 0;
+    padding: 0 28px 60px;
+  }
+  .community-head { max-width: 640px; margin: 0 0 28px; }
+  .community-head .eyebrow2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  .community-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 30px;
+    margin: 0 0 10px;
+    color: var(--text);
+  }
+  .community-head p { color: var(--text-soft); font-size: 14.5px; margin: 0; line-height: 1.6; }
+
+  .disclaimer {
+    display: flex;
+    gap: 12px;
+    background: var(--warn-soft);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin: 20px 0 34px;
+    align-items: flex-start;
+  }
+  .disclaimer .dwarn { font-size: 18px; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+  .disclaimer p { margin: 0; font-size: 13px; color: var(--text); line-height: 1.6; }
+  .disclaimer p b { color: var(--warn); }
+
+  .comm-subhead {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 14px;
+    padding-top: 8px;
+  }
+
+  .comm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .comm-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 16px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .comm-card:hover { background: var(--card-hover); border-color: rgba(167,139,250,0.4); transform: translateY(-2px); }
+  .comm-top { display: flex; align-items: flex-start; gap: 10px; }
+  .comm-icon {
+    width: 34px; height: 34px; flex-shrink: 0;
+    border-radius: 9px;
+    background: var(--gl-soft);
+    color: var(--gl);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .comm-name { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 17.5px; color: var(--text); margin: 0; line-height: 1.3; }
+  .comm-tag { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .comm-desc { font-size: 12.5px; color: var(--text-soft); line-height: 1.55; margin: 0; }
+  .comm-link {
+    margin-top: auto;
+    font-size: 12.5px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(167,139,250,0.4);
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .comm-link:hover { color: var(--accent-pink); border-color: var(--accent-pink); }
+
+  @media (max-width: 700px) { .community { padding: 0 18px 48px; } }
+
+  .more-names-note { font-size: 12.5px; color: var(--text-muted); margin: 0 0 14px; line-height: 1.6; }
+  .name-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+  .name-chip {
+    font-size: 12px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: var(--glass);
+    border: 1px solid var(--line-soft);
+    color: var(--text-soft);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark mode">🌙</button>
+    <div class="glow-blob b1"></div>
+    <div class="glow-blob b2"></div>
+    <div class="hero-inner">
+      <p class="eyebrow">For Filipino online ESL teachers — 2025 edition</p>
+      <h1>Which ESL company should you <em>actually</em> apply to?</h1>
+      <p class="sub">Rates, requirements, and the realistic notes teachers actually need — not just the recruiting-page pitch. Filter by market or tier to find your fit.</p>
+      <div class="stat-row" id="statRow"></div>
+      <p class="public-note"><span class="public-dot"></span>Public directory — browsing only.</p>
+    </div>
+  </header>
+
+  <div class="board">
+    <aside class="sidebar">
+      <div class="filter-group">
+        <p class="filter-title">Market</p>
+        <div class="tag-list" id="marketTags"></div>
+      </div>
+      <div class="filter-group">
+        <p class="filter-title">Tier</p>
+        <div class="tag-list" id="tierTags"></div>
+      </div>
+      <div class="filter-group">
+        <p class="filter-title">Quick filters</p>
+        <div class="toggle-row" id="toggleTraining">
+          <span>Provides training</span><div class="switch"></div>
+        </div>
+        <div class="toggle-row" id="toggleNewbie">
+          <span>Newbie-friendly</span><div class="switch"></div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <p class="filter-title">Sort by</p>
+        <select class="sort-select" id="sortSelect">
+          <option value="name">Company name (A–Z)</option>
+          <option value="tier">Tier (newbie first)</option>
+          <option value="market">Market</option>
+        </select>
+      </div>
+      <button class="reset-link" id="clearFilters">Clear all filters</button>
+    </aside>
+
+    <main>
+      <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search by company name…">
+      </div>
+      <p class="count-line" id="countLine"></p>
+      <div class="grid" id="cardGrid"></div>
+    </main>
+  </div>
+
+  <section class="community">
+    <div class="community-head">
+      <p class="eyebrow2">Beyond the companies</p>
+      <h2>Where teachers actually find these jobs</h2>
+      <p>Most of these companies don't run big job-board ads — hiring happens inside Facebook groups and pages, almost daily. Join a few, watch how current teachers talk about pay and management, and apply straight from there.</p>
+    </div>
+
+    <div class="disclaimer">
+      <span class="dwarn">⚠️</span>
+      <p><b>Feel free to join and hang out in these groups — but always stay careful.</b> Most members and admins are kind and helpful, but not everyone is. These groups are run by regular people, not checked or verified by this site. Before you give your ID, pay any fee, or share your bank details, check the company or "recruiter" yourself first. A real job will never ask you to pay just to apply. And these aren't the only ones — there are many more groups and pages out there, so try searching Facebook for "ESL teacher Philippines" or similar words to find them.</p>
+      <p style="margin-top:10px;">Small note: I'm not affiliated with or paid by any of the coaches listed here. I personally joined one of their trainings and it was genuinely good — but if you like learning at your own pace, you can totally do it yourself too.</p>
+    </div>
+
+    <p class="comm-subhead">Facebook groups — daily hiring posts</p>
+    <div class="comm-grid" id="fbGroupsGrid"></div>
+
+    <p class="comm-subhead">Coaches &amp; pages — training + hiring leads</p>
+    <div class="comm-grid" id="fbPagesGrid"></div>
+
+    <p class="comm-subhead">Even more names to research (not yet checked one by one)</p>
+    <p class="more-names-note">This is a raw list going around teacher groups — names only, no pay or requirement details behind them yet. Some overlap with the companies above; some you may not find much about at all. Search each name yourself before applying anywhere.</p>
+    <div class="name-chips" id="moreNamesChips"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+
+  /* ---- theme ---- */
+  (function(){
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var saved = null;
+    try { saved = localStorage.getItem('esl-directory-theme'); } catch(e) {}
+    var theme = saved || 'dark';
+
+    function apply(t) {
+      theme = t;
+      if (t === 'light') { root.setAttribute('data-theme', 'light'); btn.textContent = '☀️'; }
+      else { root.removeAttribute('data-theme'); btn.textContent = '🌙'; }
+    }
+    apply(theme);
+    btn.addEventListener('click', function(){
+      var next = theme === 'light' ? 'dark' : 'light';
+      apply(next);
+      try { localStorage.setItem('esl-directory-theme', next); } catch(e) {}
+    });
+  })();
+
+  var DEFAULT_DATA = [
+    {id:'c1', company:'NativeCamp', market:'Japan', tier:'Newbie', salaryMin:'₱150', salaryMax:'₱200+', payMethod:'PayPal · Monthly', degree:'No', tefl:'No', training:'yes', newbie:'yes', experience:'None required', classType:'1-on-1 · On-demand', link:'https://nativecamp.net/tutors', peak:'Flexible (on-demand)', notes:'On-demand means you wait logged in and students call you. Inconsistent income. Avg take-home ₱8,000–₱15,000/mo part-time. Good for building hours and confidence. Minimum age is 18. Tech needs are light: a laptop/PC with webcam, a headset with mic, at least 2 Mbps internet, and Chrome or Edge browser. No minimum hours per week — teach 24/7 on your own schedule, with pay tied to your performance and bonuses for hitting targets.'},
+    {id:'c2', company:'Jiaozi Tutor', market:'China', tier:'Newbie', salaryMin:'₱80–140', salaryMax:'₱140', payMethod:'GCash / bank transfer', degree:'No', tefl:'Preferred', training:'no', newbie:'yes', experience:'Accepts candidates without experience', classType:'1-on-1 · Booked', link:'forms.gle/yYXKVLwc51iPMDeL9', peak:'5pm–11pm PH time', notes:'Starting salary is low but there’s an attendance bonus and pay rises with accumulated classes. Strict about background (tarpaulin with Jiaozi logo — they reimburse it).'},
+    {id:'c3', company:'HAP / Sankei', market:'Japan', tier:'Newbie', salaryMin:'₱50/25min', salaryMax:'₱200', payMethod:'BDO', degree:'4-yr, or 1–2 yrs ESL/call center exp', tefl:'No', training:'yes', newbie:'yes', experience:'Fresh graduates welcome', classType:'1-on-1 · Booked', link:'humanacademyph.com', peak:'3am–11pm PH time', notes:'Long application process. Strict on internet connection — must be online 30 min before class and pass a technical check (wired internet, webcam, mic, speakers). Missed classes can trigger "holiday status" with no incoming classes until settled.'},
+    {id:'c4', company:'Engoo (Bibo)', market:'Japan', tier:'Newbie', salaryMin:'₱80', salaryMax:'₱130', payMethod:'PayPal · Monthly', degree:'No', tefl:'No', training:'yes', newbie:'yes', experience:'None required', classType:'1-on-1 · Booked', link:'https://engoo.com/app/teach', peak:'6am–10am PH time', notes:'Non-native Filipino rate is ₱80–₱130/hr. Students are mostly Japanese adults — polite and consistent. Good for beginners, but competition for students has increased.'},
+    {id:'c5', company:'PalFish (PH Course)', market:'China', tier:'Newbie', salaryMin:'5 RMB/25min', salaryMax:'₱500+', payMethod:'Payoneer · Monthly', degree:'Preferred', tefl:'Yes (TEFL)', training:'yes', newbie:'yes', experience:'None required', classType:'1-on-1 · App-based', link:'https://www.palfish.com/teacher', peak:'5–9pm Beijing time', notes:'Mobile-only teaching via app, with points-based bonuses. Full-timers report ₱8,000–₱15,000/mo. Works well combined with another platform. One listed kids track asks for a neutral, clear accent, a 120-hour teaching certificate (TEFL/TESOL/CELTA, etc.), and being online 10+ hours/week between 6–9pm Beijing time — that posting specifically named US/UK/Canada/Australia/Ireland/New Zealand accents, so check which track you\'re applying to before assuming you qualify. Download the app and you can teach from a phone or tablet, no PC needed.'},
+    {id:'c6', company:'51Talk', market:'China', tier:'Newbie', salaryMin:'₱90', salaryMax:'₱800+', payMethod:'Bank transfer · Monthly', degree:'4-yr', tefl:'Preferred', training:'yes', newbie:'yes', experience:'No experience, but degree required', classType:'1-on-1 · Booked', link:'https://51talk.ph/', peak:'6–9pm & 9am–2:30am Beijing', notes:'Requires wired DSL — LTE/WiFi not accepted. Avg ₱14,000–₱20,000/mo part-time, top earners ₱40,000+/mo. Deductions for absences. Student pool shrank after China’s 2021 tutoring law.'},
+    {id:'c7', company:'Acadsoc', market:'China', tier:'Newbie', salaryMin:'₱90', salaryMax:'₱3,400+', payMethod:'PayPal / Bank · Monthly', degree:'Preferred', tefl:'Preferred', training:'yes', newbie:'yes', experience:'None required', classType:'1-on-1 · Booked', link:'https://www.acadsoc.ph/', peak:'Evening, Beijing time', notes:'Very low starting rate (₱90/hr) but top-teacher bonuses push it to ₱3,400+/hr. Serious part-timers average ₱15,000–₱25,000/mo. Has PH branch offices in Manila and Cebu.'},
+    {id:'c8', company:'iTalki (Community)', market:'Global', tier:'Newbie', salaryMin:'₱200', salaryMax:'₱600', payMethod:'PayPal / Payoneer · Bi-weekly', degree:'No', tefl:'No', training:'no', newbie:'partial', experience:'None required', classType:'1-on-1 · Booked', link:'https://teach.italki.com/', peak:'Flexible (global students)', notes:'Community Tutor tier needs no degree or TEFL. Start low (₱200–₱300/hr) to build reviews; income grows with ratings. 15% platform fee. Good option for undergrads or career-shifters.'},
+    {id:'c9', company:'Cambly', market:'Global', tier:'Newbie', salaryMin:'Own rate', salaryMax:'₱700', payMethod:'PayPal · Weekly', degree:'No', tefl:'No', training:'no', newbie:'no', experience:'None required', classType:'1-on-1 · On-demand', link:'https://www.cambly.com/english/tutors', peak:'Flexible (US evenings)', notes:'Officially prefers native US/UK/CA/AU speakers, and many Filipino teachers report rejection. If approved, pay is around ₱590/hr but wait times for calls can be long. Not reliable income for Filipinos.'},
+    {id:'c10', company:'Lingostar', market:'Global/Korean', tier:'Mid', salaryMin:'₱65–68/25min', salaryMax:'₱450+', payMethod:'PayPal · Monthly', degree:'Yes', tefl:'Yes', training:'yes', newbie:'no', experience:'6 months preferred', classType:'1-on-1 · Booked', link:'https://www.lingostar.me/teach/website', peak:'5–9pm Singapore time', notes:'Filipino non-native PH rate is roughly ₱65–68/hr base, plus peak and premium-peak add-ons (per PH Facebook groups). Native US/CA teachers get $16–24/hr. Background check can take up to 10 days.'},
+    {id:'c11', company:'Polly English', market:'Global/Asian', tier:'Mid', salaryMin:'₱65–68/25min', salaryMax:'₱80+', payMethod:'Payoneer / Bank · Monthly', degree:'Yes', tefl:'Yes', training:'yes', newbie:'no', experience:'1 year required', classType:'1-on-1 · Booked', link:'teach.pollyenglish.cn', peak:'5–9pm weekdays, all day weekends', notes:'Same non-native pay structure as Lingostar (₱65–68/hr base plus peak add-ons). Native teachers earn considerably more. Background check required.'},
+    {id:'c14', company:'Preply', market:'Global', tier:'Senior', salaryMin:'Own rate (~$3/hr to start)', salaryMax:'₱3,000+', payMethod:'Payoneer · Anytime', degree:'Yes', tefl:'Yes', training:'no', newbie:'no', experience:'1+ year strongly recommended', classType:'1-on-1 · Booked', link:'https://preply.com/en/teach', peak:'Flexible (global)', notes:'Trial lessons: Preply keeps 100%. After that, commission starts at 33% and drops to 18% after 400+ hours. Start around ₱300–500/hr to attract students, then raise rates. IELTS specialists earn ₱1,500–3,000+/hr.'},
+    {id:'c15', company:'EF Teach Online', market:'Global', tier:'Senior', salaryMin:'₱696', salaryMax:'₱900+', payMethod:'Bank transfer · Monthly', degree:'Yes', tefl:'Yes', training:'yes', newbie:'no', experience:'Prior ESL experience required', classType:'1-on-1 / Group', link:'https://teachonline.ef.com/', peak:'Flexible (global)', notes:'Reputable global brand. Stable ₱696/hr ($12) base plus 12.07% holiday pay. Filipino C2-level English speakers can qualify — expect a competitive process, so prepare a strong demo lesson.'},
+    {id:'c16', company:'iTalki (Professional)', market:'Global', tier:'Senior', salaryMin:'₱500', salaryMax:'₱1,500+', payMethod:'PayPal / Payoneer · Bi-weekly', degree:'Yes', tefl:'Yes', training:'no', newbie:'no', experience:'1+ year required', classType:'1-on-1 · Booked', link:'https://teach.italki.com/', peak:'Flexible (global)', notes:'The Professional Teacher badge requires a degree, TEFL, and experience. You set your own rates, minus a 15% platform fee. IELTS/TOEFL specialization unlocks premium rates — build reputation through reviews.'},
+    {id:'c17', company:'Novakid', market:'Global', tier:'Mid', salaryMin:'$2/25min class (~₱110)', salaryMax:'Higher on upper TLS levels', payMethod:'Bi-weekly (method varies)', degree:'No — high school diploma minimum', tefl:'Yes (TEFL/TESOL/TEYL/DELTA/CELTA required)', training:'yes', newbie:'partial', experience:'6 months teaching English to children required', classType:'1-on-1 · Booked (kids 4–12)', link:'https://novakidteachers.recruitee.com/o/online-english-teacher-1', peak:'Flexible, min. 20 hrs/week', notes:'Base rate starts around $2 per 25-minute class. Rate climbs through the Teacher Levels System (TLS) — your pay tier is ranked against other teachers and is easy to fall out of if you miss a demanding 2-month performance streak. There\'s also an incentive/bonus for enrolling a trial-class student into a paid plan, on top of the per-class rate. Cancellations need 10 days\' notice. Reviews are mixed but mostly positive.'},
+    {id:'c18', company:'Brighterly (Math Tutor)', market:'Global (US K–12 Math)', tier:'Mid', salaryMin:'₱23,000/mo', salaryMax:'₱71,000/mo', payMethod:'Bank / Payoneer · Monthly (unconfirmed)', degree:'No — high school diploma minimum', tefl:'No (not ESL)', training:'yes', newbie:'partial', experience:'6 months teaching kids required', classType:'1-on-1 · Booked (Math, K–8 level)', link:'https://brighterly.recruitee.com/o/online-math-tutor-position', peak:'Flexible, min. 20 hrs/week (weekdays priority)', notes:'Not an ESL platform — it\'s 1-on-1 Math tutoring for US K–12 students, with ready-made materials and scripts so there\'s no lesson prep. Needs C1+ English and strong K–8-level math knowledge. Listings advertise ₱23,000–₱71,000/mo (roughly $4–6/hr); Indeed-reported average is closer to ₱41,858/mo.'},
+    {id:'c18b', company:'Brighterly (ELA Tutor)', market:'Global (US K–12 ELA)', tier:'Mid', salaryMin:'₱23,000/mo', salaryMax:'₱71,000/mo', payMethod:'Bank / Payoneer · Monthly (unconfirmed)', degree:'No — high school diploma minimum', tefl:'No (not ESL, but strong reading/writing/phonics knowledge needed)', training:'yes', newbie:'partial', experience:'6 months teaching children required', classType:'1-on-1 · Booked (English Language Arts)', link:'https://brighterly.recruitee.com/o/online-ela-tutor-position', peak:'Flexible, min. 20 hrs/week (weekdays priority)', notes:'Sister role to the Math Tutor position — same platform, same pay range, but focused on reading, writing, listening and speaking (ELA) instead of math. Needs C1+ English with a clear, neutral accent. Ready-made lesson scripts provided.'},
+    {id:'c18c', company:'Brighterly (Demo Lesson Tutor)', market:'Global (US K–12 Math & ELA)', tier:'Mid', salaryMin:'₱23,000/mo', salaryMax:'₱71,000/mo', payMethod:'Bank / Payoneer · Monthly (unconfirmed)', degree:'No — high school diploma minimum', tefl:'No (not ESL)', training:'yes', newbie:'partial', experience:'6 months teaching kids (Math or English) required', classType:'1-on-1 · Trial/demo classes (Math & ELA)', link:'https://brighterly.recruitee.com/o/online-demo-lesson-tutor', peak:'Flexible, min. 20 hrs/week (weekdays priority)', notes:'You\'re the first teacher a family meets — deliver the trial lesson that gives parents their first impression of Brighterly, covering both Math and ELA content. Same requirements and pay range as the subject-specific roles.'},
+    {id:'c19', company:'Edge Tutor', market:'Global', tier:'Mid', salaryMin:'₱140–160 (Kids Core)', salaryMax:'₱300+ (Math/Plus track)', payMethod:'Bank · Per booking', degree:'Yes (any 4-yr course)', tefl:'Preferred/required by track', training:'yes', newbie:'yes', experience:'None required (Core); 1+ yr for Premium/Plus tracks', classType:'1-on-1 & Group · Booked', link:'https://www.edgetutor.co/', peak:'Varies by track (evenings/early AM common)', notes:'PH-founded platform (spun out of Edukasyon.ph) with several tracks: Kids Core (₱140–160/hr, no experience needed), Premium Adults/Business English (₱180–220/hr, HMO after 86 hrs/mo), and Plus Math (₱250–300/hr, needs experience). Sign-up and switcher bonuses (₱1,500–5,000) are common. NBI/police clearance required.'},
+    {id:'c20', company:'Pineapple Talk', market:'China', tier:'Newbie', salaryMin:'₱120', salaryMax:'₱240', payMethod:'GCash / Bank · Weekly', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'yes', experience:'Not specified', classType:'1-on-1 · Booked (Chinese kids)', link:'', peak:'7am–11pm daily (very open hours)', notes:'No website or email listed — hiring happens directly through ClassIn. Download the ClassIn app, scan the QR code to add "HR Pineapple Talk" as a friend, and message her there with an intro video and a screenshot of your resume. Poster claims weekly GCash/bank pay, no penalties, and pay even if a student is absent — there\'s no company site to verify those claims against, so confirm details before committing.'},
+    {id:'c21', company:'1Study', market:'Vietnam', tier:'Newbie', salaryMin:'$4–5/hr', salaryMax:'≈₱250–310/hr', payMethod:'Not specified · + referral bonus', degree:'Not specified', tefl:'Not required (advantage only)', training:'no', newbie:'yes', experience:'Not required (advantage only)', classType:'1-on-1 · Online conversation classes (Vietnamese students & professionals)', link:'', peak:'Flexible', notes:'Says Filipino teachers and undergraduates are welcome, with teaching incentives and a referral bonus on top of the hourly rate. Apply by emailing your CV to laiquanghai.work@gmail.com — no company website was listed, so verify the recruiter before sending personal documents.'},
+    {id:'c22', company:'Tina English', market:'Korea', tier:'Mid', salaryMin:'₱100/25min', salaryMax:'₱120/25min (after increase)', payMethod:'PayPal · Monthly', degree:'Not specified', tefl:'Teaching certificate required (type unspecified)', training:'no', newbie:'partial', experience:'Not specified', classType:'1-on-1 · Booked (Korean students, via Zoom)', link:'', peak:'Full-time 1–10pm KST, part-time 5–10pm KST, Mon–Fri', notes:'Apply by emailing xepesys.kat@gmail.com with a 1-minute self-introduction video, an updated resume, an Ookla speed-test result, and your teaching certificates. No company website was given — verify before sending documents.'},
+    {id:'c23', company:'SpeakWit', market:'China', tier:'Mid', salaryMin:'₱90–100/25min (general)', salaryMax:'₱145–150/25min (IELTS)', payMethod:'GCash · Weekly', degree:'Not specified', tefl:'Not specified', training:'yes', newbie:'partial', experience:'Not specified', classType:'1-on-1 · Booked (Chinese learners, via ClassIn & VooV)', link:'', peak:'Flexible booking system', notes:'No penalties for valid absences as long as you give video proof. Teaching materials are provided. Apply by scanning their WeChat QR code and sending your CV plus an intro video — all admin/student communication happens over WeChat. No website listed, so verify before sharing documents.'},
+    {id:'c24', company:'Allay English', market:'Korea', tier:'Mid', salaryMin:'₱300/25min', salaryMax:'₱600/hr', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'partial', experience:'Not specified', classType:'1-on-1 · Booked (Korean adult learners, via Zoom)', link:'https://allayenglish.com', peak:'Fixed weekly slots — choose 2, 3, or 5 sessions/week, hours based on your KST availability', notes:'Focused on natural conversation and confidence-building with adult Korean learners, with detailed feedback after every class. Apply by emailing your CV, a short English self-introduction video, your preferred learner type (junior/adult/both), and your available hours (KST) to hello@allayenglish.com.'},
+    {id:'c25', company:'Enest Language Center', market:'Vietnam', tier:'Mid', salaryMin:'Up to ₱20,000/mo', salaryMax:'Based on skills/interview', payMethod:'Not specified', degree:'Yes — Bachelor\'s, preferably Education/Communication/English/Linguistics', tefl:'Yes (English teaching certificate)', training:'no', newbie:'no', experience:'At least 1 year required', classType:'1-on-1 / Group · Online', link:'', peak:'6pm–11pm PHT preferred, Mon–Sun', notes:'Fairly strict tech requirements: webcam, noise-canceling headset, wired DSL 5 Mbps+, a plain quiet well-lit space, and backup internet. Offers paid trial classes. Apply by emailing your CV only to teacher.recruitment+fb@theenest.edu.vn with the subject "[The Enest Teacher Application] Full Name".'},
+    {id:'c26', company:'SpeakWell', market:'Vietnam', tier:'Mid', salaryMin:'₱150/hr (1:1)', salaryMax:'₱160/hr (1:2)', payMethod:'Not specified', degree:'Yes — college diploma', tefl:'Yes (TEFL certificate)', training:'no', newbie:'no', experience:'At least 3 months ESL teaching experience', classType:'1-on-1 & small group · Online', link:'', peak:'Not specified', notes:'Bonus structure: ₱30 per student monthly report, ₱700 monthly Rank A+ bonus, ₱700 quarterly Rank A bonus, and guaranteed pay for 80 classes/month (with or without students) for your first 2 months. Says no unreasonable penalties. Apply by sending your CV only to speakwelltmjohn@gmail.com.'},
+    {id:'c27', company:'Yuxi English', market:'China', tier:'Mid', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'no', experience:'Teaching experience required; wants long-term commitment', classType:'1-on-1 · Booked (regular, consistent students)', link:'', peak:'5:00pm–9:30pm (peak hours)', notes:'Says it has hired Filipino teachers for 9+ years with hundreds placed long-term, and offers an internal booking system with consistent, regular students. Wants a neutral English accent and serious applicants — explicitly says "no temporary job seekers." Apply by adding their DingTalk account: eslteachers666.'},
+    {id:'c28', company:'See.Guru', market:'Global', tier:'Newbie', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not required (subject degree a plus)', tefl:'Not required (TEFL/TESOL a plus)', training:'no', newbie:'yes', experience:'Not required', classType:'1-on-1 · "Guru" tutoring — English, other languages, or subjects like Math', link:'https://see.guru/en/page/become-guru', peak:'Not specified', notes:'Different from most ESL platforms in that you can tutor other languages or subjects like Math, not just English. Looks for enthusiasm and patience over formal credentials, though a TEFL/TESOL certificate or subject degree helps. No pay figures are listed on the page — check current rates during the application process.'},
+    {id:'c29', company:'Podo', market:'Global', tier:'Mid', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'partial', experience:'Not specified', classType:'Not specified', link:'https://tutor.podospeaking.com/', peak:'Not specified', notes:'No further details were shared for this one — check the application page directly for pay, requirements, and schedule before applying.'},
+    {id:'c30', company:'JP Network English', market:'Japan', tier:'Mid', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'partial', experience:'Not specified', classType:'Not specified', link:'https://sites.google.com/jp-network.net/j-pnetworkenglishcorp', peak:'Not specified', notes:'No further details were shared for this one — visit their site directly to check current pay, requirements, and how to apply.'},
+    {id:'c31', company:'Weblio', market:'Japan', tier:'Newbie', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not required', tefl:'Not required', training:'no', newbie:'yes', experience:'None required', classType:'Online, schedule-based', link:'https://weblioph.com/pre-qualification-check/', peak:'Peak hours 8am–5pm (PH time), Mon–Fri, but you can teach 24/7', notes:'Requirements lean technical rather than academic: 18+, computer literate, fluent in spoken and written English, a noise-canceling headset with external mic, a fairly specific PC spec (Windows 11, 6GB+ RAM, Core i3 or better / Ryzen 5–9 / Threadripper, or MacOS 2017+), a plain white background with good lighting and no noise, at least 5 Mbps internet with under 30ms ping, and a Philippine Tax Identification Number (TIN). Start at their pre-qualification check link.'},
+    {id:'c32', company:'25Hoon', market:'Taiwan', tier:'Mid', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Yes — Bachelor\'s degree', tefl:'Not specified', training:'no', newbie:'partial', experience:'Minimum 6-month commitment', classType:'Junior/kids teaching track', link:'https://25hoon.com/tutors/teaching-junior/', peak:'Not specified', notes:'You can be based anywhere, but must be at least 22 years old with a bachelor\'s degree and high English proficiency, commit to at least 6 months, and have 10 Mbps+ internet since classes run on a Taiwan server.'},
+    {id:'c33', company:'RareJob', market:'Japan', tier:'Mid', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'partial', experience:'Not specified', classType:'Not specified', link:'https://www.rarejob.com.ph/', peak:'Not specified', notes:'Long-running Japan-based platform with a dedicated PH site — one of the more established names in the industry. Apply through their online application form or visit rarejob.com.ph directly for current pay and requirements.'},
+    {id:'c34', company:'Lingora', market:'Global', tier:'Mid', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'partial', experience:'Not specified', classType:'Not specified', link:'https://tutoringgo.com/web/tutor_apply.html?lang=en&mode=E&ref_key=SWt2dUE2QTgyd0JXUW1VMGxVN3R5UT09', peak:'Not specified', notes:'No further details were shared for this one — check the application page directly (hosted on tutoringgo.com) for pay, requirements, and schedule before applying.'},
+    {id:'c35', company:'Unnamed China Company (TikTok: @itskingstrange)', market:'China', tier:'Newbie', salaryMin:'Not disclosed', salaryMax:'—', payMethod:'Not specified', degree:'Not specified', tefl:'Not specified', training:'no', newbie:'partial', experience:'Not specified', classType:'Not specified', link:'https://www.tiktok.com/@itskingstrange', peak:'Not specified', notes:'The company name isn\'t publicly disclosed — a recruiter streams hiring info live on TikTok under this handle and is reported to be legit. There\'s no company website to verify anything against beyond the TikTok account itself, so watch a few streams first and message her there if you want to apply. Treat this one with extra caution since there\'s no paper trail.'}
+  ];
+
+  var TIER_LABEL = {Newbie:'Newbie', Mid:'Mid-level', Senior:'Senior'};
+  var TIER_ORDER = {Newbie:0, Mid:1, Senior:2};
+
+  var state = { data: DEFAULT_DATA, market: null, tier: null, trainingOnly: false, newbieOnly: false, sort: 'name', search: '' };
+
+  function marketClass(m) {
+    if (m.indexOf('China') > -1) return 'mkt-China';
+    if (m.indexOf('Japan') > -1) return 'mkt-Japan';
+    return 'mkt-Global';
+  }
+
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  function renderStats() {
+    var total = state.data.length;
+    var training = state.data.filter(function(d){ return d.training === 'yes'; }).length;
+    var newbieFriendly = state.data.filter(function(d){ return d.newbie === 'yes'; }).length;
+    var row = document.getElementById('statRow');
+    row.innerHTML = '';
+    [[total, 'companies listed'], [training, 'offer training'], [newbieFriendly, 'newbie-friendly']].forEach(function(pair){
+      var chip = el('div', 'stat-chip', '<strong>' + pair[0] + '</strong><span>' + pair[1] + '</span>');
+      row.appendChild(chip);
+    });
+  }
+
+  function uniqueMarkets() {
+    var set = {};
+    state.data.forEach(function(d){ set[d.market] = true; });
+    return Object.keys(set).sort();
+  }
+
+  function renderFilterTags() {
+    var marketWrap = document.getElementById('marketTags');
+    marketWrap.innerHTML = '';
+    uniqueMarkets().forEach(function(m){
+      var t = el('button', 'tag' + (state.market === m ? ' active' : ''), m);
+      t.type = 'button';
+      t.addEventListener('click', function(){
+        state.market = state.market === m ? null : m;
+        renderAll();
+      });
+      marketWrap.appendChild(t);
+    });
+
+    var tierWrap = document.getElementById('tierTags');
+    tierWrap.innerHTML = '';
+    ['Newbie', 'Mid', 'Senior'].forEach(function(tk){
+      var t = el('button', 'tag' + (state.tier === tk ? ' active' : ''), TIER_LABEL[tk]);
+      t.type = 'button';
+      t.addEventListener('click', function(){
+        state.tier = state.tier === tk ? null : tk;
+        renderAll();
+      });
+      tierWrap.appendChild(t);
+    });
+
+    var trToggle = document.getElementById('toggleTraining');
+    trToggle.classList.toggle('on', state.trainingOnly);
+    var nbToggle = document.getElementById('toggleNewbie');
+    nbToggle.classList.toggle('on', state.newbieOnly);
+  }
+
+  function getFiltered() {
+    var list = state.data.slice();
+    if (state.market) list = list.filter(function(d){ return d.market === state.market; });
+    if (state.tier) list = list.filter(function(d){ return d.tier === state.tier; });
+    if (state.trainingOnly) list = list.filter(function(d){ return d.training === 'yes'; });
+    if (state.newbieOnly) list = list.filter(function(d){ return d.newbie === 'yes'; });
+    if (state.search) {
+      var q = state.search.toLowerCase();
+      list = list.filter(function(d){ return d.company.toLowerCase().indexOf(q) > -1; });
+    }
+    list.sort(function(a, b){
+      if (state.sort === 'tier') {
+        return TIER_ORDER[a.tier] - TIER_ORDER[b.tier] || a.company.localeCompare(b.company);
+      }
+      if (state.sort === 'market') {
+        return a.market.localeCompare(b.market) || a.company.localeCompare(b.company);
+      }
+      return a.company.localeCompare(b.company);
+    });
+    return list;
+  }
+
+  function newbiePill(v) {
+    if (v === 'yes') return '<span class="pill pill-good"><span class="pill-dot"></span>Newbie-friendly</span>';
+    if (v === 'partial') return '<span class="pill pill-warn"><span class="pill-dot"></span>Partial fit</span>';
+    return '<span class="pill pill-bad"><span class="pill-dot"></span>Not for newbies</span>';
+  }
+  function trainingPill(v) {
+    if (v === 'yes') return '<span class="pill pill-good"><span class="pill-dot"></span>Trains you</span>';
+    return '<span class="pill pill-bad"><span class="pill-dot"></span>No training</span>';
+  }
+
+  function tierClass(t) {
+    if (t === 'Newbie') return 'tier-newbie';
+    if (t === 'Mid') return 'tier-mid';
+    return 'tier-senior';
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function linkHref(link) {
+    if (!link) return '#';
+    if (/^https?:\/\//i.test(link)) return link;
+    return 'https://' + link;
+  }
+
+  function renderCards() {
+    var grid = document.getElementById('cardGrid');
+    var list = getFiltered();
+    document.getElementById('countLine').textContent = list.length + (list.length === 1 ? ' company shown' : ' companies shown') + (state.data.length !== list.length ? ' of ' + state.data.length : '');
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+      var empty = el('div', 'empty-state');
+      empty.innerHTML = '<h3>Nothing matches those filters</h3><p>Try clearing a filter or search term.</p>';
+      var btn = el('button', 'btn btn-line', 'Clear filters');
+      btn.type = 'button';
+      btn.addEventListener('click', clearFilters);
+      empty.appendChild(btn);
+      grid.appendChild(empty);
+      return;
+    }
+
+    list.forEach(function(d){
+      var card = el('div', 'card ' + tierClass(d.tier));
+      var mCls = marketClass(d.market);
+      card.innerHTML =
+        '<div class="card-tab"></div>' +
+        '<div class="card-body">' +
+          '<div class="card-top">' +
+            '<h3 class="card-name">' + escapeHtml(d.company) + '</h3>' +
+          '</div>' +
+          '<div class="chip-row">' +
+            '<span class="mkt-chip ' + mCls + '">' + escapeHtml(d.market) + '</span>' +
+            '<span class="tier-label">' + TIER_LABEL[d.tier] + '</span>' +
+          '</div>' +
+          '<div class="salary-block">' +
+            '<div class="salary-figure">' + escapeHtml(d.salaryMin) + ' <span>&rarr;</span> ' + escapeHtml(d.salaryMax) + '</div>' +
+            '<div class="pay-method">' + escapeHtml(d.payMethod || '—') + '</div>' +
+          '</div>' +
+          '<div class="pill-row">' + trainingPill(d.training) + newbiePill(d.newbie) + '</div>' +
+          '<dl class="meta-grid">' +
+            '<div class="meta-item"><dt>Degree</dt><dd>' + escapeHtml(d.degree || '—') + '</dd></div>' +
+            '<div class="meta-item"><dt>TEFL/TESOL</dt><dd>' + escapeHtml(d.tefl || '—') + '</dd></div>' +
+            '<div class="meta-item"><dt>Experience</dt><dd>' + escapeHtml(d.experience || '—') + '</dd></div>' +
+            '<div class="meta-item"><dt>Class type</dt><dd>' + escapeHtml(d.classType || '—') + '</dd></div>' +
+            '<div class="meta-item"><dt>Peak hours</dt><dd>' + escapeHtml(d.peak || '—') + '</dd></div>' +
+          '</dl>' +
+          (d.link ? '<a class="card-link" href="' + linkHref(d.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(d.link) + '</a>' : '') +
+          '<details class="notes"><summary>Realistic notes</summary><p>' + escapeHtml(d.notes || 'No notes yet.') + '</p></details>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+
+  }
+
+  function renderAll() {
+    renderStats();
+    renderFilterTags();
+    renderCards();
+  }
+
+  /* ---- community: facebook groups & pages ---- */
+  var FB_GROUPS = [
+    { name: 'ESL teachers- The Philippines', tag: 'Facebook Group', desc: 'One of the biggest general ESL teacher groups in the PH — job posts, reviews, and teacher discussions.', link: 'https://www.facebook.com/groups/245795891918034' },
+    { name: 'ESL Companies with good pay (Pros and Cons)', tag: 'Facebook Group', desc: 'Focused on comparing companies — good for reading honest pros/cons before applying anywhere.', link: 'https://www.facebook.com/groups/673071893193515' },
+    { name: 'ESL Teachers Pilipinas (200 pesos +/hour)', tag: 'Facebook Group', desc: 'Geared toward higher-rate openings (₱200+/hr) — useful once you have some experience under your belt.', link: 'https://www.facebook.com/groups/1013583656496166' },
+    { name: 'Homebased ESL Online Teachers - Philippines', tag: 'Facebook Group', desc: 'General homebased ESL hiring group with daily postings from recruiters and agencies.', link: 'https://www.facebook.com/groups/audioclasshomebasedesl' }
+  ];
+  var FB_PAGES = [
+    { name: "Coach Jhey's Hub", tag: 'Facebook Page', desc: 'Hiring leads and community hub run by Coach Jhey.', link: 'https://www.facebook.com/profile.php?id=61593752350118' },
+    { name: 'Coach Jhey', tag: 'Trainer · Paid training available', desc: 'Personal page — offers paid training for teachers wanting to get hired faster.', link: 'https://www.facebook.com/gabecaihla.kimiko' },
+    { name: 'Teacher Bella', tag: 'Trainer · Paid training available', desc: 'ESL teacher and trainer offering paid coaching alongside hiring tips.', link: 'https://www.facebook.com/teacherbella.eslteacher' },
+    { name: 'ESL Success: Training & Hiring Solutions', tag: 'Facebook Page', desc: 'Page combining ESL training resources with hiring leads and solutions.', link: 'https://www.facebook.com/eslteachertrainingtohiring' }
+  ];
+
+  function renderCommunity(items, containerId) {
+    var grid = document.getElementById(containerId);
+    grid.innerHTML = '';
+    items.forEach(function(g){
+      var el = document.createElement('div');
+      el.className = 'comm-card';
+      el.innerHTML =
+        '<div class="comm-top">' +
+          '<div class="comm-icon">👥</div>' +
+          '<div><h3 class="comm-name">' + escapeHtml(g.name) + '</h3><div class="comm-tag">' + escapeHtml(g.tag) + '</div></div>' +
+        '</div>' +
+        '<p class="comm-desc">' + escapeHtml(g.desc) + '</p>' +
+        '<a class="comm-link" href="' + linkHref(g.link) + '" target="_blank" rel="noopener noreferrer">Visit on Facebook →</a>';
+      grid.appendChild(el);
+    });
+  }
+  renderCommunity(FB_GROUPS, 'fbGroupsGrid');
+  renderCommunity(FB_PAGES, 'fbPagesGrid');
+
+  var MORE_NAMES = ['Brytolek','Bizmates','Twenix','AllRight','Point English','Bridging Gaps English Network','Maolingo','TutorABC Global','AmazingTalker','Edoo','Tutero','AntiSchool','Open-Mouth English','TalkEnglishClass','Spiralyze','Calamo Speak','VIPKid','Sponge English','Upgrade English','Enlego','EasyPeasy Fluent','BrightChamps','The Top','AirClass','GLATS','AICA','BCM Educational Group','Mison Online School','E Tech 101','The Faculty','LingoAce','QQ English',"King's English",'Pinecone English','Houhai English','WonderTalk','Joy English KR','YoYoTalk','Cosmo','Tiger UX','English Central','ChipChip EDU','Bridge Culture','Galaxy','Fancy Talk','Magic Talk','TalkPie','IShow','Sharo','JerryMarie','Dimsum','Happy English','Jason English','Speakto (Et-Phone)','EineTeacher','Tutalk English','Ruvimo (kids)','Meridian ESL','Toucanstalk','Skima Talk','Funny Edu','Darstop Online Academy','Wise Education','Speaking Easily','Super Class','Virtual English Educators','IM and MA','Tutoroo','Partner English','ESLBEE PH','Lacy English','Ivy English','ESO Vietnam','Ms. Connection (small group)','Free Talk','HiTalk','Fairy English','Spiiker Telephone','Foxt','G7 English','Bilin Academy','Ginseng English','Bingo Kids','Liuliu English','Seer English','Joy Link ABC','YayTalk','EasyPass','X.note','FluentBe','Learnlight','TOPICA Native','First Future','Antoree','ECommunication','HelloKid','Kukuspeak','iBestTeacher','Orange Talk','Talk915','Sankei Online English','Fly English Group','Classgap','Kita Academy','Clarknchloe.co LTD','Sangson International Academic Tutoring Services','Vgogo'];
+  (function renderMoreNames(){
+    var wrap = document.getElementById('moreNamesChips');
+    wrap.innerHTML = '';
+    MORE_NAMES.forEach(function(n){
+      var chip = el('span', 'name-chip', escapeHtml(n));
+      wrap.appendChild(chip);
+    });
+  })();
+
+  function clearFilters() {
+    state.market = null; state.tier = null; state.trainingOnly = false; state.newbieOnly = false;
+    state.search = ''; document.getElementById('searchInput').value = '';
+    renderAll();
+  }
+
+  document.getElementById('toggleTraining').addEventListener('click', function(){
+    state.trainingOnly = !state.trainingOnly; renderAll();
+  });
+  document.getElementById('toggleNewbie').addEventListener('click', function(){
+    state.newbieOnly = !state.newbieOnly; renderAll();
+  });
+  document.getElementById('sortSelect').addEventListener('change', function(e){
+    state.sort = e.target.value; renderCards();
+  });
+  document.getElementById('searchInput').addEventListener('input', function(e){
+    state.search = e.target.value; renderCards();
+  });
+  document.getElementById('clearFilters').addEventListener('click', clearFilters);
+
+  /* ---- init ---- */
+  renderAll();
+
+})();
+</script>
+</body>
+</html>
