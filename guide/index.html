@@ -7,7 +7,11 @@
 <script>
   (function(){
     try{
-      var savedTheme=localStorage.getItem('esl-guide-theme');
+      var savedTheme=localStorage.getItem('esl-site-theme');
+      if(savedTheme!=='light'&&savedTheme!=='dark'){
+        savedTheme=localStorage.getItem('esl-guide-theme');
+        if(savedTheme==='light'||savedTheme==='dark') localStorage.setItem('esl-site-theme',savedTheme);
+      }
       if(savedTheme==='light'||savedTheme==='dark') document.documentElement.setAttribute('data-theme',savedTheme);
     }catch(e){}
   })();
@@ -59,11 +63,11 @@
     --text:#29213D;
     --text-body:#514B60;
     --text-soft:#696276;
-    --text-muted:#898397;
+    --text-muted:#6D6879;
     --accent:#7652C5;
     --accent-deep:#8058D0;
     --accent-glow:rgba(118,82,197,0.22);
-    --accent-pink:#C64D8A;
+    --accent-pink:#A63273;
     --metal-2:#403456;
     --metal-3:#765CA8;
     --metal-4:#B9B2C8;
@@ -115,7 +119,9 @@
   a{color:var(--accent);text-underline-offset:3px;}
   a:hover{color:var(--metal-3);}
   ::selection{background:var(--accent-glow);color:#fff;}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+  .skip-link{position:fixed;top:12px;left:12px;z-index:1000;transform:translateY(-180%);padding:10px 14px;border-radius:10px;background:var(--surface);color:var(--text);border:2px solid var(--accent);font-weight:700;}
+  .skip-link:focus{transform:translateY(0);}
 
   /* ---------- Header ---------- */
   header.site{
@@ -556,6 +562,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to guide content</a>
 
 <div class="ambient" aria-hidden="true"><div class="glow-blob b1"></div><div class="glow-blob b2"></div></div>
 
@@ -610,7 +617,7 @@
     <p class="pw-hint" id="pwHint"></p>
   </aside>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
 
     <!-- ============ START HERE ============ -->
     <section class="page active" id="page-start">
@@ -1316,7 +1323,7 @@
 (function(){
   var PAGES = ["start","isesl","tefl","setup","findcompany","introvideo","apply","hired","realtalk","whyicreated"];
   var STORAGE_KEY = "esl-guide-progress";
-  var THEME_KEY = "esl-guide-theme";
+  var THEME_KEY = "esl-site-theme";
   var progress = {};
 
   /* ---------- light and dark appearance ---------- */
@@ -1336,6 +1343,9 @@
   themeToggle.addEventListener('click', function(){
     var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
     applyTheme(current === 'light' ? 'dark' : 'light', true);
+  });
+  window.addEventListener('storage', function(event){
+    if(event.key === THEME_KEY) applyTheme(event.newValue === 'light' ? 'light' : 'dark', false);
   });
 
   /* ---------- progress (per-viewer, remembered in this browser) ---------- */
