@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ESL Teacher Guide — by Neri</title>
+<script>
+  (function(){
+    try{
+      var savedTheme=localStorage.getItem('esl-guide-theme');
+      if(savedTheme==='light'||savedTheme==='dark') document.documentElement.setAttribute('data-theme',savedTheme);
+    }catch(e){}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -31,6 +39,10 @@
     --glass-strong:rgba(255,255,255,0.09);
     --radius:22px;
     --shadow:0 20px 50px rgba(0,0,0,0.5);
+    --nav-bg:rgba(18,15,43,0.62);
+    --nav-bg-scrolled:rgba(12,10,32,0.86);
+    --nav-border-scrolled:rgba(167,139,250,0.28);
+    --nav-shadow:0 10px 40px rgba(0,0,0,0.4);
     --serif:'Cormorant Garamond','Cormorant',Georgia,'Times New Roman',serif;
     --sans:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -38,6 +50,34 @@
     box-sizing:border-box;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  :root[data-theme="light"]{
+    --bg:#F7F5FC;
+    --surface:#FFFFFF;
+    --card:#FFFFFF;
+    --card-hover:#F0ECF8;
+    --text:#29213D;
+    --text-body:#514B60;
+    --text-soft:#696276;
+    --text-muted:#898397;
+    --accent:#7652C5;
+    --accent-deep:#8058D0;
+    --accent-glow:rgba(118,82,197,0.22);
+    --accent-pink:#C64D8A;
+    --metal-2:#403456;
+    --metal-3:#765CA8;
+    --metal-4:#B9B2C8;
+    --ok:#17805C;
+    --line:rgba(54,39,79,0.15);
+    --line-soft:rgba(54,39,79,0.09);
+    --glass:rgba(54,39,79,0.035);
+    --glass-strong:rgba(54,39,79,0.075);
+    --shadow:0 20px 50px rgba(39,27,64,0.12);
+    --nav-bg:rgba(255,255,255,0.78);
+    --nav-bg-scrolled:rgba(255,255,255,0.94);
+    --nav-border-scrolled:rgba(118,82,197,0.24);
+    --nav-shadow:0 10px 40px rgba(39,27,64,0.12);
+    color-scheme:light;
   }
   html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px);}
   *,*::before,*::after{box-sizing:border-box;}
@@ -86,14 +126,14 @@
     max-width:1160px;margin:0 auto;
     display:flex;align-items:center;gap:18px;
     padding:9px 12px 9px 11px;
-    background:rgba(18,15,43,0.62);
+    background:var(--nav-bg);
     border:1px solid var(--line);
     border-radius:999px;
     backdrop-filter:blur(18px) saturate(140%);
     -webkit-backdrop-filter:blur(18px) saturate(140%);
     transition:background .3s ease,border-color .3s ease,box-shadow .3s ease;
   }
-  .nav.scrolled{background:rgba(12,10,32,0.86);border-color:rgba(167,139,250,0.28);box-shadow:0 10px 40px rgba(0,0,0,0.4);}
+  .nav.scrolled{background:var(--nav-bg-scrolled);border-color:var(--nav-border-scrolled);box-shadow:var(--nav-shadow);}
   .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);margin-right:auto;min-width:0;}
   .brand:hover{color:var(--text);}
   .toolkit-back{font-size:.82rem;font-weight:600;color:var(--text-soft);text-decoration:none;white-space:nowrap;}
@@ -121,6 +161,15 @@
     font-family:var(--sans);font-size:.88rem;font-weight:600;
   }
   .menu-toggle:hover{border-color:var(--accent);}
+  .theme-toggle{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:none;
+    min-height:40px;padding:8px 12px;border-radius:999px;cursor:pointer;
+    background:var(--glass);border:1px solid var(--line);color:var(--text);
+    font-family:var(--sans);font-size:.82rem;font-weight:600;white-space:nowrap;
+    transition:background .2s ease,border-color .2s ease,color .2s ease;
+  }
+  .theme-toggle:hover{background:var(--glass-strong);border-color:var(--accent);}
+  .theme-toggle .theme-icon{font-size:1rem;line-height:1;}
 
   /* ---------- Shell ---------- */
   .app{position:relative;z-index:1;}
@@ -153,13 +202,13 @@
     transition:background .15s ease,color .15s ease;
   }
   .toc a:hover{background:var(--glass);color:var(--text);}
-  .toc a[aria-current="page"]{background:var(--glass-strong);border-color:var(--line);color:#fff;}
+  .toc a[aria-current="page"]{background:var(--glass-strong);border-color:var(--line);color:var(--text);}
   .toc .num{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--text-muted);width:1.7em;flex:none;}
   .toc a[aria-current="page"] .num{color:var(--accent);}
   .toc .label{flex:1;line-height:1.3;}
   .check{
     width:18px;height:18px;border-radius:50%;flex:none;
-    border:1.5px solid rgba(255,255,255,0.25);
+    border:1.5px solid var(--line);
     display:flex;align-items:center;justify-content:center;
   }
   .check.done{background:var(--ok);border-color:var(--ok);}
@@ -209,6 +258,8 @@
     .brand-title{font-size:1.15rem;}
     .menu-toggle span{display:none;}
     .menu-toggle{padding:9px 12px;}
+    .theme-toggle{width:40px;padding:8px;}
+    .theme-toggle .theme-label{display:none;}
   }
 
   /* ---------- Pages ---------- */
@@ -255,7 +306,7 @@
   .page h2.pronunciation-heading{font-size:clamp(2rem,4vw,2.8rem);line-height:1.14;margin:42px 0 18px;}
   .page h4{font-family:var(--sans);font-weight:700;font-size:1.05rem;color:var(--text);margin:26px 0 10px;}
   .page p{margin:0 0 1em;}
-  .page strong{color:#fff;font-weight:700;}
+  .page strong{color:var(--text);font-weight:700;}
   .page em{color:var(--text);}
 
   .page ul{list-style:none;margin:0 0 1.3em;padding:0;}
@@ -277,7 +328,7 @@
   }
   .note .note-label::before{content:'✎';font-size:1rem;}
   .note .note-label.welcome::before{content:'👋';}
-  .page .note p{color:#EBDCF0;font-size:1.02rem;line-height:1.7;margin:0 0 1em;}
+  .page .note p{color:var(--text-body);font-size:1.02rem;line-height:1.7;margin:0 0 1em;}
 
   /* ---------- Callouts ---------- */
   .callout{
@@ -525,6 +576,10 @@
       <div class="pw-track" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="pwTrack"><div class="pw-fill" id="pwBar"></div></div>
       <span class="pw-count" id="pwCount">0 / 10</span>
     </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+      <span class="theme-icon" aria-hidden="true">☀</span><span class="theme-label">Light</span>
+    </button>
 
     <button class="menu-toggle" id="menuToggle" aria-label="Open page menu" aria-expanded="false" aria-controls="sidebar">
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -1262,7 +1317,27 @@
 (function(){
   var PAGES = ["start","isesl","tefl","setup","findcompany","introvideo","apply","hired","realtalk","whyicreated"];
   var STORAGE_KEY = "esl-guide-progress";
+  var THEME_KEY = "esl-guide-theme";
   var progress = {};
+
+  /* ---------- light and dark appearance ---------- */
+  var themeToggle = document.getElementById('themeToggle');
+  function applyTheme(theme, save){
+    var isLight = theme === 'light';
+    document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+    themeToggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+    themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    themeToggle.querySelector('.theme-icon').textContent = isLight ? '☾' : '☀';
+    themeToggle.querySelector('.theme-label').textContent = isLight ? 'Dark' : 'Light';
+    if(save){
+      try{ window.localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark'); }catch(e){}
+    }
+  }
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'dark', false);
+  themeToggle.addEventListener('click', function(){
+    var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    applyTheme(current === 'light' ? 'dark' : 'light', true);
+  });
 
   /* ---------- progress (per-viewer, remembered in this browser) ---------- */
   function loadProgress(){
