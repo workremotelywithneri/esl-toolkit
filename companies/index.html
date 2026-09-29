@@ -4,11 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ESL Company Directory — Filipino Teachers</title>
+<script>
+  (function(){
+    try{
+      var key='esl-site-theme';
+      var theme=localStorage.getItem(key);
+      if(theme!=='light'&&theme!=='dark'){
+        theme=localStorage.getItem('esl-directory-theme');
+        if(theme==='light'||theme==='dark') localStorage.setItem(key,theme);
+      }
+      if(theme==='light') document.documentElement.setAttribute('data-theme','light');
+    }catch(e){}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
+    color-scheme:dark;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -48,17 +62,18 @@
   }
 
   :root[data-theme="light"] {
+    color-scheme:light;
     --bg: #F7F5FB;
     --surface: #FFFFFF;
     --card: #FFFFFF;
     --card-hover: #FBFAFF;
     --text: #211D3D;
     --text-soft: #524C74;
-    --text-muted: #857FA6;
+    --text-muted: #6D678A;
     --accent: #7C3AED;
     --accent-deep: #6D28D9;
     --accent-glow: rgba(124,58,237,0.18);
-    --accent-pink: #DB2777;
+    --accent-pink: #B12672;
     --line: rgba(33,29,61,0.12);
     --line-soft: rgba(33,29,61,0.08);
     --glass: rgba(33,29,61,0.04);
@@ -82,6 +97,9 @@
   }
 
   * { box-sizing: border-box; }
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px;}
+  .skip-link{position:fixed;top:12px;left:12px;z-index:1000;transform:translateY(-180%);padding:10px 14px;border-radius:10px;background:var(--surface);color:var(--text);border:2px solid var(--focus);font-weight:700;}
+  .skip-link:focus{transform:translateY(0);}
   html, body { height: 100%; }
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   body {
@@ -313,6 +331,11 @@
     color: var(--text-soft);
     padding: 7px 0;
     cursor: pointer;
+    width:100%;
+    border:0;
+    background:transparent;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    text-align:left;
   }
   .switch {
     width: 34px; height: 19px;
@@ -353,6 +376,10 @@
 
   /* ---------- MAIN ---------- */
   .search-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  .verification-note{margin:0 0 18px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;background:var(--glass);color:var(--text-soft);font-size:13px;line-height:1.6;}
+  .verification-note strong{color:var(--text);}
+  .last-checked{margin:12px 0 0;color:var(--text-muted);font-size:11px;line-height:1.5;}
   .search-input {
     flex: 1;
     min-width: 200px;
@@ -597,9 +624,10 @@
 </head>
 <body>
 
+<a class="skip-link" href="#company-results">Skip to company results</a>
 <div class="wrap">
   <header class="hero">
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark mode">🌙</button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">🌙</button>
     <div class="glow-blob b1"></div>
     <div class="glow-blob b2"></div>
     <div class="hero-inner">
@@ -614,24 +642,24 @@
 
   <div class="board">
     <aside class="sidebar">
-      <div class="filter-group">
+      <div class="filter-group" role="group" aria-label="Filter companies by market">
         <p class="filter-title">Market</p>
         <div class="tag-list" id="marketTags"></div>
       </div>
-      <div class="filter-group">
+      <div class="filter-group" role="group" aria-label="Filter companies by tier">
         <p class="filter-title">Tier</p>
         <div class="tag-list" id="tierTags"></div>
       </div>
-      <div class="filter-group">
+      <div class="filter-group" role="group" aria-label="Quick company filters">
         <p class="filter-title">Quick filters</p>
-        <div class="toggle-row" id="toggleTraining">
-          <span>Provides training</span><div class="switch"></div>
-        </div>
-        <div class="toggle-row" id="toggleNewbie">
-          <span>Newbie-friendly</span><div class="switch"></div>
-        </div>
+        <button class="toggle-row" id="toggleTraining" type="button" aria-pressed="false">
+          <span>Provides training</span><div class="switch" aria-hidden="true"></div>
+        </button>
+        <button class="toggle-row" id="toggleNewbie" type="button" aria-pressed="false">
+          <span>Newbie-friendly</span><div class="switch" aria-hidden="true"></div>
+        </button>
       </div>
-      <div class="filter-group">
+      <div class="filter-group" role="group" aria-label="Sort company listings">
         <p class="filter-title">Sort by</p>
         <select class="sort-select" id="sortSelect">
           <option value="name">Company name (A–Z)</option>
@@ -642,11 +670,13 @@
       <button class="reset-link" id="clearFilters">Clear all filters</button>
     </aside>
 
-    <main>
-      <div class="search-bar">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search by company name…">
+    <main id="company-results" tabindex="-1">
+      <div class="search-bar" role="search" aria-label="Find ESL companies">
+        <label class="sr-only" for="searchInput">Search companies by name, market, pay, requirements, schedule, or notes</label>
+        <input type="search" class="search-input" id="searchInput" placeholder="Search companies, pay, requirements, schedule…">
       </div>
-      <p class="count-line" id="countLine"></p>
+      <p class="verification-note" role="note"><strong>About these listings:</strong> Company details can change. A “Last checked” date appears only when an entry has been reviewed against a current source. If no date is shown, confirm pay, requirements, and hiring status directly with the company before applying.</p>
+      <p class="count-line" id="countLine" role="status" aria-live="polite" aria-atomic="true"></p>
       <div class="grid" id="cardGrid"></div>
     </main>
   </div>
@@ -684,22 +714,35 @@
     var root = document.documentElement;
     var btn = document.getElementById('themeToggle');
     var saved = null;
-    try { saved = localStorage.getItem('esl-directory-theme'); } catch(e) {}
+    try {
+      saved = localStorage.getItem('esl-site-theme');
+      if(saved !== 'light' && saved !== 'dark'){
+        saved = localStorage.getItem('esl-directory-theme');
+        if(saved === 'light' || saved === 'dark') localStorage.setItem('esl-site-theme', saved);
+      }
+    } catch(e) {}
     var theme = saved || 'dark';
 
     function apply(t) {
       theme = t;
-      if (t === 'light') { root.setAttribute('data-theme', 'light'); btn.textContent = '☀️'; }
+      var isLight = t === 'light';
+      if (isLight) { root.setAttribute('data-theme', 'light'); btn.textContent = '☀️'; }
       else { root.removeAttribute('data-theme'); btn.textContent = '🌙'; }
+      btn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
     }
     apply(theme);
     btn.addEventListener('click', function(){
       var next = theme === 'light' ? 'dark' : 'light';
       apply(next);
-      try { localStorage.setItem('esl-directory-theme', next); } catch(e) {}
+      try { localStorage.setItem('esl-site-theme', next); } catch(e) {}
+    });
+    window.addEventListener('storage', function(event){
+      if(event.key === 'esl-site-theme') apply(event.newValue === 'light' ? 'light' : 'dark');
     });
   })();
 
+  // Add lastChecked to a listing only after confirming its details against a current source.
   var DEFAULT_DATA = [
     {id:'c1', company:'NativeCamp', market:'Japan', tier:'Newbie', salaryMin:'₱150', salaryMax:'₱200+', payMethod:'PayPal · Monthly', degree:'No', tefl:'No', training:'yes', newbie:'yes', experience:'None required', classType:'1-on-1 · On-demand', link:'https://nativecamp.net/tutors', peak:'Flexible (on-demand)', notes:'On-demand means you wait logged in and students call you. Inconsistent income. Avg take-home ₱8,000–₱15,000/mo part-time. Good for building hours and confidence. Minimum age is 18. Tech needs are light: a laptop/PC with webcam, a headset with mic, at least 2 Mbps internet, and Chrome or Edge browser. No minimum hours per week — teach 24/7 on your own schedule, with pay tied to your performance and bonuses for hitting targets.'},
     {id:'c2', company:'Jiaozi Tutor', market:'China', tier:'Newbie', salaryMin:'₱80–140', salaryMax:'₱140', payMethod:'GCash / bank transfer', degree:'No', tefl:'Preferred', training:'no', newbie:'yes', experience:'Accepts candidates without experience', classType:'1-on-1 · Booked', link:'forms.gle/yYXKVLwc51iPMDeL9', peak:'5pm–11pm PH time', notes:'Starting salary is low but there’s an attendance bonus and pay rises with accumulated classes. Strict about background (tarpaulin with Jiaozi logo — they reimburse it).'},
@@ -780,6 +823,7 @@
     uniqueMarkets().forEach(function(m){
       var t = el('button', 'tag' + (state.market === m ? ' active' : ''), m);
       t.type = 'button';
+      t.setAttribute('aria-pressed', state.market === m ? 'true' : 'false');
       t.addEventListener('click', function(){
         state.market = state.market === m ? null : m;
         renderAll();
@@ -792,6 +836,7 @@
     ['Newbie', 'Mid', 'Senior'].forEach(function(tk){
       var t = el('button', 'tag' + (state.tier === tk ? ' active' : ''), TIER_LABEL[tk]);
       t.type = 'button';
+      t.setAttribute('aria-pressed', state.tier === tk ? 'true' : 'false');
       t.addEventListener('click', function(){
         state.tier = state.tier === tk ? null : tk;
         renderAll();
@@ -801,8 +846,10 @@
 
     var trToggle = document.getElementById('toggleTraining');
     trToggle.classList.toggle('on', state.trainingOnly);
+    trToggle.setAttribute('aria-pressed', state.trainingOnly ? 'true' : 'false');
     var nbToggle = document.getElementById('toggleNewbie');
     nbToggle.classList.toggle('on', state.newbieOnly);
+    nbToggle.setAttribute('aria-pressed', state.newbieOnly ? 'true' : 'false');
   }
 
   function getFiltered() {
@@ -812,8 +859,12 @@
     if (state.trainingOnly) list = list.filter(function(d){ return d.training === 'yes'; });
     if (state.newbieOnly) list = list.filter(function(d){ return d.newbie === 'yes'; });
     if (state.search) {
-      var q = state.search.toLowerCase();
-      list = list.filter(function(d){ return d.company.toLowerCase().indexOf(q) > -1; });
+      var terms = state.search.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      var searchableFields = ['company','market','tier','salaryMin','salaryMax','payMethod','degree','tefl','training','newbie','experience','classType','peak','notes','link','lastChecked'];
+      list = list.filter(function(d){
+        var searchableText = searchableFields.map(function(field){ return String(d[field] || ''); }).join(' ').toLowerCase();
+        return terms.every(function(term){ return searchableText.indexOf(term) > -1; });
+      });
     }
     list.sort(function(a, b){
       if (state.sort === 'tier') {
@@ -898,6 +949,7 @@
             '<div class="meta-item"><dt>Peak hours</dt><dd>' + escapeHtml(d.peak || '—') + '</dd></div>' +
           '</dl>' +
           (d.link ? '<a class="card-link" href="' + linkHref(d.link) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(d.link) + '</a>' : '') +
+          (d.lastChecked ? '<p class="last-checked">Last checked: ' + escapeHtml(d.lastChecked) + '</p>' : '') +
           '<details class="notes"><summary>Realistic notes</summary><p>' + escapeHtml(d.notes || 'No notes yet.') + '</p></details>' +
         '</div>';
       grid.appendChild(card);
