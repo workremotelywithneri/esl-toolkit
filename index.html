@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The ESL Toolkit — Free ESL Teaching Resources</title>
+<script>
+  (function(){
+    try{
+      var key='esl-site-theme';
+      var theme=localStorage.getItem(key);
+      if(theme!=='light'&&theme!=='dark'){
+        theme=localStorage.getItem('esl-toolkit-theme');
+        if(theme==='light'||theme==='dark') localStorage.setItem(key,theme);
+      }
+      if(theme==='light') document.documentElement.setAttribute('data-theme','light');
+    }catch(e){}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -51,11 +64,11 @@
     --card-hover:#F6F1FF;
     --text:#221D3B;
     --text-soft:#5C5480;
-    --text-muted:#8B84AC;
+    --text-muted:#6D6687;
     --accent:#7C5CFC;
     --accent-deep:#6941E0;
     --accent-glow:rgba(124,92,252,0.25);
-    --accent-pink:#D6409F;
+    --accent-pink:#AE347D;
     --metal-1:#221D3B;
     --metal-2:#5C5480;
     --metal-3:#7C5CFC;
@@ -77,10 +90,14 @@
     --nav-bg:rgba(255,255,255,0.6);
     --nav-bg-scrolled:rgba(255,255,255,0.88);
     --scheme:light;
+    color-scheme:light;
   }
 
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;color-scheme:var(--scheme);}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+  .skip-link{position:fixed;top:12px;left:12px;z-index:1000;transform:translateY(-180%);padding:10px 14px;border-radius:10px;background:var(--surface);color:var(--text);border:2px solid var(--accent);font-weight:700;}
+  .skip-link:focus{transform:translateY(0);}
   body{
     margin:0;
     background:var(--bg);
@@ -152,7 +169,7 @@
     text-decoration:none;
     will-change:transform;
   }
-  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  .btn:focus-visible{outline:3px solid var(--accent); outline-offset:3px;}
   .btn-primary{background:linear-gradient(135deg, var(--accent), var(--accent-deep)); color:#fff; box-shadow:0 8px 30px rgba(167,139,250,0.28);}
   .btn-primary:hover{box-shadow:0 12px 44px rgba(167,139,250,0.45); transform:translateY(-2px);}
   .btn-marigold{background:linear-gradient(135deg, var(--accent), var(--accent-deep)); color:#fff; box-shadow:0 8px 30px rgba(167,139,250,0.28);}
@@ -424,6 +441,8 @@
     border:1px solid var(--line); transition:border-color 0.3s ease, transform 0.3s ease;
   }
   .step:hover{border-color:rgba(167,139,250,0.3); transform:translateY(-4px);}
+  .step .step-link{display:inline-flex;margin-top:18px;font-size:.9rem;font-weight:700;color:var(--accent);text-decoration:none;}
+  .step .step-link:hover{text-decoration:underline;text-underline-offset:3px;}
   .step .num{
     font-family:'Cormorant Garamond', serif; font-size:2.4rem; color:var(--accent); font-style:italic;
     display:block; margin-bottom:6px;
@@ -490,6 +509,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#free">Skip to free resources</a>
 
 <div class="nav-scrim" id="navScrim"></div>
 <header>
@@ -501,11 +521,11 @@
     <nav class="links" id="navLinks">
       <a href="#guide">Free Guide</a>
       <a href="#free">Free Resources</a>
-      <a href="#how">How It Works</a>
+      <a href="#how">Start Here</a>
       <a href="#about">About</a>
       <a href="#newsletter" class="nav-cta btn btn-primary" style="padding:10px 20px;">Join the list</a>
     </nav>
-    <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark mode">🌙</button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">🌙</button>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
   </div>
 </header>
@@ -654,23 +674,26 @@
 <section id="how">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>How it works</h2>
+      <h2>A simple place to start</h2>
     </div>
     <div class="steps">
       <div class="step reveal">
         <span class="num">01</span>
-        <h3>Grab a free resource</h3>
-        <p style="color:var(--text-soft); margin:0;">Click any resource below to access it instantly — no email, no sign-up, just a direct link.</p>
+        <h3>Read the free guide</h3>
+        <p style="color:var(--text-soft); margin:0;">Learn what to prepare and what to expect as you begin teaching ESL.</p>
+        <a class="step-link" href="guide/index.html">Start with the guide →</a>
       </div>
       <div class="step reveal">
         <span class="num">02</span>
-        <h3>Want updates?</h3>
-        <p style="color:var(--text-soft); margin:0;">If you'd like to know whenever something new gets added to the library, subscribe below.</p>
+        <h3>Explore companies</h3>
+        <p style="color:var(--text-soft); margin:0;">Compare companies and check their current requirements before applying.</p>
+        <a class="step-link" href="companies/index.html">Browse the directory →</a>
       </div>
       <div class="step reveal">
         <span class="num">03</span>
-        <h3>Reach out anytime</h3>
-        <p style="color:var(--text-soft); margin:0;">Have a question, a suggestion, or just want to say hi? Email me — I read every message, though replies might not be instant.</p>
+        <h3>Track your applications</h3>
+        <p style="color:var(--text-soft); margin:0;">Keep company applications and follow-ups organized with the free tracker.</p>
+        <a class="step-link" href="https://docs.google.com/spreadsheets/d/15gxfKUZuCIyr-PIWeITcv0w52TAJca_y/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Open the tracker ↗</a>
       </div>
     </div>
   </div>
@@ -731,8 +754,19 @@
   (function initTheme() {
     const themeToggle = document.getElementById('themeToggle');
     const root = document.documentElement;
-    const stored = (() => { try { return localStorage.getItem('esl-toolkit-theme'); } catch (e) { return null; } })();
+    const stored = (() => {
+      try {
+        let theme = localStorage.getItem('esl-site-theme');
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = localStorage.getItem('esl-toolkit-theme');
+          if (theme === 'light' || theme === 'dark') localStorage.setItem('esl-site-theme', theme);
+        }
+        return theme;
+      } catch (e) { return null; }
+    })();
     const applyTheme = (theme) => {
+      themeToggle.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+      themeToggle.setAttribute('aria-label', theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
       if (theme === 'light') {
         root.setAttribute('data-theme', 'light');
         themeToggle.textContent = '☀️';
@@ -746,7 +780,10 @@
       const isLight = root.getAttribute('data-theme') === 'light';
       const next = isLight ? 'dark' : 'light';
       applyTheme(next);
-      try { localStorage.setItem('esl-toolkit-theme', next); } catch (e) {}
+      try { localStorage.setItem('esl-site-theme', next); } catch (e) {}
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'esl-site-theme') applyTheme(event.newValue === 'light' ? 'light' : 'dark');
     });
   })();
 
