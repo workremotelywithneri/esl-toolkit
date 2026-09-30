@@ -371,8 +371,6 @@
   .card:nth-child(3n+2) .card-image{background:linear-gradient(135deg, rgba(244,114,182,0.24), rgba(167,139,250,0.16));}
   .card:nth-child(3n+3) .card-image{background:linear-gradient(135deg, rgba(196,181,253,0.26), rgba(167,139,250,0.14));}
   .card-image img{width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s cubic-bezier(.2,.8,.2,1), filter 0.3s ease;}
-  .card-image.resource-art{background:radial-gradient(circle at 50% 42%,rgba(167,139,250,0.24),transparent 48%),linear-gradient(135deg,rgba(167,139,250,0.2),rgba(244,114,182,0.14));}
-  .card-image.resource-art svg{width:96px;height:96px;position:relative;z-index:3;filter:drop-shadow(0 8px 18px rgba(0,0,0,0.22));}
   html[data-theme="light"] .card-image img{filter:brightness(1.08) saturate(0.9);}
   .card-image::after{
     content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
@@ -400,26 +398,21 @@
   /* ---------- Guide panel ---------- */
   .guide-panel{
     background:var(--card); border:1px solid var(--line); border-radius:28px;
-    padding:48px; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(280px,0.95fr);
-    grid-template-areas:"copy art" "toc toc"; gap:36px 44px; align-items:center;
+    padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center;
     box-shadow:var(--shadow); position:relative; overflow:hidden;
   }
   .guide-panel::before{
     content:""; position:absolute; width:300px; height:300px; border-radius:50%;
     background:var(--accent); filter:blur(100px); opacity:0.14; top:-100px; right:-60px; pointer-events:none;
   }
-  @media(max-width:800px){.guide-panel{grid-template-columns:1fr;grid-template-areas:"copy" "art" "toc";padding:34px 26px;}}
-  .guide-copy{grid-area:copy;position:relative;z-index:1;}
+  @media(max-width:800px){.guide-panel{grid-template-columns:1fr; padding:34px 26px;}}
   .guide-copy p{color:var(--text-soft);}
-  .guide-art{grid-area:art;margin:0;position:relative;z-index:1;}
-  .guide-art img{display:block;width:100%;aspect-ratio:1.43;object-fit:cover;object-position:center;border-radius:20px;border:1px solid var(--line);box-shadow:0 18px 45px rgba(0,0,0,0.28);}
   .guide-toc{
-    grid-area:toc;
     list-style:none; margin:0; padding:0;
     display:grid; grid-template-columns:1fr 1fr; gap:10px 20px;
-    border-top:1px dashed var(--line); padding-top:24px; position:relative; z-index:1;
+    border-left:1px dashed var(--line); padding-left:24px; position:relative; z-index:1;
   }
-  @media(max-width:520px){.guide-toc{grid-template-columns:1fr;}}
+  @media(max-width:520px){.guide-toc{grid-template-columns:1fr; border-left:none; padding-left:0;}}
   .guide-toc li{
     display:flex; align-items:baseline; gap:10px;
     font-weight:500; font-size:0.94rem; padding:8px 0; border-bottom:1px solid var(--line-soft);
@@ -582,9 +575,6 @@
         <p>My full step-by-step manual, from figuring out if ESL is for you to landing your first offer — everything I wish someone had handed me when I started. It lives on its own site and I update it whenever I find new, reliable companies.</p>
         <a href="guide/index.html" target="_blank" rel="noopener" class="btn btn-marigold">Read the free guide ↗</a>
       </div>
-      <figure class="guide-art">
-        <img src="assets/teacher-guide-cover.jpg" alt="Illustrated ESL teacher guide with books, flashcards, and classroom tools" loading="lazy" decoding="async">
-      </figure>
       <ol class="guide-toc">
         <li><span>01</span>Start Here</li>
         <li><span>02</span>Is ESL for me?</li>
@@ -649,11 +639,8 @@
         </div>
       </div>
       <div class="card reveal">
-        <div class="card-image resource-art" aria-hidden="true">
-          <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M60 25C46 15 30 15 15 21v47c15-6 31-5 45 5 14-10 30-11 45-5V21C90 15 74 15 60 25Z" fill="var(--glass-strong)" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M60 26v47M27 32c8-2 16-1 23 3m-23 8c8-2 16-1 23 3m43-14c-8-2-16-1-23 3m23 8c-8-2-16-1-23 3" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
+        <div class="card-image">
+          <img src="assets/teacher-guide-cover.jpg" alt="English books and classroom materials for teachers" loading="lazy" decoding="async">
         </div>
         <div class="card-body">
           <h3>English Self-Study Books</h3>
