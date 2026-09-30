@@ -371,6 +371,8 @@
   .card:nth-child(3n+2) .card-image{background:linear-gradient(135deg, rgba(244,114,182,0.24), rgba(167,139,250,0.16));}
   .card:nth-child(3n+3) .card-image{background:linear-gradient(135deg, rgba(196,181,253,0.26), rgba(167,139,250,0.14));}
   .card-image img{width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s cubic-bezier(.2,.8,.2,1), filter 0.3s ease;}
+  .card-image.resource-art{background:radial-gradient(circle at 50% 42%,rgba(167,139,250,0.24),transparent 48%),linear-gradient(135deg,rgba(167,139,250,0.2),rgba(244,114,182,0.14));}
+  .card-image.resource-art svg{width:96px;height:96px;position:relative;z-index:3;filter:drop-shadow(0 8px 18px rgba(0,0,0,0.22));}
   html[data-theme="light"] .card-image img{filter:brightness(1.08) saturate(0.9);}
   .card-image::after{
     content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
@@ -420,6 +422,8 @@
   .guide-toc li span{
     font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--accent); font-weight:700;
   }
+  .guide-toc a{display:flex;align-items:baseline;gap:10px;color:inherit;text-decoration:none;}
+  .guide-toc a:hover{color:var(--accent);}
 
   /* ---------- Ebook library panel ---------- */
   .ebook-panel{
@@ -499,6 +503,7 @@
   .footer-contact{display:grid;gap:4px;color:var(--text-soft);font-size:0.9rem;}
   .footer-contact p{color:var(--text-muted);font-size:0.86rem;margin:0;line-height:1.6;}
   .footer-contact a{color:var(--accent);font-weight:600;}
+  .footer-social-group{display:flex;align-items:center;gap:12px;color:var(--text-soft);font-size:0.9rem;}
   .footer-social-links{display:flex;align-items:center;gap:12px;}
   .footer-social-links a{
     display:grid;place-items:center;width:42px;height:42px;border-radius:50%;
@@ -554,6 +559,7 @@
         <li><span class="dot"></span>Application Tracker</li>
         <li><span class="dot"></span>ESL Companies Directory</li>
         <li><span class="dot"></span>Free ESL Books Library</li>
+        <li><span class="dot"></span>English Self-Study Books</li>
         <li><span class="dot"></span>ESL Reward Hub</li>
         <li><span class="dot"></span>ESL Games Collection</li>
         <li><span class="dot"></span>Printable Reward System</li>
@@ -581,6 +587,7 @@
         <li><span>07</span>How to Apply</li>
         <li><span>08</span>You Got Hired!</li>
         <li><span>09</span>Real Talk</li>
+        <li><a href="guide/index.html#whyicreated"><span>10</span>Why I Created This Guide</a></li>
       </ol>
     </div>
   </div>
@@ -631,6 +638,22 @@
           <span class="price">Telegram</span>
           <a href="https://t.me/+ahCR8MQpIgBiZmM1" target="_blank" rel="noopener" class="btn btn-marigold">Join channel</a>
         </div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="card-image resource-art" aria-hidden="true">
+          <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M60 25C46 15 30 15 15 21v47c15-6 31-5 45 5 14-10 30-11 45-5V21C90 15 74 15 60 25Z" fill="var(--glass-strong)" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M60 26v47M27 32c8-2 16-1 23 3m-23 8c8-2 16-1 23 3m43-14c-8-2-16-1-23 3m23 8c-8-2-16-1-23 3" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h3>English Self-Study Books</h3>
+          <p class="desc">English books for teachers who want to review, practise, and keep improving at their own pace.</p>
+          <div class="card-footer">
+            <span class="price">For teachers</span>
+            <a href="https://drive.google.com/drive/folders/1-AvGEwQfqbyHCZHaXRHi1OrDLnJCYR1w?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-marigold">Open book folder ↗</a>
+          </div>
         </div>
       </div>
       <div class="card reveal">
@@ -711,11 +734,10 @@
       <span class="eyebrow">About the Author</span>
       <h2>Hi, I'm Neri.</h2>
       <p class="about-subhead"><strong>Former high school teacher. Current ESL teacher. Still figuring things out.</strong></p>
-      <p>This website started because I kept saving resources, creating teaching materials, and collecting things I wished I had when I was a beginner.</p>
-      <p>Instead of letting them sit in random folders on my laptop, I decided to share them.</p>
-      <p>Everything here comes from real teaching experience, plenty of trial and error, lots of learning, and a genuine desire to help other teachers save time and stress less.</p>
-      <p>If you'd like to know the story behind this website and how I found my way into ESL, you can read it <a href="guide/index.html#whyicreated">here</a>.</p>
-      <p>I hope you find something useful.</p>
+      <h3>Why I created this guide</h3>
+      <p>When I was learning about online ESL, the information felt scattered. I spent hours searching Facebook groups, watching YouTube videos, reading comments, and jumping between websites just to figure out where to start.</p>
+      <p>I made this guide to gather the advice I wished I had as a beginner in one place. It comes from real teaching experience, trial and error, and plenty of learning. I hope it helps other teachers spend less time searching and more time preparing.</p>
+      <p>If you'd like to read the personal story of how I found my way into ESL, you can find it <a href="guide/index.html#whyicreated">in the guide</a>.</p>
     </div>
   </div>
 </section>
@@ -743,7 +765,9 @@
       <strong>You've got any questions or concerns?</strong>
       <p>Email: <a href="mailto:workremotelywithneri@gmail.com">workremotelywithneri@gmail.com</a></p>
     </div>
-    <nav class="footer-social-links" aria-label="Neri on social media">
+    <div class="footer-social-group">
+      <span>Follow me on:</span>
+      <nav class="footer-social-links" aria-label="Neri on social media">
       <a href="https://www.facebook.com/profile.php?id=61594838093941" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.5 1.6-1.5h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.2v3.2H10V21h3.4z"/></svg>
       </a>
@@ -753,7 +777,8 @@
       <a href="https://www.tiktok.com/@behindtheclass_neri" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 7.2a6.2 6.2 0 0 1-3.8-1.3v8.2a6.1 6.1 0 1 1-6.1-6.1c.4 0 .8 0 1.2.1v3.4a2.8 2.8 0 1 0 1.5 2.5V2.5h3.4a6.2 6.2 0 0 0 3.8 3.8v.9z"/></svg>
       </a>
-    </nav>
+      </nav>
+    </div>
   </div>
 </footer>
 
