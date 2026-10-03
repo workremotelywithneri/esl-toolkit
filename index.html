@@ -412,7 +412,7 @@
   .guide-copy p{color:var(--text-soft);}
   .guide-toc{
     list-style:none; margin:0; padding:0;
-    display:grid; grid-template-columns:1fr 1fr; gap:10px 20px;
+    display:grid; grid-template-columns:1fr; gap:4px;
     border-left:1px dashed var(--line); padding-left:24px; position:relative; z-index:1;
   }
   @media(max-width:520px){.guide-toc{grid-template-columns:1fr; border-left:none; padding-left:0;}}
@@ -439,7 +439,7 @@
   .ebook-panel .eyebrow{color:var(--accent);}
 
   /* ---------- How it works ---------- */
-  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .steps{display:grid; grid-template-columns:repeat(2,1fr); gap:28px;}
   @media(max-width:760px){.steps{grid-template-columns:1fr;}}
   .step{
     background:var(--card); border-radius:var(--radius); padding:28px;
@@ -448,6 +448,9 @@
   .step:hover{border-color:rgba(167,139,250,0.3); transform:translateY(-4px);}
   .step .step-link{display:inline-flex;margin-top:18px;font-size:.9rem;font-weight:700;color:var(--accent);text-decoration:none;}
   .step .step-link:hover{text-decoration:underline;text-underline-offset:3px;}
+  .step .path-next{margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line-soft);color:var(--text-soft);font-size:.9rem;line-height:1.7;}
+  .step .path-next a{color:var(--accent);font-weight:700;text-decoration:none;}
+  .step .path-next a:hover{text-decoration:underline;text-underline-offset:3px;}
   .step .num{
     font-family:'Cormorant Garamond', serif; font-size:2.4rem; color:var(--accent); font-style:italic;
     display:block; margin-bottom:6px;
@@ -645,16 +648,16 @@
           <div class="card-image"><img src="assets/games-collection-dark.jpg" data-dark-src="assets/games-collection-dark.jpg" data-light-src="assets/games-collection-light.webp" alt="Game controller surrounded by learning icons" loading="lazy" decoding="async"></div>
           <div class="card-body">
             <h3>ESL Games Collection</h3>
-            <p class="desc">Interactive games to make English lessons more engaging.</p>
-            <div class="card-footer"><span class="price">Google Drive folder</span><a href="https://drive.google.com/drive/folders/1Eow5dgc1-PUz_sD0LFOJLgNY8BDzdawT?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-marigold">Browse games ↗</a></div>
+            <p class="desc">Play two quick games in the toolkit, then explore outside sites for more classroom games and activities.</p>
+            <div class="card-footer"><span class="price">2 interactive games</span><a href="games/" class="btn btn-marigold">Open Games Hub →</a></div>
           </div>
         </div>
         <div class="card reveal">
-          <div class="card-image"><img src="assets/printable-reward-system-dark.jpg" data-dark-src="assets/printable-reward-system-dark.jpg" data-light-src="assets/printable-reward-system-light.webp" alt="Certificate with gold seal" loading="lazy" decoding="async"></div>
+          <div class="card-image"><img src="assets/printable-reward-system-dark.jpg" data-dark-src="assets/printable-reward-system-dark.jpg" data-light-src="assets/printable-reward-system-light.webp" alt="Illustration of classroom reward materials" loading="lazy" decoding="async"></div>
           <div class="card-body">
-            <h3>Printable Reward System</h3>
-            <p class="desc">Ready-to-print certificates and rewards for your classroom.</p>
-            <div class="card-footer"><span class="price">Google Drive folder</span><a href="https://drive.google.com/drive/folders/1bc7eGZJdrjfhLo7o7Of3ID_6tx_rrIhk?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-marigold">View printables ↗</a></div>
+            <h3>Classroom Reward Materials</h3>
+            <p class="desc">Assorted reward files for classroom use. The Drive folder currently has no certificates; open it to check the available materials.</p>
+            <div class="card-footer"><span class="price">Google Drive folder</span><a href="https://drive.google.com/drive/folders/1bc7eGZJdrjfhLo7o7Of3ID_6tx_rrIhk?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-marigold">View folder ↗</a></div>
           </div>
         </div>
       </div>
@@ -687,27 +690,24 @@
 <section id="how">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">A path from exploring to applying</span>
-      <h2>When you’re ready to take the next step</h2>
+      <span class="eyebrow">Two starting points</span>
+      <h2>Where are you in your ESL journey?</h2>
+      <p>Choose the path that fits what you need today. You can come back to the other resources anytime.</p>
     </div>
     <div class="steps">
       <div class="step reveal">
         <span class="num">01</span>
-        <h3>Read the free guide</h3>
-        <p style="color:var(--text-soft); margin:0;">Learn what to prepare and what to expect as you begin teaching ESL.</p>
-        <a class="step-link" href="guide/index.html">Start with the guide →</a>
+        <h3>New to ESL teaching?</h3>
+        <p style="color:var(--text-soft); margin:0;">Find out what the work involves, decide whether it suits you, and follow a beginner-friendly guide from preparation to applying.</p>
+        <a class="step-link" href="guide/index.html#start">Start with Page 00 →</a>
+        <p class="path-next">When you’re ready, <a href="companies/index.html">compare companies</a>, then <a href="https://docs.google.com/spreadsheets/d/15gxfKUZuCIyr-PIWeITcv0w52TAJca_y/edit?usp=sharing" target="_blank" rel="noopener noreferrer">track your applications ↗</a>.</p>
       </div>
       <div class="step reveal">
         <span class="num">02</span>
-        <h3>Explore companies</h3>
-        <p style="color:var(--text-soft); margin:0;">Compare companies and check their current requirements before applying.</p>
-        <a class="step-link" href="companies/index.html">Browse the directory →</a>
-      </div>
-      <div class="step reveal">
-        <span class="num">03</span>
-        <h3>Track your applications</h3>
-        <p style="color:var(--text-soft); margin:0;">Keep company applications and follow-ups organized with the free tracker.</p>
-        <a class="step-link" href="https://docs.google.com/spreadsheets/d/15gxfKUZuCIyr-PIWeITcv0w52TAJca_y/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Open the tracker ↗</a>
+        <h3>Already teaching ESL?</h3>
+        <p style="color:var(--text-soft); margin:0;">Skip the beginner guide and go straight to classroom tools, games, rewards, books, and outside teaching websites.</p>
+        <a class="step-link" href="#teaching-materials">Browse classroom resources →</a>
+        <p class="path-next">Looking for more ideas? <a href="resources/">Browse the outside resource directory →</a></p>
       </div>
     </div>
   </div>

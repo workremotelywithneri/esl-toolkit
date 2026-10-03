@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Magic Ball!</title>
+    <style>
+        /* ============================================================
+           0. THEME + COLOR VARIABLES
+           JS switches themes via body[data-theme] and cup color via
+           the --cup-* custom properties, no class-juggling needed.
+        ============================================================ */
+        :root {
+            /* Unisex (default) sky + accent palette */
+            --sky-top: #bfe9fb;
+            --sky-mid1: #dff3ff;
+            --sky-mid2: #fdf6e3;
+            --sky-bottom: #ffe9b8;
+            --title-color: #d6336c;
+            --status-color: #6a3a12;
+            --btn-1: #ff8a80;
+            --btn-2: #ff6b6b;
+            --btn-3: #e64a4a;
+            --btn-border: #a63333;
+
+            /* Cup color (default: blue) */
+            --cup-1: #7d9bff;
+            --cup-2: #4c6ef5;
+            --cup-3: #2f4cda;
+            --cup-border: #23368f;
+        }
+
+        body[data-theme="girls"] {
+            --sky-top: #ffd7ea;
+            --sky-mid1: #ffe8f4;
+            --sky-mid2: #fff2fb;
+            --sky-bottom: #ffcdf0;
+            --title-color: #c2185b;
+            --status-color: #8e2a6b;
+            --btn-1: #ff9fdb;
+            --btn-2: #ff5ec4;
+            --btn-3: #d6299f;
+            --btn-border: #96166f;
+        }
+
+        body[data-theme="boys"] {
+            --sky-top: #bfe3fb;
+            --sky-mid1: #dff0ff;
+            --sky-mid2: #eaf7ff;
+            --sky-bottom: #cfe9ff;
+            --title-color: #1565c0;
+            --status-color: #0d3b66;
+            --btn-1: #7fbaff;
+            --btn-2: #3d8bff;
+            --btn-3: #1a5fd0;
+            --btn-border: #123f8f;
+        }
+
+        /* -- Dragon: smoky dusk fading into ember/lava glow -- */
+        body[data-theme="dragon"] {
+            --sky-top: #2e1065;
+            --sky-mid1: #7c2d12;
+            --sky-mid2: #c2410c;
+            --sky-bottom: #f59e0b;
+            --title-color: #7c2d12;
+            --status-color: #78350f;
+            --btn-1: #fdba74;
+            --btn-2: #ea580c;
+            --btn-3: #9a3412;
+            --btn-border: #7c2d12;
+        }
+
+        /* -- Space: deep night sky, galaxy purples -- */
+        body[data-theme="space"] {
+            --sky-top: #0b1026;
+            --sky-mid1: #1e1b4b;
+            --sky-mid2: #312e81;
+            --sky-bottom: #4c1d95;
+            --title-color: #c4b5fd;
+            --status-color: #4c1d95;
+            --btn-1: #a5b4fc;
+            --btn-2: #6366f1;
+            --btn-3: #4338ca;
+            --btn-border: #312e81;
+        }
+
+        /* -- Ocean: bright aqua to deep teal -- */
+        body[data-theme="ocean"] {
+            --sky-top: #e0f7fa;
+            --sky-mid1: #b2ebf2;
+            --sky-mid2: #4dd0e1;
+            --sky-bottom: #00838f;
+            --title-color: #006064;
+            --status-color: #004d40;
+            --btn-1: #5eead4;
+            --btn-2: #14b8a6;
+            --btn-3: #0f766e;
+            --btn-border: #115e59;
+        }
+
+        /* -- Unicorn: pastel lavender, pink, and mint sparkle -- */
+        body[data-theme="unicorn"] {
+            --sky-top: #f5d0fe;
+            --sky-mid1: #fae8ff;
+            --sky-mid2: #e0f2fe;
+            --sky-bottom: #ddd6fe;
+            --title-color: #a21caf;
+            --status-color: #7e22ce;
+            --btn-1: #f0abfc;
+            --btn-2: #d946ef;
+            --btn-3: #a21caf;
+            --btn-border: #86198f;
+        }
+
+        /* -- Jungle: fresh greens for a safari/adventure feel -- */
+        body[data-theme="jungle"] {
+            --sky-top: #ecfccb;
+            --sky-mid1: #d9f99d;
+            --sky-mid2: #a3e635;
+            --sky-bottom: #65a30d;
+            --title-color: #3f6212;
+            --status-color: #365314;
+            --btn-1: #bef264;
+            --btn-2: #65a30d;
+            --btn-3: #3f6212;
+            --btn-border: #1a2e05;
+        }
+
+        /* -- Robot: bold metallic blue-grey with red accent -- */
+        body[data-theme="robot"] {
+            --sky-top: #e2e8f0;
+            --sky-mid1: #cbd5e1;
+            --sky-mid2: #94a3b8;
+            --sky-bottom: #475569;
+            --title-color: #dc2626;
+            --status-color: #1e293b;
+            --btn-1: #93c5fd;
+            --btn-2: #2563eb;
+            --btn-3: #1d4ed8;
+            --btn-border: #1e3a8a;
+        }
+
+        /* ============================================================
+           1. RESET
+        ============================================================ */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ============================================================
+           2. PAGE LAYOUT + SKY BACKGROUND
+           Soft pastel sky so the cups (saturated, glossy) always win
+           the contrast battle against everything behind them.
+        ============================================================ */
+        html, body {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-family: ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 1.5vh 10px;
+            position: relative;
+            background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid1) 38%, var(--sky-mid2) 78%, var(--sky-bottom) 100%);
+            transition: background 0.4s ease;
+        }
+        html { height: 100%; }
+        body {
+            height: 100vh;
+            height: 100dvh;
+            min-height: 420px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* warm sunlight glow, top-right */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -10vh;
+            right: -10vw;
+            width: 55vw;
+            height: 55vh;
+            background: radial-gradient(circle, rgba(255, 244, 189, 0.9) 0%, rgba(255, 244, 189, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* soft grassy foreground strip */
+        body::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 9vh;
+            min-height: 46px;
+            background: linear-gradient(180deg, #b7e6a0 0%, #8fd47a 45%, #6cbf5c 100%);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            box-shadow: 0 -2px 10px rgba(70, 130, 60, 0.15);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* drifting clouds */
+        .cloud {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0.75;
+            filter: blur(0.5px);
+            pointer-events: none;
+            z-index: 0;
+            animation: drift linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+        .cloud-a { top: 8%; left: -20%; width: 90px; height: 32px; animation-duration: 46s; }
+        .cloud-a::before { width: 50px; height: 50px; top: -22px; left: 10px; }
+        .cloud-a::after { width: 40px; height: 40px; top: -14px; left: 45px; }
+        .cloud-b { top: 16%; left: -30%; width: 60px; height: 22px; animation-duration: 60s; animation-delay: -20s; opacity: 0.55; }
+        .cloud-b::before { width: 34px; height: 34px; top: -14px; left: 8px; }
+        .cloud-b::after { width: 26px; height: 26px; top: -9px; left: 30px; }
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to   { transform: translateX(140vw); }
+        }
+
+        /* gentle twinkling sparkles */
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fff8d6;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(255, 244, 189, 0.9);
+            opacity: 0;
+            z-index: 0;
+            animation: twinkle 3.4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.6); }
+            50% { opacity: 0.9; transform: scale(1); }
+        }
+
+        /* reduce-motion respect */
+        @media (prefers-reduced-motion: reduce) {
+            .cloud, .sparkle { animation: none !important; }
+            .cup-wrapper, .cup, #ball, #status { transition: none !important; animation: none !important; }
+        }
+
+        /* ============================================================
+           3. HEADER (title + status pill)
+        ============================================================ */
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8vh;
+            max-height: 25vh;
+            width: 100%;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            color: var(--title-color);
+            text-shadow: 0 4px 0 rgba(255, 255, 255, 0.85), 0 8px 14px rgba(190, 24, 93, 0.25);
+            font-weight: 800;
+            font-size: clamp(1.3rem, 3.4vh, 2.4rem);
+            letter-spacing: 0.5px;
+            text-align: center;
+            line-height: 1.1;
+            transition: color 0.4s ease;
+        }
+
+        #status {
+            font-size: clamp(0.95rem, 2.1vh, 1.35rem);
+            color: var(--status-color);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.72);
+            padding: 0.5vh 24px;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+            text-align: center;
+            white-space: normal;
+            max-width: min(92vw, 620px);
+            transition: transform 0.2s ease, color 0.4s ease;
+        }
+        #status.pulse { animation: statusPulse 0.5s ease; }
+        #how-to-play {
+            color: #49371f;
+            font-size: clamp(0.82rem, 1.7vh, 1rem);
+            font-weight: 600;
+            text-align: center;
+        }
+        #round-stats {
+            color: #49371f;
+            font-size: clamp(0.75rem, 1.5vh, 0.9rem);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.56);
+            border-radius: 18px;
+            padding: 2px 14px;
+        }
+        @keyframes statusPulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* ============================================================
+           4. GAME STAGE / SCALER (unchanged scaling system)
+        ============================================================ */
+        .stage-scaler {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #game-container {
+            position: relative;
+            width: 650px;
+            height: 330px;
+            perspective: 800px;
+            transform-origin: center center;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+           5. TABLE
+           Warm, rounded wooden surface with grain + gloss highlight.
+        ============================================================ */
+        .table-surface {
+            position: absolute;
+            bottom: 18px;
+            left: 2%;
+            width: 96%;
+            height: 66px;
+            background:
+                repeating-linear-gradient(100deg, rgba(255,255,255,0.05) 0 3px, rgba(0,0,0,0.04) 3px 6px),
+                linear-gradient(180deg, #f2b155 0%, #de8a3c 25%, #c97b34 55%, #a85d26 82%, #7a4419 100%);
+            border-radius: 20px;
+            box-shadow:
+                0 22px 26px -6px rgba(80, 45, 10, 0.35),
+                inset 0 3px 0 rgba(255, 255, 255, 0.45),
+                inset 0 -6px 12px rgba(60, 30, 5, 0.35);
+            transform: rotateX(20deg);
+            z-index: 0;
+        }
+        .table-surface::after {
+            /* soft contact shadow pooling under the cups' row */
+            content: '';
+            position: absolute;
+            top: -14px;
+            left: 6%;
+            width: 88%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(40, 20, 5, 0.28) 0%, rgba(40, 20, 5, 0) 75%);
+            filter: blur(2px);
+        }
+
+        /* ============================================================
+           6. CUPS
+           Every cup shares the same color and silhouette so the player
+           must track movement instead of spotting a unique cup.
+        ============================================================ */
+        .cup-wrapper {
+            position: absolute;
+            bottom: 48px;
+            width: 96px;
+            height: 132px;
+            transition: left var(--move-duration, 0.42s) cubic-bezier(0.4, 0, 0.2, 1), bottom 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2;
+        }
+        .cup-wrapper:focus-visible {
+            outline: 4px solid #2f4cda;
+            outline-offset: 6px;
+            border-radius: 30px;
+        }
+
+        .cup-wrapper:hover .cup {
+            transform: translateY(-3px) scale(1.045);
+            filter:
+                drop-shadow(0 14px 12px rgba(0, 0, 0, 0.32))
+                drop-shadow(1.5px 0 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(-1.5px 0 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 1.5px 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 -1.5px 0 rgba(0, 0, 0, 0.55))
+                brightness(1.07);
+        }
+
+        .cup {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            box-sizing: border-box;
+            /* Tapered trapezoid — narrower at top, wider at the base,
+               like a real party cup rather than a rounded cartoon cup. */
+            clip-path: polygon(21% 3%, 79% 3%, 100% 100%, 0% 100%);
+            background:
+                repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0 2px, rgba(0, 0, 0, 0.05) 2px 5px),
+                linear-gradient(140deg, var(--cup-1) 0%, var(--cup-2) 22%, var(--cup-3) 100%);
+            box-shadow:
+                inset -10px 0 16px rgba(0, 0, 0, 0.2),
+                inset 10px 0 12px rgba(255, 255, 255, 0.18),
+                inset 0 -14px 0 rgba(0, 0, 0, 0.18);
+            filter:
+                drop-shadow(0 14px 12px rgba(0, 0, 0, 0.32))
+                drop-shadow(1.5px 0 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(-1.5px 0 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 1.5px 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 -1.5px 0 rgba(0, 0, 0, 0.55));
+            transition: transform 0.2s ease, filter 0.2s ease, background 0.3s ease;
+            /* Scale from the bottom edge (where it "sits" on the table),
+               not the center — otherwise squash/stretch and other scale
+               animations make the wide base jump up into the narrow top. */
+            transform-origin: bottom center;
+        }
+
+        /* Small raised foot/rim peeking above the cup's top edge, like
+           the base ring visible in the reference photo. Positioned
+           relative to .cup-wrapper (not .cup) so it isn't clipped by
+           the cup's own clip-path. */
+        .cup-foot {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 38%;
+            height: 9px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, var(--cup-2) 0%, var(--cup-3) 100%);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+            z-index: 1;
+        }
+
+        /* -- Cup color: identical across all cups on purpose.
+              The game is about TRACKING POSITION, not spotting a
+              color. A unique color per cup would let kids "cheat"
+              by remembering "the blue one" instead of watching the
+              shuffle. Color itself is still user-selectable — see the
+              CSS variables used in the .cup rule above. -- */
+        .cup-wrapper .cup {
+            overflow: hidden;
+        }
+
+        /* glossy highlight streak */
+        .cup::before {
+            content: '';
+            position: absolute;
+            top: 8%;
+            left: 14%;
+            width: 16%;
+            height: 78%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+            border-radius: 50%;
+            filter: blur(1.5px);
+        }
+
+        /* darker contact rim along the base */
+        .cup::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        /* ============================================================
+           7. BALL
+           Magical glowing golden ball children want to find.
+        ============================================================ */
+        #ball {
+            position: absolute;
+            bottom: 54px;
+            width: 42px;
+            height: 42px;
+            z-index: 1;
+            display: none;
+            transition: left var(--move-duration, 0.42s) cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+        }
+
+        /* -- Hidden-object skins: swapped via JS class on #ball -- */
+        .obj-ball {
+            background: radial-gradient(circle at 35% 32%, #fffbe6 0%, #ffe066 35%, #f5b800 70%, #c98a00 100%);
+            border-radius: 50%;
+            border: 2px solid #8a5a00;
+            box-shadow:
+                0 10px 16px rgba(0, 0, 0, 0.3),
+                inset -4px -4px 8px rgba(120, 70, 0, 0.35),
+                0 0 18px 4px rgba(255, 214, 102, 0.55);
+        }
+
+        .obj-gem {
+            background: linear-gradient(135deg, #f0abfc 0%, #c026d3 40%, #7e22ce 75%, #4c1d95 100%);
+            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 18% 100%, 0% 35%);
+            filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 12px rgba(217, 70, 239, 0.65));
+        }
+        .obj-gem::before {
+            content: '';
+            position: absolute;
+            top: 14%;
+            left: 20%;
+            width: 28%;
+            height: 26%;
+            background: rgba(255, 255, 255, 0.65);
+            clip-path: polygon(50% 0%, 100% 45%, 55% 100%, 0% 55%);
+        }
+
+        .obj-star {
+            background: radial-gradient(circle at 35% 30%, #fff9c4 0%, #ffe066 40%, #f5b800 75%, #b8860b 100%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 12px rgba(255, 214, 102, 0.7));
+        }
+
+        .obj-coin {
+            background: radial-gradient(circle at 35% 32%, #fff6c8 0%, #ffd93d 32%, #e6ac00 68%, #a3760a 100%);
+            border-radius: 50%;
+            border: 3px solid #8a5a00;
+            box-shadow:
+                0 10px 16px rgba(0, 0, 0, 0.3),
+                inset 0 0 0 3px rgba(255, 255, 255, 0.35),
+                inset 0 0 0 6px rgba(138, 90, 0, 0.35),
+                0 0 14px 3px rgba(255, 214, 102, 0.5);
+        }
+        .obj-coin::before {
+            content: '★';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #8a5a00;
+        }
+
+        #ball.shine {
+            animation: ballShine 0.9s ease-in-out 2;
+        }
+        @keyframes ballShine {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.18); }
+        }
+
+        /* ============================================================
+           8. CUP MOTION EFFECTS (settle bounce / reveal wiggle / shake)
+        ============================================================ */
+        .cup-wrapper.settle .cup { animation: settleBounce 0.26s ease; }
+        @keyframes settleBounce {
+            0%   { transform: scale(1, 1); }
+            40%  { transform: scale(1.08, 0.92); }
+            70%  { transform: scale(0.96, 1.04); }
+            100% { transform: scale(1, 1); }
+        }
+
+        .cup-wrapper.shake .cup { animation: cupShake 0.45s ease; }
+        @keyframes cupShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px) rotate(-2deg); }
+            40% { transform: translateX(6px) rotate(2deg); }
+            60% { transform: translateX(-4px) rotate(-1deg); }
+            80% { transform: translateX(4px) rotate(1deg); }
+        }
+
+        .cup-wrapper.winner-glow .cup {
+            filter:
+                drop-shadow(0 14px 12px rgba(0, 0, 0, 0.32))
+                drop-shadow(1.5px 0 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(-1.5px 0 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 1.5px 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 -1.5px 0 rgba(0, 0, 0, 0.55))
+                drop-shadow(0 0 10px rgba(255, 214, 102, 0.95));
+            animation: winnerPop 0.5s ease;
+        }
+        @keyframes winnerPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+
+        #game-container.celebrate #status-anchor { }
+
+        /* ============================================================
+           9. CONTROLS
+        ============================================================ */
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 15vh;
+            margin-bottom: 1vh;
+            z-index: 10;
+            width: 100%;
+            position: relative;
+        }
+
+        button {
+            padding: clamp(12px, 1.8vh, 16px) clamp(28px, 3.8vw, 48px);
+            font-size: clamp(1.05rem, 2.3vh, 1.45rem);
+            font-family: inherit;
+            font-weight: 700;
+            background: linear-gradient(180deg, var(--btn-1) 0%, var(--btn-2) 55%, var(--btn-3) 100%);
+            color: white;
+            border: 3px solid var(--btn-border);
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--btn-border), 0 14px 22px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s, box-shadow 0.1s, filter 0.2s, background 0.4s ease, border-color 0.4s ease;
+            text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            /* subtle glossy sweep */
+            content: '';
+            position: absolute;
+            top: 0; left: -60%;
+            width: 40%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s ease;
+        }
+        button:hover:not(:disabled)::after { left: 130%; }
+
+        button:hover:not(:disabled) {
+            filter: brightness(1.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 var(--btn-border), 0 17px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--btn-border), 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:focus-visible {
+            outline: 4px solid #2f4cda;
+            outline-offset: 4px;
+        }
+
+        button:disabled {
+            background: linear-gradient(180deg, #d7dde5 0%, #a8b2bd 100%);
+            border-color: #5b6472;
+            box-shadow: 0 6px 0 #5b6472;
+            cursor: not-allowed;
+            filter: none;
+        }
+
+        /* ============================================================
+           10. SETTINGS — gear button + modal overlay
+           A modal (not inline panel) so opening settings never
+           resizes or pushes the game board — important for staying
+           fully visible inside constrained embeds like ClassIn.
+        ============================================================ */
+        .controls-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .icon-btn {
+            padding: 10px 12px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            line-height: 1;
+            background: linear-gradient(180deg, #f4f7fb 0%, #d3dbe4 100%);
+            border: 3px solid #5b6472;
+            box-shadow: 0 5px 0 #5b6472, 0 10px 16px rgba(0, 0, 0, 0.15);
+        }
+        .icon-btn:hover:not(:disabled) {
+            box-shadow: 0 6px 0 #5b6472, 0 12px 18px rgba(0, 0, 0, 0.18);
+        }
+        .icon-btn:active:not(:disabled) {
+            box-shadow: 0 2px 0 #5b6472, 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 15, 25, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 200;
+        }
+        .settings-overlay[hidden] { display: none; }
+
+        .settings-card {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            max-height: 88vh;
+            overflow-y: auto;
+            background: #fffaf0;
+            border-radius: 22px;
+            padding: 20px 20px 16px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+        }
+        .settings-card h2 {
+            text-align: center;
+            font-size: 1.15rem;
+            color: var(--title-color);
+            margin-bottom: 14px;
+        }
+        .settings-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background: #e8e2d6;
+            color: #6a3a12;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            box-shadow: none;
+        }
+        .settings-close:hover { background: #ddd4c2; }
+
+        .settings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .settings-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .settings-field .field-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #6a3a12;
+        }
+        .settings-field select,
+        .settings-field input[type="range"] {
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        .settings-field select {
+            padding: 7px 10px;
+            border-radius: 10px;
+            border: 2px solid #d9a441;
+            background: #fff;
+            color: #6a3a12;
+        }
+        .settings-row-inline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .settings-row-inline input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #2f4cda;
+        }
+        .settings-field input[type="range"] {
+            accent-color: #2f4cda;
+        }
+        .settings-hint {
+            font-size: 0.72rem;
+            color: #9a7b4f;
+        }
+    </style>
+</head>
+<body data-theme="unisex">
+
+    <!-- decorative sky layer -->
+    <div class="cloud cloud-a" aria-hidden="true"></div>
+    <div class="cloud cloud-b" aria-hidden="true"></div>
+    <div class="sparkle" style="top:12%; left:14%; animation-delay:0s;" aria-hidden="true"></div>
+    <div class="sparkle" style="top:22%; left:78%; animation-delay:1.1s;" aria-hidden="true"></div>
+    <div class="sparkle" style="top:34%; left:48%; animation-delay:2s;" aria-hidden="true"></div>
+
+    <div class="header-container">
+        <h1>Find the Magic Ball! 🌟</h1>
+        <div id="status" role="status" aria-live="polite" aria-atomic="true">Watch the ball, then follow it!</div>
+        <p id="how-to-play">Tap Play. Watch the ball go under a cup, follow the shuffle, then choose a cup.</p>
+        <div id="round-stats" aria-live="off">Round 1 · Found 0 · Streak 0</div>
+    </div>
+
+    <div class="stage-scaler" id="stage-scaler">
+        <div id="game-container">
+            <div class="table-surface"></div>
+            <div id="ball"></div>
+            <!-- Cups are generated by buildCups() in the script below,
+                 based on CONFIG.numCups, so the layout adapts to any
+                 cup count without touching this markup. -->
+        </div>
+    </div>
+
+    <div class="controls-container">
+        <button id="start-btn" onclick="startGame()">Play! 🎮</button>
+        <button id="settings-btn" class="icon-btn" type="button" onclick="toggleSettings()" aria-label="Game settings" aria-expanded="false">⚙️</button>
+    </div>
+
+    <!-- Settings modal — overlay, not inline, so it never resizes or
+         pushes the game board (keeps it fully visible in ClassIn / any
+         constrained embed). -->
+    <div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+        <div class="settings-card">
+            <button class="settings-close" type="button" onclick="toggleSettings()" aria-label="Close settings">✕</button>
+            <h2 id="settings-title">Game Settings ⚙️</h2>
+            <div class="settings-grid">
+
+                <div class="settings-field">
+                    <label class="field-label" for="opt-cups">Number of Cups</label>
+                    <select id="opt-cups">
+                        <option value="3">3</option>
+                        <option value="4" selected>4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <span class="settings-hint">More cups make the game harder. Choose any setup from 3 to 12.</span>
+                </div>
+
+                <div class="settings-field">
+                    <label class="field-label" for="opt-speed">Shuffle Speed</label>
+                    <select id="opt-speed">
+                        <option value="2600">Extra Slow (Little Kids)</option>
+                        <option value="1800">Very Slow</option>
+                        <option value="1100">Slow</option>
+                        <option value="520" selected>Normal</option>
+                        <option value="350">Fast</option>
+                        <option value="220">Very Fast</option>
+                    </select>
+                </div>
+
+                <div class="settings-field">
+                    <label class="field-label" for="opt-shuffle-mode">Shuffle Style</label>
+                    <select id="opt-shuffle-mode">
+                        <option value="1" selected>Single (1 swap per move)</option>
+                        <option value="2">Double (2 swaps per move)</option>
+                        <option value="3">Triple (3 swaps per move)</option>
+                    </select>
+                </div>
+
+                <div class="settings-field">
+                    <label class="field-label" for="opt-color">Cup Color</label>
+                    <select id="opt-color">
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="orange">Orange</option>
+                        <option value="pink" selected>Pink</option>
+                        <option value="green">Green</option>
+                    </select>
+                </div>
+
+                <div class="settings-field">
+                    <label class="field-label" for="opt-object">Hidden Object</label>
+                    <select id="opt-object">
+                        <option value="ball" selected>Golden Ball</option>
+                        <option value="gem">Sparkling Gem 💎</option>
+                        <option value="star">Shining Star ⭐</option>
+                        <option value="coin">Gold Coin 🪙</option>
+                    </select>
+                </div>
+
+                <div class="settings-field">
+                    <label class="field-label" for="opt-theme">Theme</label>
+                    <select id="opt-theme">
+                        <option value="unisex" selected>Unisex</option>
+                        <option value="girls">Rose</option>
+                        <option value="boys">Blue Sky</option>
+                        <option value="dragon">Dragon 🐉</option>
+                        <option value="space">Space 🚀</option>
+                        <option value="ocean">Ocean 🌊</option>
+                        <option value="unicorn">Unicorn ✨</option>
+                        <option value="jungle">Jungle 🦁</option>
+                        <option value="robot">Robot 🤖</option>
+                    </select>
+                </div>
+
+                <div class="settings-field">
+                    <span class="field-label">Sound</span>
+                    <div class="settings-row-inline">
+                        <input type="checkbox" id="opt-mute">
+                        <label for="opt-mute">Mute sound effects</label>
+                    </div>
+                    <input type="range" id="opt-volume" min="0" max="100" value="80" aria-label="Sound volume">
+                    <span class="settings-hint">Volume (when not muted)</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // ELEMENT REFERENCES
+        // ============================================================
+        const ball = document.getElementById('ball');
+        const statusText = document.getElementById('status');
+        const startBtn = document.getElementById('start-btn');
+        const gameContainer = document.getElementById('game-container');
+        const stageScaler = document.getElementById('stage-scaler');
+        const settingsOverlay = document.getElementById('settings-overlay');
+        const settingsBtn = document.getElementById('settings-btn');
+        const optCups = document.getElementById('opt-cups');
+        const optSpeed = document.getElementById('opt-speed');
+        const optShuffleMode = document.getElementById('opt-shuffle-mode');
+        const optColor = document.getElementById('opt-color');
+        const optObject = document.getElementById('opt-object');
+        const optTheme = document.getElementById('opt-theme');
+        const optMute = document.getElementById('opt-mute');
+        const optVolume = document.getElementById('opt-volume');
+
+        // Reusable, lightweight cup markup.
+        function getCupInnerHTML() {
+            return `
+            <div class="cup-foot"></div>
+            <div class="cup"></div>`;
+        }
+
+        // Cup color choices — each maps to a 3-stop gradient + border.
+        const CUP_COLORS = {
+            red:    ['#ff6b6b', '#e50000', '#b30000', '#800000'],
+            blue:   ['#7fb0ff', '#3d7dff', '#1f5fe0', '#15409e'],
+            yellow: ['#ffe066', '#ffd23f', '#f2b400', '#b8860b'],
+            orange: ['#ffb066', '#ff8c3d', '#e8691a', '#a84c10'],
+            pink:   ['#ff9dcf', '#ff5fa8', '#e83d8a', '#a8285f'],
+            green:  ['#8fe08f', '#4dbf4d', '#2f9e2f', '#1f6e1f']
+        };
+
+        function applyCupColor(name) {
+            const c = CUP_COLORS[name] || CUP_COLORS.blue;
+            const root = document.documentElement.style;
+            root.setProperty('--cup-1', c[0]);
+            root.setProperty('--cup-2', c[1]);
+            root.setProperty('--cup-3', c[2]);
+            root.setProperty('--cup-border', c[3]);
+        }
+
+        // ============================================================
+        // GAME SETTINGS — all editable live from the ⚙️ settings modal.
+        // ============================================================
+        const CONFIG = {
+            numCups: 4,
+            shuffleSpeed: 520,  // ms each shuffle move takes — lower = faster
+            swapsPerMove: 1     // 1 = single, 2 = double, 3 = triple shuffle
+        };
+
+        // ============================================================
+        // GAME STATE
+        // ============================================================
+        let cupElements = [];
+        let cupSlots = [];
+        let hiddenUnderCupIndex = 0;
+        let isShuffling = false;
+        let canGuess = false;
+        let roundsPlayed = 0;
+        let roundsWon = 0;
+        let currentStreak = 0;
+
+        let CONTAINER_WIDTH = 650;
+        let slotWidth = 130;
+        let startLeftOffset = 52;
+        let cupWidth = 96;
+
+        // ============================================================
+        // SCALING
+        // ============================================================
+        function adjustScale() {
+            const availableWidth = stageScaler.clientWidth - 20;
+            const availableHeight = stageScaler.clientHeight - 10;
+
+            const scaleX = availableWidth / CONTAINER_WIDTH;
+            const scaleY = availableHeight / 330;
+
+            const finalScale = Math.min(scaleX, scaleY, 1);
+            gameContainer.style.transform = `scale(${finalScale})`;
+        }
+
+        window.addEventListener('resize', adjustScale);
+
+        // ============================================================
+        // CUP CREATION — rebuilds the row to match CONFIG.numCups (3–12).
+        // ============================================================
+        function buildCups() {
+            cupElements.forEach(cup => cup.remove());
+            cupElements = [];
+
+            const n = CONFIG.numCups;
+            CONTAINER_WIDTH = Math.max(650, n * 110);
+            gameContainer.style.width = `${CONTAINER_WIDTH}px`;
+
+            slotWidth = Math.floor(CONTAINER_WIDTH / n);
+            cupWidth = Math.max(50, Math.min(96, slotWidth - 14));
+            startLeftOffset = Math.floor((slotWidth - cupWidth) / 2);
+            for (let i = 0; i < n; i++) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'cup-wrapper';
+                wrapper.id = `cup${i}`;
+                wrapper.tabIndex = 0;
+                wrapper.setAttribute('role', 'button');
+                wrapper.setAttribute('aria-label', `Cup ${i + 1}`);
+                wrapper.style.width = `${cupWidth}px`;
+                wrapper.style.bottom = '48px';
+                wrapper.innerHTML = getCupInnerHTML();
+
+                wrapper.addEventListener('click', () => selectCup(i));
+                wrapper.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        selectCup(i);
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        const currentSlot = cupSlots[i];
+                        const direction = e.key === 'ArrowLeft' ? -1 : 1;
+                        const nextSlot = (currentSlot + direction + CONFIG.numCups) % CONFIG.numCups;
+                        cupElements[cupSlots.indexOf(nextSlot)].focus();
+                    }
+                });
+
+                gameContainer.appendChild(wrapper);
+                cupElements.push(wrapper);
+            }
+
+            cupSlots = Array.from({ length: n }, (_, i) => i);
+            updateCupAvailability();
+        }
+
+        // ============================================================
+        // POSITIONING
+        // ============================================================
+        function updatePositions() {
+            const ballOffset = Math.floor((cupWidth - 42) / 2);
+            cupSlots.forEach((slotIndex, cupIndex) => {
+                cupElements[cupIndex].style.left = `${startLeftOffset + slotIndex * slotWidth}px`;
+                cupElements[cupIndex].setAttribute('aria-label', `Cup in position ${slotIndex + 1}`);
+                if (cupIndex === hiddenUnderCupIndex) {
+                    ball.style.left = `${startLeftOffset + ballOffset + slotIndex * slotWidth}px`;
+                }
+            });
+        }
+
+        function updateCupAvailability() {
+            cupElements.forEach(cup => cup.setAttribute('aria-disabled', String(!canGuess)));
+        }
+
+        // ============================================================
+        // SETTINGS MODAL
+        // ============================================================
+        function toggleSettings() {
+            const willShow = settingsOverlay.hidden;
+            settingsOverlay.hidden = !willShow;
+            settingsBtn.setAttribute('aria-expanded', String(willShow));
+            if (willShow) {
+                settingsOverlay.querySelector('.settings-close').focus();
+            } else {
+                settingsBtn.focus();
+            }
+        }
+        settingsOverlay.addEventListener('click', (e) => {
+            if (e.target === settingsOverlay) toggleSettings();
+        });
+        settingsOverlay.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                toggleSettings();
+                return;
+            }
+            if (e.key !== 'Tab') return;
+            const items = [...settingsOverlay.querySelectorAll('button:not(:disabled), select:not(:disabled), input:not(:disabled)')];
+            if (!items.length) return;
+            const first = items[0];
+            const last = items[items.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+
+        function setSettingsDisabled(disabled) {
+            // Only structural options (cup count / shuffle style) lock
+            // mid-round. Speed, color, theme, and sound can change any time.
+            optCups.disabled = disabled;
+            optShuffleMode.disabled = disabled;
+        }
+
+        // -- Cup count: rebuilds the board --
+        optCups.addEventListener('change', () => {
+            if (isShuffling) return;
+            CONFIG.numCups = parseInt(optCups.value, 10);
+
+            ball.style.display = 'none';
+            canGuess = false;
+            startBtn.disabled = false;
+            startBtn.innerText = 'Play! 🎮';
+            statusText.innerText = 'Press Play to start!';
+
+            buildCups();
+            updatePositions();
+            updateCupAvailability();
+            adjustScale();
+        });
+
+        // -- Shuffle speed: takes effect on the next shuffle move.
+        //    Also slows down the actual glide animation itself, not
+        //    just the pause between moves, so "Very Slow" really reads
+        //    as slow to a young child. --
+        function updateMoveDuration() {
+            const dur = Math.max(0.3, Math.min(1.9, (CONFIG.shuffleSpeed / 1000) * 0.8));
+            document.documentElement.style.setProperty('--move-duration', `${dur}s`);
+        }
+
+        optSpeed.addEventListener('change', () => {
+            CONFIG.shuffleSpeed = parseInt(optSpeed.value, 10);
+            updateMoveDuration();
+        });
+
+        // -- Shuffle style: single / double / triple swaps per move --
+        optShuffleMode.addEventListener('change', () => {
+            if (isShuffling) return;
+            CONFIG.swapsPerMove = parseInt(optShuffleMode.value, 10);
+        });
+
+        // -- Cup color: purely visual, safe to change anytime --
+        optColor.addEventListener('change', () => applyCupColor(optColor.value));
+
+        // -- Hidden object skin: Ball / Gem / Star / Coin — purely
+        //    visual, safe to change anytime --
+        function setObjectShape(name) {
+            ball.classList.remove('obj-ball', 'obj-gem', 'obj-star', 'obj-coin');
+            ball.classList.add(`obj-${name}`);
+        }
+        optObject.addEventListener('change', () => setObjectShape(optObject.value));
+
+        // -- Theme: purely visual, safe to change anytime --
+        optTheme.addEventListener('change', () => {
+            document.body.dataset.theme = optTheme.value;
+        });
+
+        // -- Sound: mute + volume --
+        optMute.addEventListener('change', () => {
+            soundMuted = optMute.checked;
+            updateMasterGain();
+        });
+        optVolume.addEventListener('input', () => {
+            soundVolume = optVolume.value / 100;
+            updateMasterGain();
+        });
+
+        // Perform `count` random cup-slot swaps as one shuffle "move" —
+        // count = CONFIG.swapsPerMove (1 = single, 2 = double, 3 = triple).
+        function swapRandomPair() {
+            const n = CONFIG.numCups;
+            let a = Math.floor(Math.random() * n);
+            let b = Math.floor(Math.random() * n);
+            while (a === b) { b = Math.floor(Math.random() * n); }
+            const temp = cupSlots[a];
+            cupSlots[a] = cupSlots[b];
+            cupSlots[b] = temp;
+        }
+
+        // ============================================================
+        // SOUND EFFECTS (Web Audio API — no audio files needed)
+        // All tones route through a master gain node so Mute and the
+        // Volume slider in Settings affect every sound instantly.
+        // ============================================================
+        let audioCtx;
+        let masterGain;
+        let soundMuted = false;
+        let soundVolume = 0.8;
+
+        function getAudioCtx() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = soundMuted ? 0 : soundVolume;
+                masterGain.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function updateMasterGain() {
+            if (masterGain) masterGain.gain.value = soundMuted ? 0 : soundVolume;
+        }
+
+        function playTone(freq, startTime, duration, type, gainPeak) {
+            const ctx = getAudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type || 'sine';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+            gain.gain.setValueAtTime(0, ctx.currentTime + startTime);
+            gain.gain.linearRampToValueAtTime(gainPeak || 0.2, ctx.currentTime + startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+            osc.connect(gain).connect(masterGain);
+            osc.start(ctx.currentTime + startTime);
+            osc.stop(ctx.currentTime + startTime + duration + 0.05);
+        }
+
+        function playCorrectSound() {
+            // Short, warm three-note reward.
+            playTone(523.25, 0, 0.18, 'sine', 0.14);    // C5
+            playTone(659.25, 0.13, 0.18, 'sine', 0.14);  // E5
+            playTone(783.99, 0.26, 0.24, 'sine', 0.14);  // G5
+        }
+
+        function playTryAgainSound() {
+            // Soft, neutral cue; a missed guess stays low-pressure.
+            playTone(392, 0, 0.12, 'sine', 0.07);       // G4
+            playTone(440, 0.12, 0.16, 'sine', 0.07);    // A4
+        }
+
+        // ============================================================
+        // GAME FLOW
+        // ============================================================
+        async function startGame() {
+            if (isShuffling) return;
+            isShuffling = true;
+            canGuess = false;
+            startBtn.disabled = true;
+            startBtn.innerText = 'Watch closely…';
+            updateCupAvailability();
+            setSettingsDisabled(true);
+            statusText.innerText = "Watch the ball closely!";
+
+            cupElements.forEach(cup => {
+                cup.classList.remove('winner-glow', 'shake');
+            });
+            ball.classList.remove('shine');
+            ball.style.display = 'none';
+
+            cupSlots = Array.from({ length: CONFIG.numCups }, (_, i) => i);
+            cupElements.forEach(cup => cup.style.bottom = '48px');
+
+            hiddenUnderCupIndex = Math.floor(Math.random() * CONFIG.numCups);
+            updatePositions();
+
+            // Reveal pacing scales with the chosen speed too (baseline
+            // is Normal = 520ms), so "Extra Slow" gives little ones a
+            // slower, calmer look at the ball before the shuffle starts.
+            const paceFactor = CONFIG.shuffleSpeed / 520;
+
+            await sleep(80);
+            ball.style.display = 'block';
+            await sleep(150 * paceFactor);
+
+            cupElements[hiddenUnderCupIndex].style.bottom = '128px';
+            await sleep(750 * paceFactor);
+            cupElements[hiddenUnderCupIndex].style.bottom = '48px';
+            await sleep(400 * paceFactor);
+
+            // Successful streaks gently add one shuffle every two wins, up to the original 10.
+            const shuffleCount = Math.min(10, 5 + Math.floor(currentStreak / 2));
+            for (let i = 0; i < shuffleCount; i++) {
+                if (i === 0) statusText.innerText = "Follow the cups! 🌀";
+
+                for (let s = 0; s < CONFIG.swapsPerMove; s++) {
+                    swapRandomPair(); // Single/Double/Triple = 1/2/3 swaps per move
+                }
+
+                updatePositions();
+                await sleep(CONFIG.shuffleSpeed);
+            }
+
+            await sleep(200);
+            statusText.innerText = "Where is the ball? Choose a cup! 🤔";
+            statusText.classList.add('pulse');
+            setTimeout(() => statusText.classList.remove('pulse'), 500);
+            isShuffling = false;
+            setSettingsDisabled(false);
+            canGuess = true;
+            updateCupAvailability();
+        }
+
+        function updateRoundStats() {
+            document.getElementById('round-stats').innerText = `Round ${roundsPlayed + 1} · Found ${roundsWon} · Streak ${currentStreak}`;
+        }
+
+        function selectCup(clickedCupIndex) {
+            if (!canGuess) return;
+            canGuess = false;
+            startBtn.disabled = false;
+            startBtn.innerText = 'Play Again! 🎮';
+            roundsPlayed++;
+            updateCupAvailability();
+
+            cupElements.forEach(cup => cup.style.bottom = '128px');
+
+            const clickedCup = cupElements[clickedCupIndex];
+
+            if (clickedCupIndex === hiddenUnderCupIndex) {
+                statusText.innerText = "🎉 You found it! Great tracking! 🎉";
+                roundsWon++;
+                currentStreak++;
+                ball.classList.add('shine');
+                clickedCup.classList.add('winner-glow');
+                gameContainer.classList.add('celebrate');
+                setTimeout(() => gameContainer.classList.remove('celebrate'), 1200);
+                playCorrectSound();
+            } else {
+                statusText.innerText = "That cup was empty. Ready for another round? ✨";
+                currentStreak = 0;
+                clickedCup.classList.add('shake');
+                setTimeout(() => clickedCup.classList.remove('shake'), 500);
+                playTryAgainSound();
+            }
+            updateRoundStats();
+            statusText.classList.add('pulse');
+            setTimeout(() => statusText.classList.remove('pulse'), 500);
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        applyCupColor('pink');
+        setObjectShape('ball');
+        updateMoveDuration();
+        buildCups();
+        updatePositions();
+        adjustScale();
+    </script>
+</body>
+</html>
