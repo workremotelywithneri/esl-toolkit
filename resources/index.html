@@ -43,7 +43,7 @@ const resources=[
 {name:'Tay’s Teaching Toolkit',category:'Games & activities',kind:'PowerPoint games',action:'Browse games ↗',description:'Interactive PowerPoint games for online and classroom teaching.',url:'https://taysteachingtoolkit.com/collection/free-powerpoint-games'},
 {name:'Games4ESL',category:'Games & activities',kind:'Classroom games',action:'Browse games ↗',description:'PowerPoint games and classroom activities for English lessons.',url:'https://games4esl.com/powerpointgames/'},
 {name:'ESL Games World',category:'Games & activities',kind:'Interactive games',action:'Browse games ↗',description:'Interactive games and activities that teachers can use for English practice.',url:'https://www.eslgamesworld.com/PowerpointGames.html'},
-{name:'ESL Puzzles',category:'Games & activities',kind:'Games and puzzles',action:'Explore activities ↗',description:'Vocabulary games and puzzles, with printable practice activities for class.',url:'https://www.eslpuzzles.com'},
+{name:'ESL Puzzles',category:'Printables & worksheets',kind:'Games, puzzles, and worksheets',action:'Explore activities ↗',description:'Vocabulary games, puzzles, worksheets, and other printable classroom activities.',url:'https://www.eslpuzzles.com'},
 {name:'PrintDiscuss',category:'Lesson materials',kind:'Discussion worksheets',action:'Browse topics ↗',description:'Discussion worksheets and conversation topics for lessons with older learners and adults.',url:'https://printdiscuss.com/topics/'},
 {name:'Engoo Daily News and Materials',category:'Lesson materials',kind:'Reading and discussion',action:'Browse materials ↗',description:'Daily news articles and lesson materials for adults, teenagers, and professional learners.',url:'https://engoo.com/app/materials/en'},
 {name:'ESL Flashcards',category:'Printables & worksheets',kind:'Printable flashcards',action:'Browse flashcards ↗',description:'Printable picture and word flashcards to use in English lessons.',url:'https://www.eslflashcards.com'},
@@ -60,7 +60,7 @@ const categories=['All',...Object.keys(categoryDescriptions)];let active='All';c
 function renderFilters(){document.getElementById('filters').innerHTML=categories.map(c=>`<button type="button" aria-pressed="${c===active}" data-category="${c}">${c}</button>`).join('');document.querySelectorAll('[data-category]').forEach(b=>b.addEventListener('click',()=>{active=b.dataset.category;renderFilters();render()}))}
 function render(){
   const q=search.value.trim().toLowerCase();
-  const shown=resources.filter(r=>(active==='All'||r.category===active)&&`${r.name} ${r.description} ${r.category} ${r.kind}`.toLowerCase().includes(q));
+  const shown=resources.filter(r=>(active==='All'||r.category===active)&&`${r.name} ${r.description} ${r.category} ${r.kind} ${(r.links||[]).map(link=>link.action).join(' ')}`.toLowerCase().includes(q));
   document.getElementById('count').textContent=`${shown.length} ${shown.length===1?'resource':'resources'}`;
   const groups=(active==='All'?categories.slice(1):[active]).map(category=>{
     const items=shown.filter(r=>r.category===category);
