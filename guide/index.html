@@ -12,7 +12,7 @@
         savedTheme=localStorage.getItem('esl-guide-theme');
         if(savedTheme==='light'||savedTheme==='dark') localStorage.setItem('esl-site-theme',savedTheme);
       }
-      if(savedTheme==='light'||savedTheme==='dark') document.documentElement.setAttribute('data-theme',savedTheme);
+      document.documentElement.setAttribute('data-theme',savedTheme==='dark'?'dark':'light');
     }catch(e){}
   })();
 </script>
@@ -143,6 +143,8 @@
   .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);margin-right:auto;min-width:0;}
   .brand:hover{color:var(--text);}
   .toolkit-back{font-size:.82rem;font-weight:600;color:var(--text-soft);text-decoration:none;white-space:nowrap;}
+  .toolkit-back:hover{color:var(--accent);}
+  .supplemental-link{margin-top:12px;border-top:1px solid var(--line-soft)!important;padding-top:16px!important;font-size:.86rem!important;}
   .brand-mark{
     width:40px;height:40px;border-radius:50%;flex:none;
     background:conic-gradient(var(--accent),var(--metal-3),var(--accent-pink),var(--accent));
@@ -253,6 +255,12 @@
     body.nav-open .scrim{opacity:1;visibility:visible;transition:opacity .3s ease;}
   }
   @media (max-width:640px){
+    .nav{flex-wrap:wrap;border-radius:20px;gap:10px 12px;}
+    .brand{flex:1 1 45%;margin-right:0;}
+    .toolkit-back{margin-left:auto;}
+    .progress{order:3;margin-right:auto;padding-left:4px;}
+    .theme-toggle{order:4;}
+    .menu-toggle{order:5;}
     .pw-track{width:64px;}
     .brand-title{font-size:1.22rem;}
   }
@@ -575,7 +583,7 @@
         <span class="byline">by Neri</span>
       </span>
     </a>
-    <span class="toolkit-back" aria-label="ESL Toolkit">ESL Toolkit</span>
+    <a class="toolkit-back" href="../" aria-label="Return to ESL Toolkit homepage">← ESL Toolkit</a>
 
     <div class="progress" role="group" aria-label="Your progress">
       <span class="pw-label">Your progress</span>
@@ -602,16 +610,17 @@
     <button class="drawer-close" id="drawerClose" aria-label="Close page menu">✕</button>
     <span class="badge">100% Free Guide</span>
     <nav class="toc" id="tabsNav" aria-label="Guide pages">
-      <a href="#start" data-tab="start"><span class="num">00</span><span class="label">Your Complete ESL Teacher Guide</span><span class="check" data-check="start"></span></a>
-      <a href="#isesl" data-tab="isesl"><span class="num">01</span><span class="label">Is ESL Teaching for Me?</span><span class="check" data-check="isesl"></span></a>
-      <a href="#tefl" data-tab="tefl"><span class="num">02</span><span class="label">Get Certified</span><span class="check" data-check="tefl"></span></a>
+      <a href="#start" data-tab="start"><span class="num">00</span><span class="label">Start Here</span><span class="check" data-check="start"></span></a>
+      <a href="#isesl" data-tab="isesl"><span class="num">01</span><span class="label">Is ESL Teaching For Me?</span><span class="check" data-check="isesl"></span></a>
+      <a href="#expectations" data-tab="expectations"><span class="num">02</span><span class="label">Expectations vs Reality</span><span class="check" data-check="expectations"></span></a>
       <a href="#setup" data-tab="setup"><span class="num">03</span><span class="label">Set Up Your Space</span><span class="check" data-check="setup"></span></a>
-      <a href="#findcompany" data-tab="findcompany"><span class="num">04</span><span class="label">Where to Apply?</span><span class="check" data-check="findcompany"></span></a>
+      <a href="#findcompany" data-tab="findcompany"><span class="num">04</span><span class="label">Where To Apply</span><span class="check" data-check="findcompany"></span></a>
       <a href="#introvideo" data-tab="introvideo"><span class="num">05</span><span class="label">Intro Video Guide</span><span class="check" data-check="introvideo"></span></a>
       <a href="#apply" data-tab="apply"><span class="num">06</span><span class="label">Application Process</span><span class="check" data-check="apply"></span></a>
       <a href="#hired" data-tab="hired"><span class="num">07</span><span class="label">After You're Hired</span><span class="check" data-check="hired"></span></a>
       <a href="#realtalk" data-tab="realtalk"><span class="num">08</span><span class="label">Real Talk &amp; FAQs</span><span class="check" data-check="realtalk"></span></a>
       <a href="#whyicreated" data-tab="whyicreated"><span class="num">09</span><span class="label">Why I Created This Guide</span><span class="check" data-check="whyicreated"></span></a>
+      <a href="#tefl" data-tab="tefl" class="supplemental-link"><span class="num">↗</span><span class="label">TEFL/TESOL Certificate Guide</span></a>
     </nav>
     <p class="pw-hint" id="pwHint"></p>
   </aside>
@@ -620,8 +629,8 @@
 
     <!-- ============ START HERE ============ -->
     <section class="page active" id="page-start">
-      <p class="page-eyebrow">Version 2026 · For Personal Use &amp; Sharing</p>
-      <h2 class="hero-title">Your Complete <span class="accent">ESL Teacher Guide</span></h2>
+      <p class="page-eyebrow">Page 00 · Version 2026 · Free for personal use and sharing</p>
+      <h2 class="hero-title">Start <span class="accent">Here</span></h2>
       <p class="subhead">From preparation to onboarding — a free, step-by-step manual for Filipino teachers starting out in online ESL. Preparation · Certification · Application · Onboarding.</p>
 
       <div class="note">
@@ -650,10 +659,11 @@
       <button class="mark-done" data-page="start"><span class="dot"></span>Mark this page as read</button>
     </section>
 
+
     <!-- ============ IS ESL FOR ME ============ -->
     <section class="page" id="page-isesl">
       <p class="page-eyebrow">Page 01</p>
-      <h2>Is ESL Teaching for Me?</h2>
+      <h2>Is ESL Teaching For Me?</h2>
       <p class="subhead">Things you should know before becoming an ESL teacher.</p>
 
       <h3>What Is ESL Teaching?</h3>
@@ -702,8 +712,8 @@
 
     <!-- ============ TEFL/TESOL ============ -->
     <section class="page" id="page-tefl">
-      <p class="page-eyebrow">Page 02</p>
-      <h2>Get Certified</h2>
+      <p class="page-eyebrow">Supplemental topic</p>
+      <h2>TEFL/TESOL Certificate Guide</h2>
       <p class="subhead">TEFL/TESOL options, free links, and recommendations.</p>
 
       <p>One of the most common questions I get is: "Kailangan ko ba talaga ng TEFL or TESOL?" Honestly, it depends on the company. Some will hire you without one, while others won't even let you continue your application.</p>
@@ -711,7 +721,7 @@
 
       <div class="note">
         <div class="note-label">Note</div>
-        <p>Please take the course yourself if you decide to get certified. I know life gets busy, and I know there are people online offering "shortcuts" — pero the real value isn't the certificate itself, it's what you actually learn while earning it. Especially kung bago ka pa lang, you'll thank yourself later.</p>
+        <p>Please take the course yourself if you decide to get certified. I know life gets busy, and I know there are people online offering "shortcuts" — but the real value isn't the certificate itself; it's what you actually learn while earning it. If you're new to teaching, you'll thank yourself later.</p>
       </div>
 
       <h3>Common providers among Filipino teachers</h3>
@@ -725,7 +735,7 @@
         <tr><td data-label="Provider"><a href="https://www.tefl.org/" target="_blank" rel="noopener">TEFL.org</a></td><td data-label="Cost">Pricier (international)</td><td data-label="Notes">Well-known and widely accredited worldwide, but priced for a global market — expect a higher cost than the PH-based options above.</td></tr>
       </table>
 
-      <p>If you're still unsure whether ESL is for you, don't spend thousands agad. Start with a free course first — if you enjoy learning about teaching, classroom management, and language learning, consider investing in a paid certification later.</p>
+      <p>If you're still unsure whether ESL is for you, don't spend thousands right away. Start with a free course first. If you enjoy learning about teaching, classroom management, and language learning, consider investing in a paid certification later.</p>
 
       <div class="note">
         <div class="note-label">Note</div>
@@ -758,10 +768,24 @@
       <h4>I'm not an English Education major — can I still get certified?</h4>
       <p>Yes. Anyone can get certified as long as you take the course and pay for it — you don't need an Education background.</p>
 
-      <button class="mark-done" data-page="tefl"><span class="dot"></span>Mark this page as read</button>
+      
     </section>
 
     <!-- ============ YOUR SETUP ============ -->
+    <section class="page" id="page-expectations">
+      <p class="page-eyebrow">Page 02</p>
+      <h2>Expectations vs Reality</h2>
+      <p class="subhead">A friendly reality check before you jump in—because the job can be rewarding, but it isn’t always what the ads make it look like.</p>
+      <h3>It can be flexible, but you still need a routine</h3>
+      <p>Online ESL can fit around family, studies, or another job. But “work from home” doesn’t mean every hour is available or every class is booked. Your schedule, student demand, and company rules all matter.</p>
+      <h3>Your first month may feel awkward</h3>
+      <p>You’ll be learning the platform, getting used to the lesson materials, and finding your teacher voice. That’s normal. Confidence grows with practice, one class at a time.</p>
+      <h3>Pay and bookings can change</h3>
+      <p>Some weeks are busier than others, and a listed hourly rate doesn’t guarantee a full schedule. Check how a company handles cancellations, penalties, and pay before you commit.</p>
+      <div class="callout blue"><p><strong>My honest advice:</strong> Start with realistic expectations, ask current teachers questions, and keep a backup plan while you build experience.</p><p><a href="#tefl" data-tab="tefl">Read the TEFL/TESOL certificate guide →</a></p></div>
+      <button class="mark-done" data-page="expectations"><span class="dot"></span>Mark this page as read</button>
+    </section>
+
     <section class="page" id="page-setup">
       <p class="page-eyebrow">Page 03</p>
       <h2>Set Up Your Space</h2>
@@ -809,7 +833,7 @@
     <!-- ============ FIND A COMPANY ============ -->
     <section class="page" id="page-findcompany">
       <p class="page-eyebrow">Page 04</p>
-      <h2>Where to Apply?</h2>
+      <h2>Where To Apply</h2>
       <p class="subhead">Company directory.</p>
 
       <p>This guide sorts online ESL teaching companies into four tiers based on entry requirements and experience level. Each entry includes student market (Chinese, Japanese, Korean, European, Latin American, or Global), minimum requirements, hiring steps, salary, and whether training is provided.</p>
@@ -831,7 +855,7 @@
 
       <div class="callout">
         <div class="callout-label">⚠️ A safety reminder</div>
-        <p>Some companies don't have an official website — sometimes you'll connect through a teacher or a hiring manager who reaches out directly and asks for your details. That's normal in this industry. Pero be vigilant: if anyone asks you to pay money — "processing fee," "registration fee," whatever they call it — run. We are looking for work; hindi tayo ang magbabayad, tayo dapat ang babayaran. Legit companies don't charge you to apply.</p>
+        <p>Some companies don't have an official website — sometimes you'll connect through a teacher or a hiring manager who reaches out directly and asks for your details. That's normal in this industry. But stay alert: if anyone asks you to pay money — "processing fee," "registration fee," whatever they call it — run. We are looking for work; hindi tayo ang magbabayad, tayo dapat ang babayaran. Legit companies don't charge you to apply.</p>
       </div>
 
       <div class="note">
@@ -1320,7 +1344,8 @@
 
 <script>
 (function(){
-  var PAGES = ["start","isesl","tefl","setup","findcompany","introvideo","apply","hired","realtalk","whyicreated"];
+  var PAGES = ["start","isesl","expectations","setup","findcompany","introvideo","apply","hired","realtalk","whyicreated"];
+  var ALL_PAGES = PAGES.concat(["tefl"]);
   var STORAGE_KEY = "esl-guide-progress";
   var THEME_KEY = "esl-site-theme";
   var progress = {};
@@ -1338,7 +1363,7 @@
       try{ window.localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark'); }catch(e){}
     }
   }
-  applyTheme(document.documentElement.getAttribute('data-theme') || 'dark', false);
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'light', false);
   themeToggle.addEventListener('click', function(){
     var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
     applyTheme(current === 'light' ? 'dark' : 'light', true);
@@ -1430,10 +1455,11 @@
   }
 
   function show(name, userTriggered){
-    if(PAGES.indexOf(name) < 0) name = 'start';
+    if(ALL_PAGES.indexOf(name) < 0) name = 'start';
     document.querySelectorAll('.page').forEach(function(pg){ pg.classList.remove('active'); });
     var target = document.getElementById('page-'+name);
     if(target) target.classList.add('active');
+    if(PAGES.indexOf(name) >= 0){ try{ localStorage.setItem('esl-guide-last-page', name); }catch(e){} }
     navLinks.forEach(function(a){
       if(a.getAttribute('data-tab') === name){ a.setAttribute('aria-current','page'); }
       else { a.removeAttribute('aria-current'); }
@@ -1492,7 +1518,7 @@
   /* back / forward and manually edited links */
   function fromHash(){
     var h = (location.hash || '').replace('#','');
-    if(PAGES.indexOf(h) >= 0) show(h, true);
+    if(ALL_PAGES.indexOf(h) >= 0) show(h, true);
   }
   window.addEventListener('hashchange', fromHash);
   window.addEventListener('popstate', fromHash);
@@ -1504,7 +1530,7 @@
   onScroll();
 
   var initial = (location.hash || '').replace('#','');
-  show(PAGES.indexOf(initial) >= 0 ? initial : 'start', false);
+  show(ALL_PAGES.indexOf(initial) >= 0 ? initial : 'start', false);
   loadProgress();
 })();
 </script>
