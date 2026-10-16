@@ -627,12 +627,21 @@
     modalNameX.textContent = displayName('X');
     modalNameO.textContent = displayName('O');
     matchupLabel.textContent = `${displayName('X')} vs ${displayName('O')} · 6×6`;
+    (cells || []).forEach((player, i) => {
+      if(player) renderPiece(i, player);
+    });
     updateStatus();
   }
 
   function iconFor(player){
     const pack = ICON_PACKS[currentPackId];
     return player === 'X' ? pack.iconX() : pack.iconO();
+  }
+
+  function renderPiece(i, player){
+    const r = Math.floor(i/N), c = i%N;
+    cellEls[i].setAttribute('aria-label', `Row ${r+1}, column ${c+1}, ${displayName(player)}'s piece`);
+    cellEls[i].innerHTML = iconFor(player);
   }
 
   /* ---------- RESPONSIVE SIZING FOR 16:8 FRAME ---------- */
@@ -783,8 +792,7 @@
     const cellEl = cellEls[i];
     cellEl.classList.add('filled');
     cellEl.disabled = true;
-    cellEl.setAttribute('aria-label', `Row ${r+1}, column ${c+1}, ${displayName(current)}'s piece`);
-    cellEl.innerHTML = iconFor(current);
+    renderPiece(i, current);
 
     const newLines = detectLines(r,c,current);
     if(newLines.length){
