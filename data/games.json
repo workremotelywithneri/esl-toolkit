@@ -1,0 +1,68 @@
+{
+  "games": [
+    {
+      "id": "find-the-magic-ball",
+      "title": "Find the Magic Ball!",
+      "description": "Watch the ball, follow the cups as they shuffle, then choose where you think it is. Change the shuffle speed and style to adjust the challenge.",
+      "url": "find-the-ball-v2.html",
+      "thumbnail": "assets/games/find-the-magic-ball.svg",
+      "thumbnailAlt": "",
+      "category": "Focus & memory",
+      "tags": [
+        "Solo play",
+        "Adjustable difficulty"
+      ],
+      "status": "published",
+      "featured": false
+    },
+    {
+      "id": "trophy-clash",
+      "title": "Trophy Clash: Tic-Tac-Toe",
+      "description": "Challenge a partner on a 6×6 board. Make lines of four or more to earn trophies; the player with the most trophies when the board fills wins.",
+      "url": "TICTACTOE-improved.html",
+      "thumbnail": "assets/games/trophy-clash.svg",
+      "thumbnailAlt": "",
+      "category": "Strategy & planning",
+      "tags": [
+        "Two players",
+        "Custom icons & themes"
+      ],
+      "status": "published",
+      "featured": false
+    },
+    {
+      "id": "build-your-ice-cream",
+      "title": "Build Your Ice Cream",
+      "description": "Create a colorful ice cream treat with scoops, sauces, and toppings in this interactive classroom reward game.",
+      "url": "Build-Your-Ice-Cream-free-decorating-v3.3.html",
+      "thumbnail": "assets/games/build-your-ice-cream.svg",
+      "thumbnailAlt": "Illustration of an ice cream cone with colorful scoops",
+      "category": "Creative rewards",
+      "tags": [
+        "Build and decorate",
+        "Classroom reward"
+      ],
+      "status": "published",
+      "featured": true,
+      "previewVideo": "assets/previews/ice-cream-preview.mp4",
+      "previewPoster": "assets/previews/ice-cream-preview.jpg"
+    },
+    {
+      "id": "gumball-reading-machine",
+      "title": "Gumball Reading Machine",
+      "description": "Prepare and save named word collections before class, choose the correct lesson, and turn reading practice into a playful gumball activity.",
+      "url": "gumball-reading-machine-v2.html",
+      "thumbnail": "assets/games/gumball-reading-machine.svg",
+      "thumbnailAlt": "Illustration of a colorful gumball reading machine",
+      "category": "Reading & phonics",
+      "tags": [
+        "Saved word collections",
+        "Teacher-controlled lessons"
+      ],
+      "status": "published",
+      "featured": true,
+      "previewVideo": "assets/previews/gumball-preview.mp4",
+      "previewPoster": "assets/previews/gumball-preview.jpg"
+    }
+  ]
+}

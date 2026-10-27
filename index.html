@@ -400,6 +400,67 @@
   .teacher-actions .btn{padding:11px 15px; font-size:0.8rem;}
   .price{font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--metal-2); font-size:0.85rem;}
 
+  /* ---------- Games: two collections + What's New (added) ---------- */
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  @media(max-width:700px){.grid-2{grid-template-columns:1fr;}}
+  .card-tag{
+    align-self:flex-start;
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:600;
+    padding:5px 11px; border-radius:999px;
+    color:var(--accent); background:rgba(167,139,250,0.10); border:1px solid rgba(167,139,250,0.3);
+  }
+  .card-tag-external{color:var(--text-muted); background:transparent; border:1px dashed var(--line);}
+  .card-original{border-color:rgba(167,139,250,0.4);}
+  .game-cards .card-image.card-image-external{
+    background:linear-gradient(135deg, rgba(135,131,179,0.22), rgba(167,139,250,0.08));
+    color:var(--text-muted);
+    outline:2px dashed var(--line); outline-offset:-14px;
+  }
+  .card-image-external svg{position:relative; z-index:1; width:64px; height:64px; opacity:0.85;}
+  .teach-more{margin-top:40px;}
+
+  .wn{margin-top:40px;}
+  .wn[hidden]{display:none;}
+  .wn-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px 18px; flex-wrap:wrap; margin-bottom:14px;}
+  .resource-group .wn-head h3{margin:0;}
+  .wn-all{color:var(--accent); font-weight:600; font-size:0.92rem; text-decoration:none;}
+  .wn-all:hover{text-decoration:underline;}
+  .wn-all:focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px;}
+  .wn-list{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media(max-width:900px){.wn-list{grid-template-columns:1fr;}}
+  .wn-item{
+    display:grid; grid-template-columns:96px 1fr; gap:6px 14px; align-items:center;
+    padding:12px; border:1px solid var(--line); border-radius:18px;
+    background:rgba(var(--card-glass-rgb),var(--card-glass-alpha));
+    transition:border-color 0.2s ease;
+  }
+  .wn-item:hover{border-color:rgba(167,139,250,0.4);}
+  .wn-item.wn-nothumb{grid-template-columns:1fr;}
+  .wn-thumb{grid-row:span 2; width:96px; height:60px; border-radius:12px; overflow:hidden; background:var(--glass-strong);}
+  .wn-thumb img, .wn-thumb video{width:100%; height:100%; object-fit:contain; display:block;}
+  .wn-thumb{position:relative;}
+  .wn-preview-toggle{position:absolute;bottom:8px;right:8px;z-index:2;border:1px solid rgba(255,255,255,.65);background:rgba(25,17,50,.88);color:white;border-radius:999px;padding:6px 11px;font-size:12px;cursor:pointer;}
+  .wn-preview-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
+  .wn-text{display:flex; flex-direction:column; gap:2px; min-width:0;}
+  .wn-title{font-weight:700; font-size:0.98rem; line-height:1.3;}
+  .wn-desc{color:var(--text-soft); font-size:0.85rem; line-height:1.45; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+  .wn-play{justify-self:start; padding:8px 18px; font-size:0.85rem;}
+
+  /* Single featured release card — responsive and easy to update via games.json */
+  .wn-list{grid-template-columns:minmax(0,1fr);}
+  .wn-item{grid-template-columns:minmax(150px,32%) minmax(0,1fr) auto;gap:18px;padding:18px;}
+  .wn-thumb{grid-row:1; width:100%;height:170px;}
+  .wn-text{gap:8px;}
+  .wn-title{font-size:1.25rem;}
+  .wn-desc{font-size:0.95rem;-webkit-line-clamp:3;}
+  .wn-feature-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--accent);}
+  .wn-play{justify-self:end;white-space:nowrap;}
+  @media(max-width:700px){
+    .wn-item{grid-template-columns:minmax(0,1fr);gap:12px;}
+    .wn-thumb{height:185px;}
+    .wn-play{justify-self:start;}
+  }
+
   /* ---------- Guide panel ---------- */
   .guide-panel{
     background:var(--card); border:1px solid var(--line); border-radius:28px;
@@ -519,10 +580,33 @@
   }
   .footer-social-links a:hover{transform:translateY(-3px);color:#fff;border-color:var(--accent);background:var(--glass-strong);}
   .footer-social-links svg{width:19px;height:19px;fill:currentColor;}
+  /* Footer layout fix: three independent columns, no overlapping content. */
+  .footer-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);align-items:start;gap:clamp(22px,3vw,48px);}
+  .footer-row > *{min-width:0;max-width:100%;}
+  .footer-social-group{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0;}
+  .footer-social-links{display:flex;flex-wrap:wrap;align-items:center;gap:10px;max-width:100%;}
+  .footer-social-links a{flex-shrink:0;}
+  .footer-social-links a.tiktok-footer-link{width:auto;height:auto;max-width:100%;display:inline-flex;gap:6px;padding:9px 12px;overflow-wrap:anywhere;line-height:1.4;}
+  .footer-support{max-width:100% !important;}
+  @media(max-width:1050px){.footer-row{grid-template-columns:repeat(2,minmax(0,1fr));}.footer-support{grid-column:1/-1;}}
+  @media(max-width:650px){.footer-row{grid-template-columns:minmax(0,1fr);gap:26px;}.footer-support{grid-column:auto;}}
+
   @media(max-width:560px){.footer-row{align-items:flex-start;flex-direction:column;gap:14px;}}
 
   .reveal{opacity:0; transform:translateY(18px); transition:opacity 0.7s ease, transform 0.7s ease;}
   .reveal.visible{opacity:1; transform:translateY(0);}
+
+/* Checkpoint 9: mobile usability, readable actions, and keyboard access. */
+@media (max-width: 600px) {
+  .follow-quick { align-items:stretch !important; }
+  .follow-quick .btn { min-height:44px; display:inline-flex; align-items:center; justify-content:center; text-align:center; }
+  .footer-row a { overflow-wrap:anywhere; }
+  .nav a, .nav button { min-height:40px; }
+}
+@media (max-width: 390px) {
+  .follow-quick .btn { width:100%; }
+}
+a:focus-visible,button:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
 </style>
 </head>
 <body>
@@ -538,13 +622,14 @@
     <nav class="links" id="navLinks">
       <a href="#guide">Start Here</a>
       <a href="#find-work">Find Work</a>
+      <a href="games/">My Games</a>
       <a href="resources/">Classroom Activities</a>
       <a href="#books">Books</a>
       <a href="#about">About</a>
       <a href="#newsletter" class="nav-cta btn btn-primary" style="padding:10px 20px;">Join the list</a>
     </nav>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">🌙</button>
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation menu" aria-controls="navLinks" aria-expanded="false">☰</button>
   </div>
 </header>
 
@@ -554,7 +639,7 @@
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">For aspiring and current ESL teachers</span>
-      <h1>Find your next step in<span class="accent">ESL teaching.</span></h1>
+      <h1>Find your next step in <span class="accent">ESL teaching.</span></h1>
       <p class="lede">Explore whether ESL teaching is right for you, find work, or get practical materials for your classes. The guides and resources here are free to use.</p>
     </div>
     <div class="audience-paths" role="group" aria-label="Choose the path that fits you">
@@ -603,7 +688,7 @@
     <div class="section-head reveal">
       <span class="eyebrow">Browse by what you need</span>
       <h2>Free ESL tools and materials</h2>
-      <p>Choose a section below. Each card explains who the resource is for and where its link will take you.</p>
+      <p>Looking for classroom games, teaching materials, or ESL career tools? Choose what you need below.</p>
     </div>
     <div class="resource-group" id="find-work">
       <h3>Find ESL work</h3>
@@ -630,7 +715,37 @@
     <div class="resource-group" id="teaching-materials">
       <h3>Teach and prepare lessons</h3>
       <p>Find classroom materials, interactive games, and reward ideas for your students.</p>
-      <div class="grid grid-4">
+      <div class="grid grid-2 game-cards">
+        <div class="card card-original reveal">
+          <div class="card-image"><img src="assets/games-collection-dark.jpg" data-dark-src="assets/games-collection-dark.jpg" data-light-src="assets/games-collection-light.webp" alt="Game controller surrounded by learning icons" loading="lazy" decoding="async"></div>
+          <div class="card-body">
+            <span class="card-tag">Made by Neri · Free to play</span>
+            <h3>My Original ESL Games</h3>
+            <p class="desc">Play my original classroom games, including Find the Magic Ball, Trophy Clash, and Gumball Reading with reusable word collections.</p>
+            <div class="card-footer"><span class="price" id="originalGamesCount">Original games</span><a href="games/" class="btn btn-marigold">Explore My Games</a></div>
+          </div>
+        </div>
+        <div class="card card-external reveal">
+          <div class="card-image card-image-external" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+          </div>
+          <div class="card-body">
+            <span class="card-tag card-tag-external">External sites ↗</span>
+            <h3>Games From Other Websites</h3>
+            <p class="desc">A hand-picked list of game sites made by other creators. I don’t own or run these websites, and some show ads or need an account, so preview before using one with students.</p>
+            <div class="card-footer"><span class="price">Third-party sites</span><a href="resources/#games" class="btn btn-ghost">Explore External Games</a></div>
+          </div>
+        </div>
+      </div>
+      <!-- Featured releases: controlled by data/games.json. Hidden if none are featured. -->
+      <div class="wn" id="whatsNew" hidden>
+        <div class="wn-head">
+          <h3>✨ Fresh from the Toolkit</h3>
+          <a class="wn-all" href="games/">View All Games →</a>
+        </div>
+        <ul class="wn-list" id="wnList"></ul>
+      </div>
+      <div class="grid grid-3 teach-more">
         <div class="card reveal">
           <div class="card-image"><img src="assets/teacher-resources-library-dark.jpg" data-dark-src="assets/teacher-resources-library-dark.jpg" data-light-src="assets/teacher-resources-library-light.jpg" alt="ESL games and classroom materials for students" loading="lazy" decoding="async"></div>
           <div class="card-body">
@@ -645,14 +760,6 @@
             <h3>ESL Reward Hub</h3>
             <p class="desc">Digital rewards to motivate students during online lessons.</p>
             <div class="card-footer"><span class="price">Google Drive folder</span><a href="https://drive.google.com/drive/folders/1TG93F-eqCBbUG_5zGB-KUSAbbFN_23qK?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-marigold">View rewards ↗</a></div>
-          </div>
-        </div>
-        <div class="card reveal">
-          <div class="card-image"><img src="assets/games-collection-dark.jpg" data-dark-src="assets/games-collection-dark.jpg" data-light-src="assets/games-collection-light.webp" alt="Game controller surrounded by learning icons" loading="lazy" decoding="async"></div>
-          <div class="card-body">
-            <h3>ESL Games Collection</h3>
-            <p class="desc">Play Find the Magic Ball and our Tic-Tac-Toe game, then explore more game sites from around the web.</p>
-            <div class="card-footer"><span class="price">2 interactive games</span><a href="games/" class="btn btn-marigold">Open Games Hub →</a></div>
           </div>
         </div>
         <div class="card reveal">
@@ -716,7 +823,7 @@
 
 <section id="about" style="background:var(--surface);">
   <div class="wrap about">
-    <div class="about-photo reveal"><img src="assets/neri-aquarium.png" alt="Neri looking at fish through an aquarium window"></div>
+    <div class="about-photo reveal"><img src="assets/neri-aquarium.webp" alt="Neri looking at fish through an aquarium window"></div>
     <div class="reveal about-copy">
       <span class="eyebrow">About the Author</span>
       <h2>Hi, I'm Neri.</h2>
@@ -734,8 +841,12 @@
     <div class="newsletter reveal">
       <div>
         <span class="eyebrow" style="color:var(--accent-pink);">Let's stay connected</span>
-        <h2>Get updates by email</h2>
-        <p>Sign up if you'd like to hear when I add new resources to the toolkit.</p>
+        <h2>New ESL games and resources are coming!</h2>
+        <p>Follow on TikTok or Instagram for new classroom games, teaching resources, and guide updates. Prefer email? Subscribe for announcements below.</p>
+      </div>
+      <div class="follow-quick" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0">
+        <a class="btn btn-marigold" href="https://www.tiktok.com/@workremotelywithneri" target="_blank" rel="noopener noreferrer">Follow on TikTok</a>
+        <a class="btn btn-ghost" href="https://www.instagram.com/workremotelywithneri" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
       </div>
       <form class="inline-form" onsubmit="return handleNewsletterSubmit(event)">
         <input type="email" placeholder="you@example.com" required aria-label="Email address">
@@ -753,18 +864,18 @@
       <p>Email: <a href="mailto:workremotelywithneri@gmail.com">workremotelywithneri@gmail.com</a></p>
     </div>
     <div class="footer-social-group">
-      <span>Follow me on:</span>
+      <span>Follow for new ESL games and updates:</span>
       <nav class="footer-social-links" aria-label="Neri on social media">
-      <a href="https://www.facebook.com/profile.php?id=61594838093941" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.4 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.5 1.6-1.5h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.2v3.2H10V21h3.4z"/></svg>
-      </a>
+      <a href="https://www.tiktok.com/@workremotelywithneri" target="_blank" rel="noopener noreferrer" aria-label="TikTok @workremotelywithneri" title="Follow on TikTok" class="tiktok-footer-link" style="border:1px solid currentColor;border-radius:999px;text-decoration:none;font-size:.85rem;font-weight:700">TikTok <span aria-hidden="true">@workremotelywithneri</span></a>
       <a href="https://www.instagram.com/workremotelywithneri" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7zm0 1.8a2.9 2.9 0 0 0-2.9 2.9v9.6a2.9 2.9 0 0 0 2.9 2.9h9.6a2.9 2.9 0 0 0 2.9-2.9V7.2a2.9 2.9 0 0 0-2.9-2.9H7.2zm4.8 3a4.7 4.7 0 1 1 0 9.4 4.7 4.7 0 0 1 0-9.4zm0 1.8a2.9 2.9 0 1 0 0 5.8 2.9 2.9 0 0 0 0-5.8zm5-3.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg>
       </a>
-      <a href="https://www.tiktok.com/@behindtheclass_neri" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 7.2a6.2 6.2 0 0 1-3.8-1.3v8.2a6.1 6.1 0 1 1-6.1-6.1c.4 0 .8 0 1.2.1v3.4a2.8 2.8 0 1 0 1.5 2.5V2.5h3.4a6.2 6.2 0 0 0 3.8 3.8v.9z"/></svg>
-      </a>
       </nav>
+    </div>
+    <div class="footer-support" style="max-width:350px;line-height:1.5">
+      <strong>Enjoying the ESL Toolkit?</strong>
+      <p style="margin:6px 0 10px">If these resources help your lessons, you can support future games and updates. Completely optional!</p>
+      <a href="https://buymeacoffee.com/workremotelywithneri" target="_blank" rel="noopener noreferrer" aria-label="Support the ESL Toolkit on Buy Me a Coffee" style="display:inline-block;padding:10px 14px;border:1px solid currentColor;border-radius:12px;text-decoration:none;font-weight:700">☕ Support the Toolkit</a>
     </div>
   </div>
 </footer>
@@ -838,14 +949,20 @@
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
   const navScrim = document.getElementById('navScrim');
-  const toggleMobileNav = () => {
-    navLinks.classList.toggle('open');
-    navScrim.classList.toggle('open');
+  const setMobileNav = (open) => {
+    navLinks.classList.toggle('open', open);
+    navScrim.classList.toggle('open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
   };
-  const closeMobileNav = () => {
-    navLinks.classList.remove('open');
-    navScrim.classList.remove('open');
-  };
+  const toggleMobileNav = () => setMobileNav(!navLinks.classList.contains('open'));
+  const closeMobileNav = () => setMobileNav(false);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navLinks.classList.contains('open')) {
+      closeMobileNav();
+      menuToggle.focus();
+    }
+  });
   menuToggle.addEventListener('click', toggleMobileNav);
   navScrim.addEventListener('click', closeMobileNav);
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
@@ -928,6 +1045,132 @@
     }
     return false;
   }
+</script>
+<script>
+  // ---------- Original games catalog: same publication policy as the Games Hub ----------
+  (function () {
+    'use strict';
+    const countEl = document.getElementById('originalGamesCount');
+    const wnBox = document.getElementById('whatsNew');
+    const wnList = document.getElementById('wnList');
+    if (!wnBox || !wnList) return;
+    const pathOK = (value, ext) => typeof value === 'string' && value.length < 300 &&
+      !value.startsWith('/') && !value.includes('\\') && !value.includes('?') &&
+      !value.includes('#') && !value.split('/').includes('..') &&
+      !value.split('/').includes('.') && /^[A-Za-z0-9_./-]+$/.test(value) && ext.test(value);
+    const valid = g => g && typeof g === 'object' && !Array.isArray(g) &&
+      g.status === 'published' && typeof g.id === 'string' &&
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(g.id) &&
+      ['title', 'description', 'category'].every(k => typeof g[k] === 'string' && g[k].trim() && g[k].length < 600) &&
+      Array.isArray(g.tags) && g.tags.length <= 12 &&
+      g.tags.every(t => typeof t === 'string' && t.length <= 80) &&
+      pathOK(g.url, /\.html$/i) && pathOK(g.thumbnail, /\.(svg|png|webp|jpe?g)$/i) &&
+      (g.thumbnailAlt === undefined || typeof g.thumbnailAlt === 'string');
+    const realDate = value => {
+      if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+      const date = new Date(value + 'T00:00:00Z');
+      return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value &&
+        value <= new Date().toISOString().slice(0, 10);
+    };
+    function publishedGames(entries) {
+      // Reject all published entries involved in a case-insensitive ID or URL conflict.
+      // Non-published entries cannot make a published entry disappear.
+      const candidates = entries.filter(valid);
+      const idCounts = new Map(), urlCounts = new Map();
+      for (const g of candidates) {
+        const id = g.id.toLowerCase(), url = g.url.toLowerCase();
+        idCounts.set(id, (idCounts.get(id) || 0) + 1);
+        urlCounts.set(url, (urlCounts.get(url) || 0) + 1);
+      }
+      return candidates.filter(g => idCounts.get(g.id.toLowerCase()) === 1 &&
+        urlCounts.get(g.url.toLowerCase()) === 1);
+    }
+    function buildItem(g) {
+      const li = document.createElement('li');
+      li.className = 'wn-item';
+      const box = document.createElement('div');
+      box.className = 'wn-thumb';
+      const img = document.createElement('img');
+      img.src = g.thumbnail;
+      img.alt = g.thumbnailAlt || '';
+      img.width = 96; img.height = 60;
+      img.loading = 'lazy'; img.decoding = 'async';
+      img.addEventListener('error', () => { box.remove(); li.classList.add('wn-nothumb'); });
+      // Actual gameplay previews, muted for browser autoplay compatibility.
+      const previewOK = path => pathOK(path, /\.mp4$/i);
+      const posterOK = path => pathOK(path, /\.(png|jpe?g|webp)$/i);
+      if (previewOK(g.previewVideo)) {
+        const video = document.createElement('video');
+        video.src = g.previewVideo;
+        video.poster = posterOK(g.previewPoster) ? g.previewPoster : g.thumbnail;
+        video.muted = true; video.defaultMuted = true;
+        video.autoplay = true; video.loop = true; video.playsInline = true;
+        video.preload = 'metadata';
+        video.setAttribute('aria-label', g.title + ' gameplay preview');
+        video.addEventListener('error', () => { video.replaceWith(img); toggle.remove(); });
+        const toggle = document.createElement('button');
+        toggle.type = 'button'; toggle.className = 'wn-preview-toggle';
+        toggle.textContent = 'Pause preview';
+        let manuallyPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (manuallyPaused) { video.autoplay = false; video.removeAttribute('autoplay'); toggle.textContent = 'Play preview'; }
+        toggle.addEventListener('click', () => {
+          manuallyPaused = !manuallyPaused;
+          if (manuallyPaused) { video.pause(); toggle.textContent = 'Play preview'; }
+          else { video.play().catch(() => {}); toggle.textContent = 'Pause preview'; }
+        });
+        box.append(video, toggle);
+        const observer = new IntersectionObserver(entries => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting || document.hidden || manuallyPaused) video.pause();
+            else video.play().catch(() => { toggle.textContent = 'Play preview'; });
+          }
+        }, {threshold: 0.15});
+        observer.observe(box);
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) video.pause();
+          else if (!manuallyPaused && box.getBoundingClientRect().top < innerHeight && box.getBoundingClientRect().bottom > 0) video.play().catch(() => {});
+        });
+      } else box.appendChild(img);
+      li.appendChild(box);
+      const body = document.createElement('div');
+      body.className = 'wn-text';
+      const tag = document.createElement('span');
+      tag.className = 'wn-feature-label'; tag.textContent = 'Featured game'; body.appendChild(tag);
+      const title = document.createElement('strong');
+      title.className = 'wn-title'; title.textContent = g.title;
+      const desc = document.createElement('span');
+      desc.className = 'wn-desc'; desc.textContent = g.description;
+      body.append(title, desc); li.appendChild(body);
+      const play = document.createElement('a');
+      play.className = 'btn btn-marigold wn-play';
+      play.href = g.url; play.textContent = 'Play';
+      play.setAttribute('aria-label', 'Play ' + g.title);
+      li.appendChild(play);
+      return li;
+    }
+    fetch('data/games.json', { cache: 'no-cache' })
+      .then(response => { if (!response.ok) throw new Error('Catalog unavailable'); return response.json(); })
+      .then(data => {
+        if (!data || !Array.isArray(data.games)) throw new Error('Invalid catalog');
+        const games = publishedGames(data.games);
+        if (countEl) countEl.textContent = games.length + (games.length === 1 ? ' game' : ' games');
+        const fresh = games.map((g, i) => ({ g, i }))
+          .filter(item => item.g.featured === true)
+          .sort((a, b) => {
+            const da = realDate(a.g.publishedOn) ? a.g.publishedOn : '';
+            const db = realDate(b.g.publishedOn) ? b.g.publishedOn : '';
+            return db.localeCompare(da) || a.i - b.i;
+          })
+          .slice(0, 2);
+        wnList.replaceChildren(...fresh.map(item => buildItem(item.g)));
+        wnBox.hidden = fresh.length === 0;
+      })
+      .catch(() => {
+        // Fail closed: no featured content or unverified count on errors.
+        wnList.replaceChildren(); wnBox.hidden = true;
+        if (countEl) countEl.textContent = 'Original games';
+      });
+  })();
 </script>
 </body>
 </html>
