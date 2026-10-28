@@ -63,6 +63,75 @@
       "featured": true,
       "previewVideo": "assets/previews/gumball-preview.mp4",
       "previewPoster": "assets/previews/gumball-preview.jpg"
+    },
+    {
+      "id": "build-a-pizza",
+      "title": "Build a Pizza",
+      "description": "Build and decorate a pizza with toppings.",
+      "url": "build-a-pizza.html",
+      "thumbnail": "assets/previews/pizza-preview.jpg",
+      "thumbnailAlt": "Gameplay screenshot of Build a Pizza",
+      "category": "Creative rewards",
+      "tags": [
+        "Classroom game"
+      ],
+      "status": "published",
+      "featured": false,
+      "previewVideo": "assets/previews/pizza-preview.mp4",
+      "previewPoster": "assets/previews/pizza-preview.jpg",
+      "showHubPreview": true
+    },
+    {
+      "id": "build-a-burger",
+      "title": "Build a Burger",
+      "description": "Create a custom burger in this classroom reward game.",
+      "url": "build-a-burger-v2.html",
+      "thumbnail": "assets/previews/burger-preview.jpg",
+      "thumbnailAlt": "Gameplay screenshot of Build a Burger",
+      "category": "Creative rewards",
+      "tags": [
+        "Classroom game"
+      ],
+      "status": "published",
+      "featured": false,
+      "previewVideo": "assets/previews/burger-preview.mp4",
+      "previewPoster": "assets/previews/burger-preview.jpg",
+      "showHubPreview": true
+    },
+    {
+      "id": "build-an-aquarium",
+      "title": "Build an Aquarium",
+      "description": "Create and decorate an underwater aquarium.",
+      "url": "build-an-aquarium.html",
+      "thumbnail": "assets/previews/aquarium-preview.jpg",
+      "thumbnailAlt": "Gameplay screenshot of Build an Aquarium",
+      "category": "Creative rewards",
+      "tags": [
+        "Classroom game"
+      ],
+      "status": "published",
+      "featured": false,
+      "previewVideo": "assets/previews/aquarium-preview.mp4",
+      "previewPoster": "assets/previews/aquarium-preview.jpg",
+      "showHubPreview": true
+    },
+    {
+      "id": "spin-the-wheel",
+      "title": "Spin the Wheel",
+      "description": "Spin teacher-entered words or sentences, and save reusable lists for future lessons.",
+      "url": "spin-the-wheel-v3.html",
+      "thumbnail": "assets/previews/spin-wheel-preview.jpg",
+      "thumbnailAlt": "Gameplay screenshot of Spin the Wheel",
+      "category": "Classroom activities",
+      "tags": [
+        "Saved word lists",
+        "Teacher-controlled"
+      ],
+      "status": "published",
+      "featured": false,
+      "previewVideo": "assets/previews/spin-wheel-preview.mp4",
+      "previewPoster": "assets/previews/spin-wheel-preview.jpg",
+      "showHubPreview": true
     }
   ]
 }

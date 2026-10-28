@@ -48,6 +48,15 @@
 /* Checkpoint 9: readable and keyboard-accessible game actions. */
 .game a:focus-visible,.home-link:focus-visible,.theme-toggle:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
 @media(max-width:420px){.nav-actions{flex-wrap:wrap;justify-content:flex-end}.home-link{white-space:normal;text-align:right}.game .launch{min-height:48px}.teacher-tip{line-height:1.6}}
+</style>
+<style>
+/* Game previews use the existing artwork area so cards keep their dimensions. */
+.art .preview-poster,.art .game-preview{position:absolute;inset:0;margin:auto;width:min(240px,72%);height:150px;object-fit:contain;filter:drop-shadow(0 14px 22px rgba(0,0,0,.2))}
+.art .preview-poster{z-index:1;transition:opacity .2s ease}
+.art .game-preview{z-index:2;display:block;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.art.preview-playing .game-preview{opacity:1}
+.art.preview-playing .preview-poster{opacity:0}
+@media(prefers-reduced-motion:reduce){.art .game-preview{display:none}}
 </style></head>
 <body>
 <a class="skip" href="#main">Skip to games</a>
@@ -82,11 +91,47 @@
   const status=document.getElementById('gamesStatus');
   const catalogUrl='../data/games.json';
   const pathOK=(value,ext)=>typeof value==='string' && value.length<300 && !value.startsWith('/') && !value.includes('\\') && !value.includes('?') && !value.includes('#') && !value.split('/').includes('..') && !value.split('/').includes('.') && /^[A-Za-z0-9_./-]+$/.test(value) && ext.test(value);
+  const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let previewObserver=null;
   function addText(parent,tag,value,className){const el=document.createElement(tag);if(className)el.className=className;el.textContent=value;parent.append(el);return el}
-  function valid(g){return g && typeof g==='object' && g.status==='published' && typeof g.id==='string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(g.id) && ['title','description','category'].every(k=>typeof g[k]==='string' && g[k].trim() && g[k].length<600) && Array.isArray(g.tags) && g.tags.length<=12 && g.tags.every(t=>typeof t==='string'&&t.length<=80) && pathOK(g.url,/\.html$/i) && pathOK(g.thumbnail,/\.(svg|png|webp|jpe?g)$/i) && (g.thumbnailAlt===undefined || typeof g.thumbnailAlt==='string');}
+  function validPreview(g){
+    const videoOK=g.previewVideo===undefined || pathOK(g.previewVideo,/\.mp4$/i);
+    const posterOK=g.previewPoster===undefined || pathOK(g.previewPoster,/\.(png|webp|jpe?g)$/i);
+    return videoOK && posterOK && (g.showHubPreview===undefined || typeof g.showHubPreview==='boolean') && (g.showHubPreview!==true || (typeof g.previewVideo==='string' && typeof g.previewPoster==='string'));
+  }
+  function valid(g){return g && typeof g==='object' && g.status==='published' && typeof g.id==='string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(g.id) && ['title','description','category'].every(k=>typeof g[k]==='string' && g[k].trim() && g[k].length<600) && Array.isArray(g.tags) && g.tags.length<=12 && g.tags.every(t=>typeof t==='string'&&t.length<=80) && pathOK(g.url,/\.html$/i) && pathOK(g.thumbnail,/\.(svg|png|webp|jpe?g)$/i) && (g.thumbnailAlt===undefined || typeof g.thumbnailAlt==='string') && validPreview(g);}
+  function playPreview(video){
+    if(motionPreference.matches)return;
+    if(!video.hasAttribute('src')){video.src=video.dataset.src;video.load();}
+    const attempt=video.play();if(attempt&&typeof attempt.catch==='function')attempt.catch(()=>{});
+  }
+  function configurePreviews(){
+    if(previewObserver){previewObserver.disconnect();previewObserver=null;}
+    const previews=[...container.querySelectorAll('video.game-preview')];
+    if(motionPreference.matches){previews.forEach(video=>{video.pause();video.removeAttribute('src');video.load();video.closest('.art')?.classList.remove('preview-playing')});return;}
+    if('IntersectionObserver' in window){
+      previewObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+        if(entry.isIntersecting)playPreview(entry.target);
+        else{entry.target.pause();entry.target.closest('.art')?.classList.remove('preview-playing');}
+      }),{rootMargin:'120px 0px',threshold:0.1});
+      previews.forEach(video=>previewObserver.observe(video));
+    }else previews.forEach(playPreview);
+  }
+  if(typeof motionPreference.addEventListener==='function')motionPreference.addEventListener('change',configurePreviews);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){container.querySelectorAll('video.game-preview').forEach(video=>video.pause())}else configurePreviews()});
   function card(g){
     const article=document.createElement('article');article.className='game';
-    const art=addText(article,'div','','art');const img=document.createElement('img');img.src='../'+g.thumbnail;img.alt=g.thumbnailAlt||'';img.loading='lazy';art.append(img);
+    const art=addText(article,'div','','art');
+    const showPreview=g.showHubPreview===true;
+    const img=document.createElement('img');img.src='../'+(showPreview?g.previewPoster:g.thumbnail);img.alt=showPreview?(g.thumbnailAlt||`Gameplay preview of ${g.title}`):(g.thumbnailAlt||'');img.loading='lazy';img.decoding='async';
+    if(showPreview){
+      img.className='preview-poster';
+      const video=document.createElement('video');video.className='game-preview';video.dataset.src='../'+g.previewVideo;video.poster='../'+g.previewPoster;video.muted=true;video.defaultMuted=true;video.loop=true;video.autoplay=true;video.playsInline=true;video.preload='none';video.setAttribute('aria-hidden','true');video.tabIndex=-1;
+      video.addEventListener('playing',()=>art.classList.add('preview-playing'));
+      video.addEventListener('pause',()=>art.classList.remove('preview-playing'));
+      video.addEventListener('error',()=>art.classList.remove('preview-playing'));
+      art.append(img,video);
+    }else art.append(img);
     const body=addText(article,'div','','game-content');const heading=addText(body,'div','','game-heading');addText(heading,'h2',g.title);addText(heading,'span',g.category,'badge');addText(body,'p',g.description);
     const tags=addText(body,'div','','tags');g.tags.forEach(t=>addText(tags,'span',t,'tag'));
     if(g.id==='gumball-reading-machine'){const tip=addText(body,'p','Teacher tip: Save your word collections before class, then select the correct collection when the lesson starts.','teacher-tip');tip.style.cssText='font-size:.9rem;margin-top:10px;';}
@@ -98,7 +143,7 @@
     const candidates=json.games.filter(valid),idCounts=new Map(),urlCounts=new Map();
     for(const g of candidates){const id=g.id.toLowerCase(),url=g.url.toLowerCase();idCounts.set(id,(idCounts.get(id)||0)+1);urlCounts.set(url,(urlCounts.get(url)||0)+1)}
     const selected=candidates.filter(g=>idCounts.get(g.id.toLowerCase())===1&&urlCounts.get(g.url.toLowerCase())===1);
-    container.replaceChildren(...selected.map(card));status.textContent=selected.length?`${selected.length} classroom games available`:'No games are currently listed. Please check back soon.';
+    container.replaceChildren(...selected.map(card));status.textContent=selected.length?`${selected.length} classroom games available`:'No games are currently listed. Please check back soon.';configurePreviews();
   }catch(error){container.replaceChildren();status.textContent='Games couldn’t load right now. Please refresh, or go back to all teaching resources.';}
   }
   load();

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spin The Wheel for ESL Teachers</title>
+<style>
+/* ===== THEMES (colors are set by JS via CSS variables) ===== */
+:root{--bg:#F4F7FB;--panel:#fff;--ink:#1F2A44;--soft:#5B6784;--line:#D9E0EE;--accent:#4F46E5;--accent2:#EEF0FF}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:"Trebuchet MS","Segoe UI",system-ui,-apple-system,sans-serif;transition:background .3s}
+/* ===== SAFE LAYOUT: generous margins on all four sides ===== */
+#app{position:fixed;inset:0;display:flex;gap:clamp(12px,3vw,40px);padding:max(6vh,24px) max(5vw,24px)}
+#stage{flex:1;min-width:0;min-height:0;position:relative}
+#wheel{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+#hub{position:absolute;left:50%;border:6px solid #fff;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:clamp(14px,2.4vmin,26px);font-family:inherit;cursor:pointer;box-shadow:0 4px 14px #0004;transform:translate(-50%,-50%)}
+#hub:hover{filter:brightness(1.1)}
+#hub:disabled{filter:grayscale(.5);cursor:default}
+/* ===== EDIT PANEL ===== */
+#panel{width:clamp(280px,32vw,400px);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;overflow:auto;box-shadow:0 8px 30px #0001}
+#app.launched #panel{display:none}
+h1{font-size:1.25rem;line-height:1.2}
+.sub{color:var(--soft);font-size:.9rem}
+.tabs{display:flex;gap:6px}
+.tab{flex:1}
+button,select{font:inherit;font-size:1rem;min-height:46px;border-radius:12px;border:2px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 12px;cursor:pointer;font-weight:700}
+button:hover,select:hover{border-color:var(--accent)}
+button:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-size:1.1rem}
+textarea{width:100%;flex:1;min-height:150px;resize:vertical;border:2px solid var(--line);border-radius:12px;padding:10px;font:inherit;font-size:1rem;background:var(--bg);color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+label.sw{display:flex;align-items:center;gap:10px;font-weight:700;min-height:40px;cursor:pointer}
+label.sw input{width:22px;height:22px;accent-color:var(--accent)}
+#count{font-size:.85rem;color:var(--soft)}
+#msg{font-size:.85rem;color:#C2410C;min-height:1.1em}
+#editBtn{position:fixed;top:max(2.5vh,14px);right:max(2.5vw,14px);display:none;z-index:5}
+#app.launched ~ #editBtn{display:block}
+/* ===== RESULT CARD ===== */
+#result{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#0008;z-index:10;padding:max(6vh,24px) max(5vw,24px)}
+#result.show{display:flex}
+#card{background:var(--panel);border-radius:28px;padding:clamp(20px,4vmin,48px);width:min(860px,100%);max-height:100%;overflow:auto;text-align:center;box-shadow:0 20px 60px #0007;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+#kind{color:var(--soft);font-weight:700;font-size:clamp(1rem,2.4vmin,1.4rem)}
+#win{font-weight:800;line-height:1.25;margin:.5em 0 .9em;overflow-wrap:anywhere;color:var(--ink)}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+#toast{position:fixed;left:50%;bottom:max(6vh,24px);transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:12px 20px;border-radius:12px;font-weight:700;z-index:30;display:none;max-width:90vw;text-align:center}
+#hist{color:var(--soft);font-size:.9rem;margin-bottom:12px;overflow-wrap:anywhere}
+.hint{font-size:.8rem;color:var(--soft);display:none}
+#wname{flex:2;min-height:46px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;font:inherit;background:var(--bg);color:var(--ink)}
+@media (prefers-reduced-motion:reduce){#card{animation:none}}
+/* ===== MOBILE / NARROW ===== */
+@media (max-width:760px),(max-aspect-ratio:1/1){
+ #app{flex-direction:column;padding:max(3vh,16px) max(4vw,16px)}
+ #panel{width:100%;max-height:46%;order:2}
+ #stage{order:1}
+}
+</style>
+</head>
+<body>
+<div id="app">
+ <section id="stage">
+  <canvas id="wheel" aria-label="Spinning wheel"></canvas>
+  <button id="hub" aria-label="Spin the wheel">SPIN</button>
+ </section>
+ <aside id="panel">
+  <div><h1>Spin The Wheel for ESL Teachers</h1><p class="sub">Type or paste one item per line. The wheel updates automatically.</p></div>
+  <textarea id="text" spellcheck="false" placeholder=""></textarea>
+  <div id="count"></div><div id="msg"></div>
+  <div class="row"><button id="clear">Clear entries</button><button id="undo" style="display:none">Undo clear</button></div>
+  <div class="row"><input id="wname" aria-label="List name" placeholder="Name your list"><button id="saveW">Save list</button></div>
+  <div class="row"><select id="saved" aria-label="Saved lists"></select><button id="loadW">Load</button></div><div class="row"><button id="renameW">Rename selected</button><button id="delW">Delete selected</button></div>
+  <p class="hint" id="bigNote">Over 30 items: slices show numbers, and the full text appears on the result card.</p>
+  <label class="sw"><input type="checkbox" id="remove">Remove selected entry after spin</label>
+  <label class="sw"><input type="checkbox" id="sound" checked>Sounds on</label>
+  <label class="sw"><input type="checkbox" id="fast">Fast spin</label>
+  <select id="theme" aria-label="Color theme"></select>
+  <div class="row"><button id="full">Fullscreen</button><button class="primary" id="launch">Hide panel &amp; present</button></div>
+ </aside>
+</div>
+<button id="editBtn">Edit items</button>
+<div id="result" role="dialog" aria-modal="true"><div id="card">
+ <div id="kind"></div><div id="win" aria-live="polite"></div><div id="hist"></div>
+ <div class="row"><button class="primary" id="again">Spin Again</button><button id="timer">Timer 30s</button><button id="close">Close</button></div>
+</div></div>
+<canvas id="fx"></canvas><div id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   SPIN THE WHEEL FOR ESL TEACHERS  (single file, works offline)
+   Sections: Themes · Presets · Storage · Sound · Wheel Logic ·
+   Animation · Edit Panel · Confetti · Teacher Settings
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const MAX = 100;
+
+/* ---------- THEMES: add your own here ---------- */
+const THEMES = {
+ "Rainbow Classroom":{c:["#EF476F","#F78C3B","#F5C518","#06B884","#26A5E4","#7B61FF"],bg:"#F4F7FB",panel:"#FFFFFF",ink:"#1F2A44",soft:"#5B6784",line:"#D9E0EE",accent:"#4F46E5"},
+ "Pastel Classroom":{c:["#FFB3C6","#FFD8A8","#FFF0A0","#B8F2D0","#B5DEFF","#D7C4FF"],bg:"#FFF9F5",panel:"#FFFFFF",ink:"#3A2E4F",soft:"#6E6285",line:"#EADFF0",accent:"#8B5CF6"},
+ "Ocean Blue":{c:["#0B6E99","#1A8FBF","#34B3D9","#7DD6EA","#0F4C81","#2A9D8F"],bg:"#EAF6FB",panel:"#FFFFFF",ink:"#0B2A40",soft:"#4A6A80",line:"#CFE5F0",accent:"#0B6E99"},
+ "Candy Colors":{c:["#FF6FB5","#FF9ECF","#A78BFA","#5EEAD4","#FDE047","#FB7185"],bg:"#FFF0F8",panel:"#FFFFFF",ink:"#4A1D3F",soft:"#7C5271",line:"#F5D5E8",accent:"#D6338A"},
+ "Forest Theme":{c:["#2D6A4F","#52B788","#95D5B2","#B7791F","#7A9E3B","#40916C"],bg:"#EEF5EC",panel:"#FFFFFF",ink:"#1B3326",soft:"#4F6B5A",line:"#D2E3D4",accent:"#2D6A4F"},
+ "Dark Mode":{c:["#6D5BD0","#2BA6A0","#D9534F","#C98A1B","#3B82C4","#8E5BB5"],bg:"#14171F",panel:"#1F2430",ink:"#EEF1F7",soft:"#A3ADC2",line:"#343B4D",accent:"#7C6CF0"}
+};
+
+/* ---------- PRESET LIBRARY: add your own here ---------- */
+const UNUSED_PRESETS = {
+ "Vocabulary Practice":["Apple","Banana","Orange","Grapes","Watermelon","Strawberry","Mango","Pineapple"],
+ "Phonics Practice":["a_e (cake)","ee (tree)","sh (ship)","ch (chair)","th (thumb)","ai (rain)","oo (moon)","ar (car)"],
+ "Would You Rather":["Would you rather fly or be invisible?","Would you rather have a pet dog or a pet cat?","Would you rather eat pizza or burgers every day?","Would you rather live by the sea or in the mountains?","Would you rather be very tall or very small?","Would you rather play games or watch movies?"],
+ "Icebreaker Questions":["What is your favorite animal?","What did you do yesterday?","What is your favorite food?","What do you like to do on weekends?","Who is your best friend?","What is your favorite color and why?"],
+ "Rewards":["High five!","Sticker","Pick a song","2 extra minutes of free time","Choose the next game","Dance break","Teacher draws for you","Bonus point"],
+ "Student Names":["Anna","Ben","Chloe","David","Emma","Felix","Grace","Henry"],
+ "Discussion Questions":["Describe your perfect weekend.","What is your dream job?","Tell me about your family.","What makes a good friend?","Make a sentence using 'because'.","Describe your favorite place."]
+};
+
+/* ---------- STORAGE: remembers the last wheel ---------- */
+const KEY = "eslSpinWheel_v1";
+let S = {mode:"items",lists:{items:[],students:[]},theme:"Rainbow Classroom",remove:false,sound:true,fast:false,saved:{}};
+try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.lists)S=Object.assign(S,d)}catch(e){}
+if(!Array.isArray(S.lists.items))S.lists.items=[];
+if(S.lists.items.join("|")===UNUSED_PRESETS["Vocabulary Practice"].join("|") && !localStorage.getItem("eslSpinWheel_v2_initialized")){S.lists.items=[];}
+try{localStorage.setItem("eslSpinWheel_v2_initialized","1")}catch(e){}
+S.mode="items";S.saved=S.saved||{};
+const save = () => {try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+/* ---------- SOUND (Web Audio; optional) ---------- */
+let ac=null;
+function tone(f,d,type="sine",v=.08,delay=0){
+ if(!S.sound)return;
+ try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+  const t=ac.currentTime+delay,o=ac.createOscillator(),g=ac.createGain();
+  o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d)}catch(e){}
+}
+const sClick=()=>tone(520,.08,"triangle",.07);
+let lastTick=0;const sTick=p=>{const n=performance.now();if(n-lastTick<45)return;lastTick=n;tone(300+700*p,.04,"square",.03)};       // plays as slices pass the pointer, slows with the wheel
+const sWin=()=>[523,659,784,1047].forEach((f,i)=>tone(f,.35,"triangle",.09,i*.12));
+let tt;function toast(m){const e=$("toast");e.textContent=m;e.style.display="block";clearTimeout(tt);tt=setTimeout(()=>e.style.display="none",2800)}
+
+/* ---------- WHEEL LOGIC ---------- */
+const cv=$("wheel"),ctx=cv.getContext("2d");
+let list=[],labels=[],rot=0,W=0,H=0,R=0,cx=0,cy=0,hi=-1,spinning=false,winner=-1,pending=-1,hist=[],dirty=false;
+
+function th(){return THEMES[S.theme]||THEMES["Rainbow Classroom"]}
+function sliceColor(i,n){const c=th().c;return c[(i===n-1&&n>1&&(n-1)%c.length===0)?3:i%c.length]}
+function isLight(h){const v=parseInt(h.slice(1),16),r=v>>16,g=(v>>8)&255,b=v&255;return (0.299*r+0.587*g+0.114*b)>150}
+
+// Wrap text into lines no longer than maxW at the current font
+function wrap(t,maxW){
+ const out=[];let line="";
+ for(let w of t.split(/\s+/)){
+  while(ctx.measureText(w).width>maxW){ // very long word: break it
+   let k=w.length;while(k>1&&ctx.measureText(w.slice(0,k)).width>maxW)k--;
+   if(line){out.push(line);line=""}out.push(w.slice(0,k));w=w.slice(k)}
+  const test=line?line+" "+w:w;
+  if(ctx.measureText(test).width<=maxW)line=test;else{out.push(line);line=w}
+ }
+ if(line)out.push(line);return out;
+}
+// Pick the biggest font size where text fits inside its slice (never overlaps neighbours)
+function fitLabels(){
+ const n=list.length,a=Math.PI*2/Math.max(n,1),r0=R*.25,r1=R*.95,L=r1-r0;
+ const wid=n===1?R*.8:Math.min(R*.8,2*(r0+L*.25)*Math.sin(Math.min(a,Math.PI)/2)*.86);
+ labels=list.map((t0,k)=>{const t=n>30?String(k+1):t0;
+  let fs=Math.max(6,Math.min(R*.1,38)),lines=[t];
+  for(;fs>=6;fs--){ctx.font=`700 ${fs}px "Trebuchet MS","Segoe UI",sans-serif`;lines=wrap(t,L);if(lines.length*fs*1.12<=wid)break}
+  const maxLines=Math.max(1,Math.floor(wid/(fs*1.12)));
+  if(lines.length>maxLines){lines=lines.slice(0,maxLines);let s=lines[maxLines-1];while(s.length>1&&ctx.measureText(s+"…").width>L)s=s.slice(0,-1);lines[maxLines-1]=s+"…"}
+  return {lines,fs};
+ });
+}
+function resize(){
+ const b=$("stage").getBoundingClientRect(),s=Math.max(120,Math.min(b.width,b.height)),d=window.devicePixelRatio||1;
+ W=H=s;cv.style.width=cv.style.height=s+"px";cv.style.left=(b.width-s)/2+"px";cv.style.top=(b.height-s)/2+"px";
+ cv.width=cv.height=Math.round(s*d);ctx.setTransform(d,0,0,d,0,0);
+ R=s*.42;cx=s/2;cy=s/2+s*.04;
+ const hs=s*.15,h=$("hub");h.style.width=h.style.height=hs+"px";h.style.left=(b.width/2)+"px";h.style.top=(b.height/2+s*.04)+"px";
+ fitLabels();draw();
+}
+function draw(){
+ ctx.clearRect(0,0,W,H);const n=list.length,t=th(),a=Math.PI*2/Math.max(n,1);
+ ctx.save();ctx.translate(cx,cy);
+ ctx.beginPath();ctx.arc(0,0,R+W*.02,0,7);ctx.fillStyle=t.accent;ctx.shadowColor="#0005";ctx.shadowBlur=W*.03;ctx.fill();ctx.shadowBlur=0;
+ if(!n){ctx.beginPath();ctx.arc(0,0,R,0,7);ctx.fillStyle=t.panel;ctx.fill();ctx.fillStyle=t.soft;ctx.textAlign="center";ctx.font=`700 ${R*.07}px sans-serif`;ctx.fillText("Add items to start",0,0)}
+ for(let i=0;i<n;i++){
+  const col=sliceColor(i,n);ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,R,rot+i*a,rot+(i+1)*a);ctx.closePath();
+  ctx.fillStyle=col;ctx.fill();if(hi>=0&&i!==hi){ctx.fillStyle="rgba(0,0,0,.38)";ctx.fill()}ctx.lineWidth=n>50?1:2.5;ctx.strokeStyle="#fff";ctx.stroke();
+ }
+ // Labels: always read left-to-right, flipped when on the left half so text is NEVER upside down
+ for(let i=0;i<n;i++){
+  const mid=rot+(i+.5)*a,flip=Math.cos(mid)<0,{lines,fs}=labels[i]||{lines:[],fs:8};
+  ctx.save();ctx.rotate(mid);if(flip)ctx.rotate(Math.PI);
+  ctx.font=`700 ${fs}px "Trebuchet MS","Segoe UI",sans-serif`;ctx.textBaseline="middle";
+  ctx.fillStyle=isLight(sliceColor(i,n))?"#1B1B2F":"#fff";ctx.textAlign="center";
+  // Center labels within the usable ring, away from both the hub and the outer rim.
+  const x=flip?-R*.60:R*.60;
+  lines.forEach((ln,k)=>ctx.fillText(ln,x,(k-(lines.length-1)/2)*fs*1.12));
+  ctx.restore();
+ }
+ if(hi>=0&&hi<n){ // highlight the winning slice
+  ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,R,rot+hi*a,rot+(hi+1)*a);ctx.closePath();
+  ctx.lineWidth=Math.max(4,W*.012);ctx.strokeStyle="#FFD23F";ctx.stroke();
+ }
+ ctx.beginPath();ctx.arc(0,0,R*.2,0,7);ctx.fillStyle=t.panel;ctx.fill();
+ // Fixed pointer at the top (does not rotate)
+ ctx.beginPath();ctx.moveTo(0,-R+R*.06);ctx.lineTo(-R*.08,-R-R*.14);ctx.lineTo(R*.08,-R-R*.14);ctx.closePath();
+ ctx.fillStyle="#E11D48";ctx.strokeStyle="#fff";ctx.lineWidth=4;ctx.shadowColor="#0006";ctx.shadowBlur=8;ctx.stroke();ctx.fill();
+ ctx.restore();
+}
+const TAU=Math.PI*2;
+function idxAtPointer(r){const n=list.length;return Math.floor((((-Math.PI/2-r)%TAU)+TAU)%TAU/(TAU/n))}
+
+/* ---------- ANIMATION: smooth accelerate, then long natural slow-down ---------- */
+function spin(){
+ if(spinning)return;if(!list.length){toast("Add an item to start spinning.");return}
+ removePending();stopTimer();$("result").classList.remove("show");hi=-1;
+ const n=list.length,a=TAU/n,pick=Math.floor(Math.random()*n);
+ const jitter=(Math.random()-.5)*a*.7;                       // land anywhere inside the slice, never on a line
+ let target=-Math.PI/2-(pick+.5)*a-jitter;                   // slice centre under the top pointer
+ target+=TAU*Math.ceil((rot+TAU*(5+Math.random()*3)-target)/TAU);
+ const start=rot,dist=target-start,dur=(S.fast?2.2+Math.random():4.8+Math.random()*1.6)*1000,ta=.12;
+ const total=ta/2+(1-ta)/3;                                  // normaliser: velocity ramps up, then cubic ease-out
+ spinning=true;$("hub").disabled=true;sClick();
+ let last=idxAtPointer(rot),t0=performance.now();
+ (function frame(now){
+  const t=Math.min(1,(now-t0)/dur);
+  const p=(t<ta?t*t/(2*ta):ta/2+(1-ta)/3*(1-Math.pow(1-(t-ta)/(1-ta),3)))/total;
+  rot=start+dist*p;const i=idxAtPointer(rot);
+  if(i!==last){last=i;sTick(1-t)}
+  draw();
+  if(t<1)requestAnimationFrame(frame);else{spinning=false;$("hub").disabled=false;finish(pick)}
+ })(t0);
+}
+function finish(i){
+ winner=i;hi=i;pending=S.remove?i:-1;hist.push(list[i]);draw();
+ setTimeout(()=>{showResult(list.length>30?"#"+(i+1)+" – "+list[i]:list[i]);confetti();sWin()},350);
+}
+function removePending(){
+ if(pending>=0&&pending<list.length){list.splice(pending,1);S.lists[S.mode]=list;$("text").value=list.join("\n");save();hi=-1;rebuild()}
+ pending=-1;
+}
+
+/* ---------- RESULT CARD ---------- */
+function showResult(t){
+ $("kind").textContent=S.mode==="students"?"Selected Student:":"Selected:";
+ const w=$("win");w.textContent=t;
+ w.style.fontSize=t.length<18?"clamp(2.4rem,11vmin,6rem)":t.length<60?"clamp(1.8rem,6.5vmin,3.4rem)":"clamp(1.3rem,4.2vmin,2.2rem)";
+ $("hist").textContent=hist.length>1?"Picked so far: "+hist.slice(-8).join(", "):"";stopTimer();$("result").classList.add("show");$("again").focus();
+}
+function closeResult(){sClick();stopTimer();$("result").classList.remove("show");removePending();hi=-1;draw()}
+
+/* ---------- EDIT PANEL ---------- */
+function parse(){
+ const l=$("text").value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+ $("msg").textContent=l.length>MAX?`Only the first ${MAX} items are used.`:"";return l.slice(0,MAX);
+}
+function rebuild(){list=S.lists[S.mode].slice();$("bigNote").style.display=list.length>30?"block":"none";$("count").textContent=`${list.length} of ${MAX} items`;fitLabels();draw()}
+function updateWheel(){if(spinning)return;S.lists[S.mode]=parse();save();hi=-1;hist=[];dirty=false;rebuild()}
+function setMode(m){
+ S.mode="items";save();hist=[];dirty=false;
+ $("text").value=S.lists.items.join("\n");$("text").placeholder="";hi=-1;rebuild();
+}
+$("text").addEventListener("input",()=>{if(spinning){toast("Wait until the wheel stops.");return}updateWheel()});
+$("clear").onclick=()=>{if(spinning)return;undoTxt=$("text").value;$("text").value="";updateWheel();$("undo").style.display="block"};
+let undoTxt="";$("undo").onclick=()=>{$("text").value=undoTxt;updateWheel();$("undo").style.display="none"};
+$("launch").onclick=()=>{if(spinning)return;updateWheel();$("app").classList.add("launched");setTimeout(resize,30)};
+$("editBtn").onclick=()=>{sClick();$("app").classList.remove("launched");setTimeout(resize,30)};
+
+/* ---------- TEACHER SETTINGS ---------- */
+function applyTheme(){
+ const t=th(),s=document.documentElement.style;
+ [["--bg",t.bg],["--panel",t.panel],["--ink",t.ink],["--soft",t.soft],["--line",t.line],["--accent",t.accent]].forEach(([k,v])=>s.setProperty(k,v));
+ draw();
+}
+$("theme").onchange=e=>{S.theme=e.target.value;save();sClick();applyTheme()};
+$("remove").onchange=e=>{S.remove=e.target.checked;save()};
+$("sound").onchange=e=>{S.sound=e.target.checked;save();sClick()};
+$("fast").onchange=e=>{S.fast=e.target.checked;save()};
+/* Named lists are stored locally in this browser; no network required. */
+function refreshSaved(selected=""){
+ const el=$("saved");el.replaceChildren();
+ const blank=document.createElement("option");blank.value="";blank.textContent="Choose a saved list…";el.append(blank);
+ Object.keys(S.saved||{}).sort((a,b)=>a.localeCompare(b)).forEach(n=>{
+  const o=document.createElement("option");o.value=n;o.textContent=n;el.append(o);
+ });
+ el.value=selected&&Object.hasOwn(S.saved,selected)?selected:"";
+}
+$("saveW").onclick=()=>{
+ const n=$("wname").value.trim();if(!n){toast("Name your list first.");return}
+ if(!parse().length){toast("Add at least one item before saving.");return}
+ if(Object.hasOwn(S.saved,n)&&!confirm(`Replace saved list "${n}"?`))return;
+ S.saved[n]=parse();save();refreshSaved(n);toast(`Saved "${n}"`);
+};
+$("loadW").onclick=()=>{
+ const n=$("saved").value;if(!n||!Object.hasOwn(S.saved,n)){toast("Choose a saved list first.");return}
+ if(spinning){toast("Wait until the wheel stops.");return}
+ undoTxt=$("text").value;$("text").value=S.saved[n].join("\n");$("wname").value=n;updateWheel();$("undo").style.display="block";toast(`Loaded "${n}"`);
+};
+$("renameW").onclick=()=>{
+ const old=$("saved").value,newName=$("wname").value.trim();
+ if(!old||!Object.hasOwn(S.saved,old)){toast("Choose a saved list to rename.");return}
+ if(!newName){toast("Type the new name above.");return}
+ if(old===newName)return;
+ if(Object.hasOwn(S.saved,newName)){toast("That name is already used.");return}
+ S.saved[newName]=S.saved[old];delete S.saved[old];save();refreshSaved(newName);toast(`Renamed to "${newName}"`);
+};
+$("delW").onclick=()=>{
+ const n=$("saved").value;if(!n||!Object.hasOwn(S.saved,n)){toast("Choose a saved list to delete.");return}
+ if(!confirm(`Delete saved list "${n}"? This cannot be undone.`))return;
+ delete S.saved[n];save();refreshSaved();toast(`Deleted "${n}"`);
+};
+/* Countdown timer on the result card (speaking challenges) */
+let tInt=null;
+function stopTimer(){clearInterval(tInt);tInt=null;$("timer").textContent="Timer 30s"}
+$("timer").onclick=()=>{if(tInt){stopTimer();return}let s=30;sClick();$("timer").textContent="Stop · "+s+"s";tInt=setInterval(()=>{s--;$("timer").textContent="Stop · "+s+"s";if(s<=0){stopTimer();tone(880,.5,"triangle",.1);toast("Time's up!")}},1000)};
+$("full").onclick=()=>{sClick();
+ if(!document.fullscreenElement)(document.documentElement.requestFullscreen||function(){}).call(document.documentElement);
+ else document.exitFullscreen()};
+$("hub").onclick=spin;cv.onclick=spin;
+$("again").onclick=()=>{sClick();spin()};$("close").onclick=closeResult;
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape"&&$("result").classList.contains("show"))closeResult();
+ if(e.code==="Space"&&!/TEXTAREA|SELECT|BUTTON/.test(document.activeElement.tagName)){e.preventDefault();spin()}
+});
+
+/* ---------- CONFETTI (small, professional burst) ---------- */
+const fx=$("fx"),fc=fx.getContext("2d");
+function confetti(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+ const d=window.devicePixelRatio||1;fx.width=innerWidth*d;fx.height=innerHeight*d;fc.setTransform(d,0,0,d,0,0);
+ const cols=th().c.concat(["#FFD23F"]),ps=[];
+ for(let i=0;i<110;i++){const ang=-Math.PI/2+(Math.random()-.5)*1.6,sp=7+Math.random()*9;
+  ps.push({x:innerWidth/2,y:innerHeight*.55,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,r:Math.random()*6,s:3+Math.random()*5,c:cols[i%cols.length],star:i%9===0})}
+ const t0=performance.now();
+ (function f(now){
+  const t=(now-t0)/2400;fc.clearRect(0,0,innerWidth,innerHeight);if(t>=1)return;
+  ps.forEach(p=>{p.vy+=.28;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=.2;fc.globalAlpha=1-t*t;fc.fillStyle=p.c;
+   if(p.star){fc.fillText("✦",p.x,p.y)}else{fc.save();fc.translate(p.x,p.y);fc.rotate(p.r);fc.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);fc.restore()}});
+  requestAnimationFrame(f)})(t0);
+}
+
+/* ---------- INIT ---------- */
+$("theme").innerHTML=Object.keys(THEMES).map(k=>`<option${k===S.theme?" selected":""}>${k}</option>`).join("");
+$("remove").checked=S.remove;$("sound").checked=S.sound;$("fast").checked=S.fast;refreshSaved();
+new ResizeObserver(resize).observe($("stage"));addEventListener("resize",resize);
+applyTheme();setMode(S.mode);resize();
+</script>
+</body>
+</html>
