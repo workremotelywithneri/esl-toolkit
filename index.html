@@ -419,46 +419,55 @@
   .card-image-external svg{position:relative; z-index:1; width:64px; height:64px; opacity:0.85;}
   .teach-more{margin-top:40px;}
 
-  .wn{margin-top:40px;}
-  .wn[hidden]{display:none;}
-  .wn-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px 18px; flex-wrap:wrap; margin-bottom:14px;}
-  .resource-group .wn-head h3{margin:0;}
-  .wn-all{color:var(--accent); font-weight:600; font-size:0.92rem; text-decoration:none;}
+  /* ---------- Featured games ---------- */
+  .featured-highlight{
+    margin:0 auto 36px;padding:26px 24px;
+    border:1px solid var(--line);border-radius:28px;
+    background:linear-gradient(135deg,rgba(167,139,250,0.14),rgba(var(--card-glass-rgb),0.78));
+    box-shadow:var(--shadow);
+  }
+  .featured-highlight[hidden]{display:none;}
+  .wn{margin-top:0;}
+  .wn-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 18px;flex-wrap:wrap;margin-bottom:14px;}
+  .wn-head h2{margin:0;color:var(--text);font-size:clamp(1.35rem,2.1vw,1.65rem);}
+  .wn-all{color:var(--accent);font-weight:600;font-size:0.92rem;text-decoration:none;}
   .wn-all:hover{text-decoration:underline;}
-  .wn-all:focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px;}
-  .wn-list{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
-  @media(max-width:900px){.wn-list{grid-template-columns:1fr;}}
+  .wn-all:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px;}
+  .wn-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
   .wn-item{
-    display:grid; grid-template-columns:96px 1fr; gap:6px 14px; align-items:center;
-    padding:12px; border:1px solid var(--line); border-radius:18px;
+    display:grid;grid-template-columns:minmax(0,32%) minmax(0,1fr) auto;gap:12px;align-items:center;
+    min-width:0;padding:14px;border:1px solid var(--line);border-radius:18px;
     background:rgba(var(--card-glass-rgb),var(--card-glass-alpha));
     transition:border-color 0.2s ease;
   }
   .wn-item:hover{border-color:rgba(167,139,250,0.4);}
-  .wn-item.wn-nothumb{grid-template-columns:1fr;}
-  .wn-thumb{grid-row:span 2; width:96px; height:60px; border-radius:12px; overflow:hidden; background:var(--glass-strong);}
-  .wn-thumb img, .wn-thumb video{width:100%; height:100%; object-fit:contain; display:block;}
-  .wn-thumb{position:relative;}
+  .wn-item.wn-nothumb{grid-template-columns:minmax(0,1fr) auto;}
+  .wn-thumb{grid-row:1;width:100%;height:118px;border-radius:12px;overflow:hidden;background:var(--glass-strong);position:relative;}
+  .wn-thumb img,.wn-thumb video{width:100%;height:100%;object-fit:contain;display:block;}
   .wn-preview-toggle{position:absolute;bottom:8px;right:8px;z-index:2;border:1px solid rgba(255,255,255,.65);background:rgba(25,17,50,.88);color:white;border-radius:999px;padding:6px 11px;font-size:12px;cursor:pointer;}
   .wn-preview-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:2px;}
-  .wn-text{display:flex; flex-direction:column; gap:2px; min-width:0;}
-  .wn-title{font-weight:700; font-size:0.98rem; line-height:1.3;}
-  .wn-desc{color:var(--text-soft); font-size:0.85rem; line-height:1.45; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
-  .wn-play{justify-self:start; padding:8px 18px; font-size:0.85rem;}
-
-  /* Single featured release card — responsive and easy to update via games.json */
-  .wn-list{grid-template-columns:minmax(0,1fr);}
-  .wn-item{grid-template-columns:minmax(150px,32%) minmax(0,1fr) auto;gap:18px;padding:18px;}
-  .wn-thumb{grid-row:1; width:100%;height:170px;}
-  .wn-text{gap:8px;}
-  .wn-title{font-size:1.25rem;}
-  .wn-desc{font-size:0.95rem;-webkit-line-clamp:3;}
-  .wn-feature-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--accent);}
-  .wn-play{justify-self:end;white-space:nowrap;}
+  .wn-text{display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .wn-title{font-weight:700;font-size:1.06rem;line-height:1.3;}
+  .wn-desc{color:var(--text-soft);font-size:0.84rem;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .wn-feature-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--accent);}
+  .wn-play{justify-self:end;white-space:nowrap;padding:8px 14px;font-size:0.84rem;}
+  @media(max-width:920px){
+    .wn-list{grid-template-columns:minmax(0,1fr);}
+    .wn-item{grid-template-columns:minmax(130px,24%) minmax(0,1fr) auto;gap:14px;padding:14px;}
+    .wn-thumb{height:118px;}
+  }
   @media(max-width:700px){
-    .wn-item{grid-template-columns:minmax(0,1fr);gap:12px;}
-    .wn-thumb{height:185px;}
-    .wn-play{justify-self:start;}
+    .featured-highlight{margin-bottom:28px;padding:20px 16px;border-radius:24px;}
+    .wn-head{align-items:flex-start;margin-bottom:12px;}
+    .wn-item{grid-template-columns:minmax(100px,35%) minmax(0,1fr);grid-template-rows:auto auto;gap:8px 12px;padding:12px;}
+    .wn-item.wn-nothumb{grid-template-columns:minmax(0,1fr);}
+    .wn-thumb{grid-column:1;grid-row:1/span 2;height:78px;}
+    .wn-text{grid-column:2;grid-row:1;gap:3px;}
+    .wn-title{font-size:1rem;}
+    .wn-desc{font-size:.82rem;line-height:1.35;}
+    .wn-play{grid-column:2;grid-row:2;justify-self:start;padding:7px 14px;}
+    .wn-item.wn-nothumb .wn-text{grid-column:1;grid-row:1;}
+    .wn-item.wn-nothumb .wn-play{grid-column:1;grid-row:2;}
   }
 
   /* ---------- Guide panel ---------- */
@@ -678,6 +687,14 @@ a:focus-visible,button:focus-visible { outline:3px solid var(--accent); outline-
   </div>
 </section>
 
+<section class="wn featured-highlight wrap" id="whatsNew" hidden aria-labelledby="wnHeading">
+  <div class="wn-head">
+    <h2 id="wnHeading">✨ Fresh from the Toolkit</h2>
+    <a class="wn-all" href="games/">View All Games →</a>
+  </div>
+  <ul class="wn-list" id="wnList"></ul>
+</section>
+
 <section id="guide">
   <div class="wrap">
     <div class="guide-panel reveal">
@@ -757,14 +774,6 @@ a:focus-visible,button:focus-visible { outline:3px solid var(--accent); outline-
             <div class="card-footer"><span class="price">Third-party sites</span><a href="resources/#games" class="btn btn-ghost">Explore External Games</a></div>
           </div>
         </div>
-      </div>
-      <!-- Featured releases: controlled by data/games.json. Hidden if none are featured. -->
-      <div class="wn" id="whatsNew" hidden>
-        <div class="wn-head">
-          <h3>✨ Fresh from the Toolkit</h3>
-          <a class="wn-all" href="games/">View All Games →</a>
-        </div>
-        <ul class="wn-list" id="wnList"></ul>
       </div>
       <div class="grid grid-3 teach-more">
         <div class="card reveal">
