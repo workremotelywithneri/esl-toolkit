@@ -540,6 +540,22 @@
   .about-copy p{color:var(--text-soft);}
   .about-subhead{color:var(--text);font-size:1.05rem;font-weight:700;}
 
+  /* ---------- Feedback ---------- */
+  #feedback{padding:46px 0;}
+  .feedback-callout{
+    display:flex;align-items:center;justify-content:space-between;gap:28px;
+    padding:34px 40px;background:var(--surface);border:1px solid var(--line);
+    border-radius:28px;box-shadow:var(--shadow);
+  }
+  .feedback-copy{max-width:680px;}
+  .feedback-callout h2{margin:8px 0 6px;color:var(--text);}
+  .feedback-callout p{margin:0;color:var(--text-soft);}
+  .feedback-callout .btn{flex-shrink:0;}
+  @media(max-width:800px){
+    #feedback{padding:34px 0;}
+    .feedback-callout{align-items:flex-start;flex-direction:column;padding:30px 26px;gap:18px;}
+  }
+
   /* ---------- Newsletter / footer ---------- */
   .newsletter{
     background:var(--surface);
@@ -580,6 +596,11 @@
   }
   .footer-social-links a:hover{transform:translateY(-3px);color:#fff;border-color:var(--accent);background:var(--glass-strong);}
   .footer-social-links svg{width:19px;height:19px;fill:currentColor;}
+  .footer-social-links a.instagram-footer-link{
+    display:inline-flex;width:auto;height:auto;align-items:center;gap:7px;
+    padding:9px 12px;border-radius:999px;text-decoration:none;overflow-wrap:anywhere;line-height:1.4;
+    font-size:.85rem;font-weight:700;
+  }
   /* Footer layout fix: three independent columns, no overlapping content. */
   .footer-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);align-items:start;gap:clamp(22px,3vw,48px);}
   .footer-row > *{min-width:0;max-width:100%;}
@@ -840,6 +861,19 @@ a:focus-visible,button:focus-visible { outline:3px solid var(--accent); outline-
   </div>
 </section>
 
+<section id="feedback" aria-labelledby="feedback-heading">
+  <div class="wrap">
+    <div class="feedback-callout reveal">
+      <div class="feedback-copy">
+        <span class="eyebrow">Feedback &amp; Suggestions</span>
+        <h2 id="feedback-heading">Your Feedback Helps Me Improve 💜</h2>
+        <p>Share a review, report a bug, or suggest an improvement. Your thoughts help me make the ESL Toolkit more useful for teachers.</p>
+      </div>
+      <a class="btn btn-primary" href="https://forms.gle/ZzJrFzorXVydJjvd7" target="_blank" rel="noopener noreferrer">Share Your Feedback</a>
+    </div>
+  </div>
+</section>
+
 <section id="newsletter">
   <div class="wrap">
     <div class="newsletter reveal">
@@ -866,13 +900,15 @@ a:focus-visible,button:focus-visible { outline:3px solid var(--accent); outline-
     <div class="footer-contact">
       <strong>You've got any questions or concerns?</strong>
       <p>Email: <a href="mailto:workremotelywithneri@gmail.com">workremotelywithneri@gmail.com</a></p>
+      <p><a href="#feedback">Feedback &amp; Suggestions</a></p>
     </div>
     <div class="footer-social-group">
       <span>Follow for new ESL games and updates:</span>
       <nav class="footer-social-links" aria-label="Neri on social media">
       <a href="https://www.tiktok.com/@workremotelywithneri" target="_blank" rel="noopener noreferrer" aria-label="TikTok @workremotelywithneri" title="Follow on TikTok" class="tiktok-footer-link" style="border:1px solid currentColor;border-radius:999px;text-decoration:none;font-size:.85rem;font-weight:700">TikTok <span aria-hidden="true">@workremotelywithneri</span></a>
-      <a href="https://www.instagram.com/workremotelywithneri" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <a href="https://www.instagram.com/workremotelywithneri" target="_blank" rel="noopener noreferrer" aria-label="Instagram @workremotelywithneri" title="Follow on Instagram" class="instagram-footer-link">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.5h9.6a4.7 4.7 0 0 1 4.7 4.7v9.6a4.7 4.7 0 0 1-4.7 4.7H7.2a4.7 4.7 0 0 1-4.7-4.7V7.2a4.7 4.7 0 0 1 4.7-4.7zm0 1.8a2.9 2.9 0 0 0-2.9 2.9v9.6a2.9 2.9 0 0 0 2.9 2.9h9.6a2.9 2.9 0 0 0 2.9-2.9V7.2a2.9 2.9 0 0 0-2.9-2.9H7.2zm4.8 3a4.7 4.7 0 1 1 0 9.4 4.7 4.7 0 0 1 0-9.4zm0 1.8a2.9 2.9 0 1 0 0 5.8 2.9 2.9 0 0 0 0-5.8zm5-3.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg>
+        <span aria-hidden="true">Instagram @workremotelywithneri</span>
       </a>
       </nav>
     </div>
