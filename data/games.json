@@ -3,135 +3,159 @@
     {
       "id": "find-the-magic-ball",
       "title": "Find the Magic Ball!",
-      "description": "Watch the ball, follow the cups as they shuffle, then choose where you think it is. Change the shuffle speed and style to adjust the challenge.",
+      "description": "Watch the ball go under the cups, follow the shuffle, then choose the cup you think hides it. Adjust the shuffle speed and style to change the challenge.",
       "url": "find-the-ball-v2.html",
       "thumbnail": "assets/games/find-the-magic-ball.svg",
-      "thumbnailAlt": "",
+      "thumbnailAlt": "Three cups and a golden ball ready for a classroom guessing game.",
       "category": "Focus & memory",
       "tags": [
         "Solo play",
         "Adjustable difficulty"
       ],
       "status": "published",
-      "featured": false
+      "featured": false,
+      "releaseDate": "2026-10-03",
+      "thumbnailLight": "assets/games/find-the-magic-ball-light.jpg",
+      "thumbnailDark": "assets/games/find-the-magic-ball-dark.jpg"
     },
     {
       "id": "trophy-clash",
       "title": "Trophy Clash: Tic-Tac-Toe",
-      "description": "Challenge a partner on a 6×6 board. Make lines of four or more to earn trophies; the player with the most trophies when the board fills wins.",
+      "description": "Play against a partner on a 6×6 board. Make lines of four to earn trophies; the player with more trophies after all 36 spaces are filled wins.",
       "url": "TICTACTOE-improved.html",
       "thumbnail": "assets/games/trophy-clash.svg",
-      "thumbnailAlt": "",
+      "thumbnailAlt": "Trophy Clash board with red crosses, blue circles, and a gold trophy.",
       "category": "Strategy & planning",
       "tags": [
         "Two players",
         "Custom icons & themes"
       ],
       "status": "published",
-      "featured": false
+      "featured": false,
+      "releaseDate": "2026-10-03",
+      "thumbnailLight": "assets/games/trophy-clash-light.png",
+      "thumbnailDark": "assets/games/trophy-clash-dark.png"
     },
     {
       "id": "build-your-ice-cream",
       "title": "Build Your Ice Cream",
-      "description": "Create a colorful ice cream treat with scoops, sauces, and toppings in this interactive classroom reward game.",
+      "description": "Choose a base and scoops, then add sauces, toppings, and decorations.",
       "url": "Build-Your-Ice-Cream-free-decorating-v3.3.html",
       "thumbnail": "assets/games/build-your-ice-cream.svg",
-      "thumbnailAlt": "Illustration of an ice cream cone with colorful scoops",
+      "thumbnailAlt": "Colorful scoops and toppings on a classroom ice cream cone.",
       "category": "Creative rewards",
       "tags": [
         "Build and decorate",
         "Classroom reward"
       ],
       "status": "published",
-      "featured": true,
+      "featured": false,
       "previewVideo": "assets/previews/ice-cream-preview.mp4",
-      "previewPoster": "assets/previews/ice-cream-preview.jpg"
+      "previewPoster": "assets/previews/ice-cream-preview.jpg",
+      "releaseDate": "2026-10-27",
+      "thumbnailLight": "assets/games/build-your-ice-cream-light.jpg",
+      "thumbnailDark": "assets/games/build-your-ice-cream-dark.jpg"
     },
     {
       "id": "gumball-reading-machine",
       "title": "Gumball Reading Machine",
-      "description": "Prepare and save named word collections before class, choose the correct lesson, and turn reading practice into a playful gumball activity.",
+      "description": "Reveal words or sentences in a playful gumball-machine reading activity.",
       "url": "gumball-reading-machine-v2.html",
       "thumbnail": "assets/games/gumball-reading-machine.svg",
-      "thumbnailAlt": "Illustration of a colorful gumball reading machine",
+      "thumbnailAlt": "A bright gumball reading machine with colorful gumballs.",
       "category": "Reading & phonics",
       "tags": [
         "Saved word collections",
         "Teacher-controlled lessons"
       ],
       "status": "published",
-      "featured": true,
+      "featured": false,
       "previewVideo": "assets/previews/gumball-preview.mp4",
-      "previewPoster": "assets/previews/gumball-preview.jpg"
+      "previewPoster": "assets/previews/gumball-preview.jpg",
+      "releaseDate": "2026-10-27",
+      "thumbnailLight": "assets/games/gumball-reading-machine-light.jpg",
+      "thumbnailDark": "assets/games/gumball-reading-machine-dark.jpg"
     },
     {
       "id": "build-a-pizza",
       "title": "Build a Pizza",
-      "description": "Build and decorate a pizza with toppings.",
+      "description": "Choose a base, sauce, cheese, and toppings to build your pizza.",
       "url": "build-a-pizza.html",
       "thumbnail": "assets/previews/pizza-preview.jpg",
-      "thumbnailAlt": "Gameplay screenshot of Build a Pizza",
+      "thumbnailAlt": "A freshly topped pizza surrounded by ingredients.",
       "category": "Creative rewards",
       "tags": [
         "Classroom game"
       ],
       "status": "published",
-      "featured": false,
+      "featured": true,
       "previewVideo": "assets/previews/pizza-preview.mp4",
       "previewPoster": "assets/previews/pizza-preview.jpg",
-      "showHubPreview": true
+      "showHubPreview": true,
+      "releaseDate": "2026-10-28",
+      "thumbnailLight": "assets/games/build-a-pizza-light.jpg",
+      "thumbnailDark": "assets/games/build-a-pizza-dark.jpg"
     },
     {
       "id": "build-a-burger",
       "title": "Build a Burger",
-      "description": "Create a custom burger in this classroom reward game.",
+      "description": "Choose a bun, patty, cheese, vegetables, sauce, and extras to build your burger.",
       "url": "build-a-burger-v2.html",
       "thumbnail": "assets/previews/burger-preview.jpg",
-      "thumbnailAlt": "Gameplay screenshot of Build a Burger",
+      "thumbnailAlt": "A stacked classroom burger with fresh toppings and ingredients.",
       "category": "Creative rewards",
       "tags": [
         "Classroom game"
       ],
       "status": "published",
-      "featured": false,
+      "featured": true,
       "previewVideo": "assets/previews/burger-preview.mp4",
       "previewPoster": "assets/previews/burger-preview.jpg",
-      "showHubPreview": true
+      "showHubPreview": true,
+      "releaseDate": "2026-10-28",
+      "thumbnailLight": "assets/games/build-a-burger-light.jpg",
+      "thumbnailDark": "assets/games/build-a-burger-dark.jpg"
     },
     {
       "id": "build-an-aquarium",
       "title": "Build an Aquarium",
-      "description": "Create and decorate an underwater aquarium.",
+      "description": "Add animals, plants, and decorations to create an aquarium.",
       "url": "build-an-aquarium.html",
       "thumbnail": "assets/previews/aquarium-preview.jpg",
-      "thumbnailAlt": "Gameplay screenshot of Build an Aquarium",
+      "thumbnailAlt": "A colorful aquarium with fish, coral, and a sunken treasure chest.",
       "category": "Creative rewards",
       "tags": [
         "Classroom game"
       ],
       "status": "published",
-      "featured": false,
+      "featured": true,
       "previewVideo": "assets/previews/aquarium-preview.mp4",
       "previewPoster": "assets/previews/aquarium-preview.jpg",
-      "showHubPreview": true
+      "showHubPreview": true,
+      "releaseDate": "2026-10-28",
+      "thumbnailLight": "assets/games/build-an-aquarium-light.jpg",
+      "thumbnailDark": "assets/games/build-an-aquarium-dark.jpg"
     },
     {
       "id": "spin-the-wheel",
       "title": "Spin the Wheel",
-      "description": "Spin teacher-entered words or sentences, and save reusable lists for future lessons.",
+      "description": "Enter words or sentences and spin to select one. Save named lists to use again later.",
       "url": "spin-the-wheel-v3.html",
       "thumbnail": "assets/previews/spin-wheel-preview.jpg",
-      "thumbnailAlt": "Gameplay screenshot of Spin the Wheel",
+      "thumbnailAlt": "A bright classroom reward wheel with playful icons and prizes.",
       "category": "Classroom activities",
       "tags": [
         "Saved word lists",
         "Teacher-controlled"
       ],
       "status": "published",
-      "featured": false,
+      "featured": true,
       "previewVideo": "assets/previews/spin-wheel-preview.mp4",
       "previewPoster": "assets/previews/spin-wheel-preview.jpg",
-      "showHubPreview": true
+      "showHubPreview": true,
+      "releaseDate": "2026-10-28",
+      "thumbnailLight": "assets/games/spin-the-wheel-light.jpg",
+      "thumbnailDark": "assets/games/spin-the-wheel-dark.jpg"
     }
   ]
 }

@@ -618,7 +618,9 @@
     border: 1px solid var(--line-soft);
     color: var(--text-soft);
   }
-  .toolkit-home{display:inline-block;margin-bottom:18px;color:var(--text-soft);font-size:.9rem;font-weight:600;text-decoration:none;}
+  .toolkit-home{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;color:var(--text-soft);font-size:.9rem;font-weight:600;text-decoration:none;}
+  .toolkit-profile{width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex:0 0 34px;overflow:hidden;border:1px solid var(--line);border-radius:50%;}
+  .toolkit-profile img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;}
   .toolkit-home:hover{color:var(--accent);}
 </style>
 </head>
@@ -631,7 +633,7 @@
     <div class="glow-blob b1"></div>
     <div class="glow-blob b2"></div>
     <div class="hero-inner">
-      <a class="toolkit-home" href="../">← ESL Toolkit home</a>
+      <a class="toolkit-home" href="../" aria-label="The ESL Toolkit home"><span class="toolkit-profile"><img src="../assets/neri-profile.jpg" alt="" width="34" height="34"></span><span>The ESL Toolkit</span></a>
       <a class="toolkit-home" href="../resources/" style="margin-left:18px;">Teacher resources →</a>
       <p class="eyebrow">For Filipino online ESL teachers — 2026 edition</p>
       <h1>Which ESL company should you <em>actually</em> apply to?</h1>
